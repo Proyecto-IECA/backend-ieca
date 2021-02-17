@@ -23,11 +23,11 @@ const getPostulante = async(req, res) => {
         id_postulante = id
     ];
     let postulante = await queryParams('stp_getbyid_postulante(?)', mysqlParams);
-    if (postulante[0]) {
+    if (postulante[0][0]) {
         res.json({
             status: true,
             message: 'Consulta Exitosa',
-            data: postulante[0]
+            data: postulante[0][0]
         });
     } else {
         res.json({
