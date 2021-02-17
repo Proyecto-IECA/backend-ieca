@@ -23,19 +23,23 @@ const generateJWT = (id) => {
     });
 }
 
-const generateTokenRefreshToken = async(id_postulante) => {
-    const generateToken = await generateJWT(id_postulante);
+const generateTokenRefreshToken = async(id_todo) => {
+    const generateToken = await generateJWT(id_todo);
     const token = generateToken.token;
     const jwt_id = generateToken.jwt_id;
     const fecha_expiracion = moment().add(10, 'd').toDate();
     const mysqlParamsT = [
         jwt_id,
         fecha_expiracion,
-        id_postulante
+        id_todo
     ];
-    const generateRToken = await queryParams('stp_add_token_postulante(?, ?, ?)', mysqlParamsT);
+
+    const generateRToken = await queryParams('stp_add_token_empresa(?, ?, ?)', mysqlParamsT);
     const refreshToken = uuid.stringify(generateRToken[0][0].id_token);
+
     return { token, refreshToken }
+
 }
+
 
 module.exports = { generateTokenRefreshToken }
