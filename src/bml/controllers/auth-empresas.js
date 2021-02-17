@@ -50,9 +50,7 @@ const registerEmpresas = async(req, res) => {
     const {
         nombre,
         administrador,
-        pagina_web,
         ubicacion,
-        telefono,
         giro,
         email,
         pass
@@ -60,14 +58,12 @@ const registerEmpresas = async(req, res) => {
     const mysqlParams = [
         nombre,
         administrador,
-        pagina_web,
         ubicacion,
-        telefono,
         giro,
         email,
         pass
     ];
-    let result = await queryParams('stp_add_empresa(?, ?, ?, ?, ?, ?, ?, ?)', mysqlParams);
+    let result = await queryParams('stp_add_empresa(?, ?, ?, ?, ?, ?)', mysqlParams);
     if (result.affectedRows != 0) {
         res.json({
             status: true,
