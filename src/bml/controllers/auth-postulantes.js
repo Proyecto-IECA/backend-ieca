@@ -1,61 +1,93 @@
 const { queryParams } = require('../../dal/data-access');
+const { generateTokenRefreshToken } = require('../helpers/jwt');
+const bcrypt = require('bcryptjs');
 
 const loginPostulante = async(req, res) => {
-    const { email } = req.body;
+    const { email, pass } = req.body;
     const mysqlParams = [
         email
     ];
     let postulante = await queryParams('stp_login_postulante(?)', mysqlParams);
-
-    if (postulante[0]) {
-        res.json({
-            status: true,
-            message: 'Inicio de sesion correcto',
-            data: postulante[0]
-        });
-    } else {
+    if (postulante[0] == '') {
         res.json({
             status: false,
-            message: 'Inicio de sesion incorrecto',
-            data: postulante
+            message: 'El Email es incorrecto',
+            data: null
         });
     }
-}
+    try {
 
+        const validPassword = bcrypt.compareSync(pass, postulante[0][0].pass);
+
+        if (!validPassword) {
+            res.json({
+                status: false,
+                message: 'Password incorrecto',
+                data: null
+            });
+        }
+        const id_postulante = postulante[0][0].id_postulante;
+        const tokens = await generateTokenRefreshToken(id_postulante);
+
+        res.json({
+            status: true,
+            message: 'Acceso correcto',
+            data: postulante[0][0],
+            token: tokens.token,
+            refreshToken: tokens.refreshToken
+        });
+
+    } catch (error) {
+        throw new Error(error)
+    }
+
+}
 
 const registerPostulante = async(req, res) => {
     const {
         nombre,
         apellido_paterno,
         apellido_materno,
-        fecha_nacimiento,
         sexo,
         email,
         pass
     } = req.body;
-    const mysqlParams = [
-        nombre,
-        apellido_paterno,
-        apellido_materno,
-        fecha_nacimiento,
-        sexo,
-        email,
-        pass
-    ];
-    let result = await queryParams('stp_add_postulante(?, ?, ?, ?, ?, ?, ?)', mysqlParams);
-    if (result.affectedRows != 0) {
-        res.json({
-            status: true,
-            message: 'Cuenta registrada de manera exitosa',
-            data: result.affectedRows
-        });
+    const mysqlParam = [email];
+
+    let postulante = await queryParams('stp_login_postulante(?)', mysqlParam);
+    if (postulante[0] == '') {
+        const salt = bcrypt.genSaltSync();
+        const passwordEncrypt = bcrypt.hashSync(pass, salt);
+        const mysqlParams = [
+            nombre,
+            apellido_paterno,
+            apellido_materno,
+            sexo,
+            email,
+            passwordEncrypt
+        ];
+        let result = await queryParams('stp_add_postulante(?, ?, ?, ?, ?, ?)', mysqlParams);
+        if (result.affectedRows != 0) {
+            res.json({
+                status: true,
+                message: 'Cuenta registrada de manera exitosa',
+                data: result.affectedRows
+            });
+        } else {
+            res.json({
+                status: false,
+                message: 'Ocurrio un error al crear la cuenta',
+                data: result.affectedRows
+            });
+        }
     } else {
         res.json({
             status: false,
-            message: 'Ocurrio un error al crear la cuenta',
-            data: result.affectedRows
-        });
+            message: 'Ya existe un usuario con ese email',
+            data: null
+        })
     }
+
 }
 
 const renewPass = async(req, res) => {
