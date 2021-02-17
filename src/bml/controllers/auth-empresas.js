@@ -7,17 +7,17 @@ const loginEmpresa = async(req, res) => {
     const mysqlParams = [
         email
     ];
-    let result = await queryParams('stp_login_empresa(?)', mysqlParams);
+    let empresa = await queryParams('stp_login_empresa(?)', mysqlParams);
 
-    if (result[0] == '') {
+    if (empresa[0] == '') {
         res.json({
             status: false,
-            message: 'Inicio de sesion correcto',
+            message: 'El Email es incorrecto',
             data: null
         });
     }
     try {
-        const validPassword = bcrypt.compareSync(pass, result[0][0].pass);
+        const validPassword = bcrypt.compareSync(pass, empresa[0][0].pass);
 
         if (!validPassword) {
             res.json({
@@ -26,43 +26,19 @@ const loginEmpresa = async(req, res) => {
                 data: null
             });
         }
-        const id_empresa = result[0][0].id_empresa;
-        const tokens = await generateTokenRefreshToken(id_empresa);
+        const id_empresa = empresa[0][0].id_empresa;
+        const tokens = await generateTokenRefreshToken(id_empresa, 2);
 
         res.json({
             status: true,
             message: 'Acceso correcto',
-            data: result[0][0],
+            data: empresa[0][0],
             token: tokens.token,
             refreshToken: tokens.refreshToken
         });
 
     } catch (error) {
         throw new Error(error)
-    }
-}
-
-const renewPass = async(req, res) => {
-    const { email, pass } = req.body;
-    const mysqlParams = [
-        email,
-        pass
-    ];
-
-    let result = await queryParams('stp_renewpass_empresa(?, ?)', mysqlParams);
-
-    if (result.affectedRows != 0) {
-        res.json({
-            status: true,
-            message: 'Contraseña actualizada correctamente',
-            data: result.affectedRows
-        });
-    } else {
-        res.json({
-            status: false,
-            message: 'Ocurrio un error al actualizar la contraseña',
-            data: result.affectedRows
-        });
     }
 }
 
@@ -76,6 +52,7 @@ const registerEmpresas = async(req, res) => {
         pass
     } = req.body;
     const mysqlParam = [email];
+
     let empresa = await queryParams('stp_login_empresa(?)', mysqlParam);
     if (empresa[0] == '') {
         const salt = bcrypt.genSaltSync();
@@ -108,6 +85,30 @@ const registerEmpresas = async(req, res) => {
             message: 'Ya existe un usuario con ese email',
             data: null
         })
+    }
+}
+
+const renewPass = async(req, res) => {
+    const { email, pass } = req.body;
+    const mysqlParams = [
+        email,
+        pass
+    ];
+
+    let result = await queryParams('stp_renewpass_empresa(?, ?)', mysqlParams);
+
+    if (result.affectedRows != 0) {
+        res.json({
+            status: true,
+            message: 'Contraseña actualizada correctamente',
+            data: result.affectedRows
+        });
+    } else {
+        res.json({
+            status: false,
+            message: 'Ocurrio un error al actualizar la contraseña',
+            data: result.affectedRows
+        });
     }
 }
 

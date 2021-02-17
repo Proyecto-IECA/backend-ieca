@@ -27,7 +27,7 @@ const loginPostulante = async(req, res) => {
             });
         }
         const id_postulante = postulante[0][0].id_postulante;
-        const tokens = await generateTokenRefreshToken(id_postulante);
+        const tokens = await generateTokenRefreshToken(id_postulante, 1);
 
         res.json({
             status: true,

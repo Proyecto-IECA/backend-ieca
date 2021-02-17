@@ -22,12 +22,12 @@ const getEmpresaid = async(req, res) => {
     const mysqlParams = [
         id_empresa = id
     ];
-    let empresas = await queryParams('stp_getbyid_empresa(?)', mysqlParams);
-    if (empresas[0]) {
+    let empresa = await queryParams('stp_getbyid_empresa(?)', mysqlParams);
+    if (empresas[0][0]) {
         res.json({
             status: true,
             message: 'Consulta Exitosa',
-            data: empresas[0]
+            data: empresa[0][0]
         });
     } else {
         res.json({
