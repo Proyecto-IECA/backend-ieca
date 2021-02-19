@@ -4,9 +4,9 @@ const cors = require("cors");
 const app = express();
 
 app.use(
-  cors({
-    origin: true,
-  })
+    cors({
+        origin: true,
+    })
 );
 app.use(express.json());
 app.use("/api/postulantes", require("./routes/postulantes"));

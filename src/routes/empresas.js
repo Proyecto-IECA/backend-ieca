@@ -1,11 +1,16 @@
+//Se requiere el uso del framework express para manejo de las rutas
 const Router = require('express');
-const { getAllEmpresa, getEmpresaid, updateEpresa, deleteEmpresa } = require('../bml/controllers/empresas');
+//Se requieren los metodos de las empresas del archivo empresas.js
+const { getEmpresas, getEmpresa, updateEmpresa, deleteEmpresa } = require('../bml/controllers/empresas');
 
+//Se crea una constante del tipo router
 const router = Router();
 
-router.get('/', getAllEmpresa);
-router.get('/:id', getEmpresaid);
-router.put('/:id', updateEpresa);
+//Rutas de nuestras empresas
+router.get('/', getEmpresas);
+router.get('/:id', getEmpresa);
+router.put('/:id', updateEmpresa);
 router.delete('/:id', deleteEmpresa);
 
+//Exportamos el router
 module.exports = router;
