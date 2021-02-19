@@ -58,86 +58,119 @@ const loginEmpresa = async(req, res) => {
 
 //Funcion para registrarte como postulante
 const registerEmpresas = async(req, res) => {
-    /*Se crea una constante con los atributos para registrar a una empresa por medio
-    del body de nuestro endpoint*/
-    const {
-        nombre,
-        administrador,
-        ubicacion,
-        giro,
-        email,
-        pass
-    } = req.body;
-    /*Se crea una constante con todos los parametros necesarios para registrar a la empresa 
-    en la BD*/
-    const mysqlParam = [email];
-
-    //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
-    let empresa = await queryParams('stp_login_empresa(?)', mysqlParam);
-    //Se verifica si el email no existe en la BD
-    if (empresa[0] == '') {
-        //Se generan unos bits aleatorios para la encriptacion de la contraseña
-        const salt = bcrypt.genSaltSync();
-        //Se encripta la contraseña 
-        const passwordEncrypt = bcrypt.hashSync(pass, salt);
-        /*Se crea una constante con todos los parametros necesarios para registrar a la empresa 
-        en la BD*/
-        const mysqlParams = [
+        /*Se crea una constante con los atributos para registrar a una empresa por medio
+        del body de nuestro endpoint*/
+        const {
             nombre,
             administrador,
             ubicacion,
             giro,
             email,
-            passwordEncrypt
-        ];
+            pass
+        } = req.body;
+        /*Se crea una constante con todos los parametros necesarios para registrar a la empresa 
+        en la BD*/
+        const mysqlParam = [email];
 
         //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
-        let result = await queryParams('stp_add_empresa(?, ?, ?, ?, ?, ?)', mysqlParams);
-        //Se verifica si los renglones afectados de la BD son diferentes de cero
-        if (result.affectedRows != 0) {
-            res.json({
-                status: true,
-                message: 'Cuenta registrada de manera exitosa',
-                data: result.affectedRows
-            });
+        let empresa = await queryParams('stp_login_empresa(?)', mysqlParam);
+        //Se verifica si el email no existe en la BD
+        if (empresa[0] == '') {
+            //Se generan unos bits aleatorios para la encriptacion de la contraseña
+            const salt = bcrypt.genSaltSync();
+            //Se encripta la contraseña 
+            const passwordEncrypt = bcrypt.hashSync(pass, salt);
+            /*Se crea una constante con todos los parametros necesarios para registrar a la empresa 
+            en la BD*/
+            const mysqlParams = [
+                nombre,
+                administrador,
+                ubicacion,
+                giro,
+                email,
+                passwordEncrypt
+            ];
+
+            //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
+            let result = await queryParams('stp_add_empresa(?, ?, ?, ?, ?, ?)', mysqlParams);
+            //Se verifica si los renglones afectados de la BD son diferentes de cero
+            if (result.affectedRows != 0) {
+                res.json({
+                    status: true,
+                    message: 'Cuenta registrada de manera exitosa',
+                    data: result.affectedRows
+                });
+            } else {
+                res.json({
+                    status: false,
+                    message: 'Ocurrio un error al crear la cuenta',
+                    data: result.affectedRows
+                });
+            }
         } else {
             res.json({
                 status: false,
-                message: 'Ocurrio un error al crear la cuenta',
-                data: result.affectedRows
-            });
+                message: 'Ya existe un usuario con ese email',
+                data: null
+            })
+        }
+    }
+    //funcion para la recuperacion de la password de la empresa
+const renewPass = async(req, res) => {
+    //se crean las constantes para actualizar la password de la empresa
+    const { email, pass } = req.body;
+    //constante que se requiere para loguear a la empresa
+    const mysqlParam = [
+            email
+        ]
+        //variable la cual alamacena el resultado del procedimiento almacenado
+    let empresa = await queryParams('stp_login_empresa(?)', mysqlParam);
+    // se verifica si el email concuerda con el email que se encuantra en la base de datos
+    if (empresa[0][0]) {
+        //constante que almacena si la password es igual a la que se encuentra en la base de datos 
+        const validPassword = bcrypt.compareSync(pass, empresa[0][0].pass);
+        //se verifica con un falso o un true si son similares o no
+        if (!validPassword) {
+            //Se generan unos bits aleatorios para la encriptacion de la contraseña
+            const salt = bcrypt.genSaltSync();
+            //Se encripta la contraseña 
+            const passwordEncrypt = bcrypt.hashSync(pass, salt);
+            //constantes que se requieres para la actualizacion de la passowrd
+            const mysqlParams = [
+                email,
+                passwordEncrypt
+            ];
+            //variable que almacena la respuesta de la actualizacion o recuperacion de la password
+            let result = await queryParams('stp_renewpass_empresa(?, ?)', mysqlParams);
+            // se verifica si afecta un rengon de la base de datos
+            if (result.affectedRows != 0) {
+                res.json({
+                    status: true,
+                    message: 'Contraseña actualizada correctamente',
+                    data: result.affectedRows
+                });
+            } else {
+                res.json({
+                    status: false,
+                    message: 'Ocurrio un error al actualizar la contraseña',
+                    data: result.affectedRows
+                });
+            }
+        } else {
+            res.json({
+                status: false,
+                message: 'Esa password ya la has utilizado',
+                data: null
+            })
         }
     } else {
         res.json({
             status: false,
-            message: 'Ya existe un usuario con ese email',
+            message: 'Este Email no existe',
             data: null
         })
     }
-}
 
-const renewPass = async(req, res) => {
-    const { email, pass } = req.body;
-    const mysqlParams = [
-        email,
-        pass
-    ];
-
-    let result = await queryParams('stp_renewpass_empresa(?, ?)', mysqlParams);
-
-    if (result.affectedRows != 0) {
-        res.json({
-            status: true,
-            message: 'Contraseña actualizada correctamente',
-            data: result.affectedRows
-        });
-    } else {
-        res.json({
-            status: false,
-            message: 'Ocurrio un error al actualizar la contraseña',
-            data: result.affectedRows
-        });
-    }
 }
 
 const validarEmail = async(req, res) => {
