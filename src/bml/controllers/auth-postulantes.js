@@ -117,26 +117,64 @@ const registerPostulante = async(req, res) => {
 
 }
 
+//Funcion para actualizar la contraseña del postulante
 const renewPass = async(req, res) => {
+    /*Se crea una constante con los atributos para actualizar la contraseña del postulante por medio
+    del body de nuestro endpoint*/
     const { email, pass } = req.body;
-    const mysqlParams = [
-        email,
-        pass
-    ];
+    /*Se crea una constante con todos los parametros necesarios para actualizar la contraseña del postulante 
+    en la BD*/
+    const mySqlParam = [email];
 
-    let result = await queryParams('stp_renewpass_postulante(?, ?)', mysqlParams);
+    //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
+    let postulante = await queryParams('stp_login_postulante(?)', mySqlParam);
 
-    if (result.affectedRows != 0) {
-        res.json({
-            status: true,
-            message: 'Contraseña actualizada correctamente',
-            data: result.affectedRows
-        });
+    //Validamos si existe el email en la BB
+    if (postulante[0][0]) {
+        //Se compara el password que se manda por el endpoint con el password del postulante 
+        const validpassword = bcrypt.compareSync(pass, postulante[0][0].pass);
+
+        //Si la comparacion de las contraseñas es verdadera
+        if (validpassword) {
+            res.json({
+                status: false,
+                message: 'No puedes actualizar la contraseña por la misma contraseña',
+                data: null
+            });
+        } else {
+            //Se generan unos bits aleatorios para la encriptacion de la contraseña
+            const salt = bcrypt.genSaltSync();
+            //Se encripta la contraseña 
+            const passwordEncryption = bcrypt.hashSync(pass, salt);
+            /*Se crea una constante con todos los parametros necesarios para actualizar la contraseña del postulante 
+            en la BD*/
+            const mysqlParams = [
+                email,
+                passwordEncryption
+            ];
+
+            //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
+            let result = await queryParams('stp_renewpass_postulante(?, ?)', mysqlParams);
+            //Se verifica si los renglones afectados de la BD son diferentes de cero
+            if (result.affectedRows != 0) {
+                res.json({
+                    status: true,
+                    message: 'Contraseña actualizada correctamente',
+                    data: result.affectedRows
+                });
+            } else {
+                res.json({
+                    status: false,
+                    message: 'Ocurrio un error al actualizar la contraseña',
+                    data: result.affectedRows
+                });
+            }
+        }
     } else {
         res.json({
             status: false,
-            message: 'Ocurrio un error al actualizar la contraseña',
-            data: result.affectedRows
+            message: 'Este email no a sido registrado aun',
+            data: null
         });
     }
 }
