@@ -64,6 +64,7 @@ const registerPostulante = async(req, res) => {
         nombre,
         apellido_paterno,
         apellido_materno,
+        fecha_nacimiento,
         sexo,
         email,
         pass
@@ -86,6 +87,7 @@ const registerPostulante = async(req, res) => {
             nombre,
             apellido_paterno,
             apellido_materno,
+            fecha_nacimiento,
             sexo,
             email,
             passwordEncrypt
