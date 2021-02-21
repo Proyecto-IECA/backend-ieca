@@ -117,32 +117,37 @@ const registerEmpresas = async(req, res) => {
     }
     //funcion para la recuperacion de la password de la empresa
 const renewPass = async(req, res) => {
-    //se crean las constantes para actualizar la password de la empresa
+    /*Se crea una constante con los atributos para actualizar la contraseña de la empresa por medio
+    del body de nuestro endpoint*/
     const { email, pass } = req.body;
-    //constante que se requiere para loguear a la empresa
-    const mysqlParam = [
-            email
-        ]
-        //variable la cual alamacena el resultado del procedimiento almacenado
+    /*Se crea una constante con todos los parametros necesarios para actualizar la contraseña de la empresa 
+    en la BD*/
+    const mysqlParam = [email];
+
+    //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
     let empresa = await queryParams('stp_login_empresa(?)', mysqlParam);
-    // se verifica si el email concuerda con el email que se encuantra en la base de datos
+
+    //Validamos si existe el email en la BD
     if (empresa[0][0]) {
-        //constante que almacena si la password es igual a la que se encuentra en la base de datos 
+        //Se compara el password que se manda por el endpoint con el password de la empresa 
         const validPassword = bcrypt.compareSync(pass, empresa[0][0].pass);
-        //se verifica con un falso o un true si son similares o no
+
+        //Si la comparacion de las contraseñas es falsa
         if (!validPassword) {
             //Se generan unos bits aleatorios para la encriptacion de la contraseña
             const salt = bcrypt.genSaltSync();
             //Se encripta la contraseña 
             const passwordEncrypt = bcrypt.hashSync(pass, salt);
-            //constantes que se requieres para la actualizacion de la passowrd
+            /*Se crea una constante con todos los parametros necesarios para actualizar la contraseña de la empresa 
+             en la BD*/
             const mysqlParams = [
                 email,
                 passwordEncrypt
             ];
-            //variable que almacena la respuesta de la actualizacion o recuperacion de la password
+
+            //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
             let result = await queryParams('stp_renewpass_empresa(?, ?)', mysqlParams);
-            // se verifica si afecta un rengon de la base de datos
+            //Se verifica si los renglones afectados de la BD son diferentes de cero
             if (result.affectedRows != 0) {
                 res.json({
                     status: true,
@@ -159,7 +164,7 @@ const renewPass = async(req, res) => {
         } else {
             res.json({
                 status: false,
-                message: 'Esa password ya la has utilizado',
+                message: 'No puedes actualizar la contraseña por la misma contraseña',
                 data: null
             })
         }

@@ -26,7 +26,7 @@ router.post('/register', [
     check('nombre', 'El nombre es obligatorio').notEmpty(),
     check('apellido_paterno', 'El apellido paterno es obligatorio').notEmpty(),
     check('apellido_materno', 'El apellido materno es obligatorio').notEmpty(),
-    check('fecha_nacimiento', 'La fecha de nacimiento es obligatorio').isDate(),
+    check('fecha_nacimiento', 'La fecha de nacimiento es obligatoria').isDate(),
     check('sexo', 'El sexo es obligatorio').notEmpty(),
     check('email', 'El email es obligatorio').isEmail(),
     check('pass', 'El password es obligatorio').notEmpty(),

@@ -131,19 +131,13 @@ const renewPass = async(req, res) => {
     //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
     let postulante = await queryParams('stp_login_postulante(?)', mySqlParam);
 
-    //Validamos si existe el email en la BB
+    //Validamos si existe el email en la BD
     if (postulante[0][0]) {
         //Se compara el password que se manda por el endpoint con el password del postulante 
         const validpassword = bcrypt.compareSync(pass, postulante[0][0].pass);
 
-        //Si la comparacion de las contraseñas es verdadera
-        if (validpassword) {
-            res.json({
-                status: false,
-                message: 'No puedes actualizar la contraseña por la misma contraseña',
-                data: null
-            });
-        } else {
+        //Si la comparacion de las contraseñas es falsa
+        if (!validpassword) {
             //Se generan unos bits aleatorios para la encriptacion de la contraseña
             const salt = bcrypt.genSaltSync();
             //Se encripta la contraseña 
@@ -171,6 +165,12 @@ const renewPass = async(req, res) => {
                     data: result.affectedRows
                 });
             }
+        } else {
+            res.json({
+                status: false,
+                message: 'No puedes actualizar la contraseña por la misma contraseña',
+                data: null
+            });
         }
     } else {
         res.json({
