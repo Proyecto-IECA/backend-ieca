@@ -23,17 +23,16 @@ const getPostulantes = async(req, res) => {
 
 //Funcion para obtener un postulante a traves de su id
 const getPostulante = async(req, res) => {
-    //Se crea una constante que sera el id y se recibira por params de nuestro endpoint
+    //Se crea una constante que sera el id y se recibira por params de nuestra peticion
     const { id } = req.params;
-    /*Se crea una constante con los parametros para ejecutar el procedimiento almacenado para 
-    obtner el postulante de la BD*/
+    //Creamos una constante con los parametros para el procedimiento almacenado
     const mysqlParams = [
         id_postulante = id
     ];
 
     //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
     let postulante = await queryParams('stp_getbyid_postulante(?)', mysqlParams);
-    //Se verifica si la respuesta devolvio algo para retornar el postulante
+    //Se verifica si el primer objeto de nuestra respuesta tiene algo
     if (postulante[0][0]) {
         res.json({
             status: true,
@@ -51,10 +50,9 @@ const getPostulante = async(req, res) => {
 
 //Funcion para actualizar el perfil del postulante
 const updatePostulante = async(req, res) => {
-    //Se crea una constante que sera el id y se recibira por params de nuestro endpoint
+    //Se crea una constante con el atributo de los params de nuetra peticion
     const { id } = req.params;
-    /*Se crea una constante con los atributos que se van a actualizar del postulante por medio
-    del body de nuestro endpoint*/
+    //Se crea una constante con los atributos del body de nuetra peticion
     const {
         nombre,
         apellido_paterno,
@@ -70,8 +68,7 @@ const updatePostulante = async(req, res) => {
         foto_perfil,
         cv,
     } = req.body;
-    /*Se crea una constante con todos los parametros necesarios para actualizar la informacion 
-    del postulante en la BD*/
+    //Creamos una constante con los parametros para el procedimiento almacenado
     const mysqlParams = [
         id_postulante = id,
         nombre,
@@ -109,10 +106,9 @@ const updatePostulante = async(req, res) => {
 
 //Funcion para dar de baja al postulante
 const deletePostulante = async(req, res) => {
-    //Se crea una constante que sera el id y se recibira por params de nuestro endpoint
+    //Se crea una constante con el atributo de los params de nuetra peticion
     const { id } = req.params;
-    /*Se crea una constante con los parametros para ejecutar el procedimiento almacenado para 
-    borrar al postulante de la BD*/
+    //Creamos una constante con los parametros para el procedimiento almacenado
     const mysqlParams = [
         id_postualnte = id
     ];

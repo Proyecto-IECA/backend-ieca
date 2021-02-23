@@ -1,8 +1,6 @@
-//Se requiere la dependencia de jsonwebtoken y la almacenamos en una constante
+//Se implementan las dependencias necesarias
 const jwt = require('jsonwebtoken');
-//Se requiere de la dependencia uuid y la almacenamos en una constante
 const uuid = require('uuid');
-//Se requiere de la dependencia moment y la almacenamos en una constante
 const moment = require('moment');
 //Se requiere del metodo queryParams del archivo data-access.js
 const { queryParams } = require('../../dal/data-access');
@@ -18,7 +16,7 @@ const generateJWT = (id) => {
         /*Se genera el jsonwetoken con el conetenido, una clave para la encriptacion, el
         tiempo de expiracion y su id para identificarlo*/
         jwt.sign(payload, process.env.JWT_SECRET, {
-            expiresIn: '120000',
+            expiresIn: '12h',
             jwtid: jwt_id
         }, (err, token) => {
             if (err) {
@@ -31,10 +29,9 @@ const generateJWT = (id) => {
     });
 }
 
-/*Funcion que recibe un id y el tipo para generar un refreshToken ya sea de postulante o empresa 
-y retornar este junto con el jsonwebtoken*/
+//Funcion para generar un Token y un RefreshToken con un id
 const generateTokenRefreshToken = async(id, tipo) => {
-    //Se manda llamar el metodo para generar el jsonwebtoken y pasamos el id
+    //Generemos un jsonwebtoken con ayuda de la funcion generateJWT
     const generateToken = await generateJWT(id);
     //En una constante guardamos el token que nos retorno la funcion anterior
     const token = generateToken.token;
@@ -42,8 +39,7 @@ const generateTokenRefreshToken = async(id, tipo) => {
     const jwt_id = generateToken.jwt_id;
     //Se genera una fecha con ayuda de la libreria moment a 10 dias posterior del dia actual
     const fecha_expiracion = moment().add(10, 'd').toDate();
-    /*Se crea una constante con los parametros para ejecutar el procedimiento almacenado para 
-    guardar el refreshToken en la BD*/
+    //Creamos una constante con los parametros para el procedimiento almacenado
     const mysqlParamsT = [
         jwt_id,
         fecha_expiracion,
@@ -53,31 +49,45 @@ const generateTokenRefreshToken = async(id, tipo) => {
     //Declaramos una variable sin inicializar
     let generateRToken;
 
-    /*Dependiendo del tipo que se manda se ejecutara la llamada al metodo queryParams para ejecutar
-    el procedimiento almacenado con los parametros necesarios, el tipo 1 es para el postulante y algun
-    otro tipo seria para la empresa*/
+    //Si el tipo es uno el token le pertenece al postulante y se ejecutara su procedimiento almacenado
     if (tipo == 1)  {
         generateRToken = await queryParams('stp_add_token_postulante(?, ?, ?)', mysqlParamsT);
     } else {
         generateRToken = await queryParams('stp_add_token_empresa(?, ?, ?)', mysqlParamsT);
     }
 
-    /*Guardamos en una constante el refreshToken devuelto de la ejecucion del procedimiento almacenado,
-    ya sea el de postulante o empresa, a este se le aplica un metodo de la libreria uuid para mostrar
-    en formato de cadena el refreshToken*/
+    //Pasamos a formato de cadena el refreshToken con ayuda de la libreria uuid
     const refreshToken = uuid.stringify(generateRToken[0][0].id_token);
 
+    //Retornamos el token y refreshToken
     return { token, refreshToken }
 }
 
+//Funcion para obtener el id del jsonwebtoken
+const getJWT_ID = (token) => {
+    //Validamos el token y obtenemos su payload
+    const payload = jwt.verify(token, process.env.JWT_SECRET, {
+        ignoreExpiration: true
+    });
+    //Guardamos en una constante el id
+    const jwt_id = payload.jti;
+    //Lo retornamos
+    return jwt_id;
+}
+
+//Funcion para obtener el refreshToken de la BD
 const getRefreshToken = async(jwt_id, id_token) => {
+    //Creamos una constante con los parametros para el procedimiento almacenado
     const mysqlParams = [
         id_token,
         jwt_id
     ];
     try {
+        //En una constante guardamos la respuesta de la ejecucion del procedimiento
         const rToken = await queryParams('stp_getbyid_token(?,?)', mysqlParams);
+        //Si el primer objeto de nuestra respuesta tiene algo
         if (rToken[0][0]) {
+            //Retornamos ese primer objeto
             return rToken[0][0];
         } else {
             return null;
@@ -88,15 +98,18 @@ const getRefreshToken = async(jwt_id, id_token) => {
 
 }
 
+//Funcion para validar que el refreshToken no halla expirado
 const expiredRefreshToken = (rToken) => {
+    //Se compara si la fecha de hoy es despues a la fecha de expiracion del refreshToken
     if (moment().isAfter(rToken.fecha_expiracion)) return true;
 
     return false;
 }
 
-//Exportamos la funcion que devolvera nuestro token y refreshToken
+//Exportamos las funciones
 module.exports = {
     generateTokenRefreshToken,
+    getJWT_ID,
     getRefreshToken,
     expiredRefreshToken
 }

@@ -23,17 +23,16 @@ const getEmpresas = async(req, res) => {
 
 //Funcion para obtener una empresa a traves de su id
 const getEmpresa = async(req, res) => {
-    //Se crea una constante que sera el id y se recibira por params de nuestro endpoint
+    //Se crea una constante que sera el id y se recibira por params de nuestra peticion
     const { id } = req.params;
-    /*Se crea una constante con los parametros para ejecutar el procedimiento almacenado para 
-    obtner la empresa de la BD*/
+    //Creamos una constante con los parametros para el procedimiento almacenado
     const mysqlParams = [
         id_empresa = id
     ];
 
     //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
     let empresa = await queryParams('stp_getbyid_empresa(?)', mysqlParams);
-    //Se verifica si la respuesta devolvio algo para retornar una empresa
+    //Se verifica si el primer objeto de nuestra respuesta tiene algo
     if (empresa[0][0]) {
         res.json({
             status: true,
@@ -51,10 +50,9 @@ const getEmpresa = async(req, res) => {
 
 //Funcion para actualizar el perfil de la empresa
 const updateEmpresa = async(req, res) => {
-    //Se crea una constante que sera el id y se recibira por params de nuestro endpoint
+    //Se crea una constante con el atributo de los params de nuetra peticion
     const { id } = req.params;
-    /*Se crea una constante con los atributos que se van a actualizar de la empresa por medio
-    del body de nuestro endpoints*/
+    //Se crea una constante con los atributos del body de nuetra peticion
     const {
         nombre,
         administrador,
@@ -64,8 +62,7 @@ const updateEmpresa = async(req, res) => {
         telefono,
         giro
     } = req.body;
-    /*Se crea una constante con todos los parametros necesarios para actualizar la informacion 
-    de la empresa en la BD*/
+    //Creamos una constante con los parametros para el procedimiento almacenado
     const mysqlParams = [
         id_empresa = id,
         nombre,
@@ -97,10 +94,9 @@ const updateEmpresa = async(req, res) => {
 
 //Funcion para dar de baja la empresa
 const deleteEmpresa = async(req, res) => {
-    //Se crea una constante que sera el id y se recibira por params de nuestro endpoint
+    //Se crea una constante con el atributo de los params de nuetra peticion
     const { id } = req.params;
-    /*Se crea una constante con los parametros para ejecutar el procedimiento almacenado para 
-    borrar la empresa de la BD*/
+    //Creamos una constante con los parametros para el procedimiento almacenado
     const mysqlParams = [
         id_empresa = id
     ];
