@@ -18,7 +18,7 @@ const generateJWT = (id) => {
         /*Se genera el jsonwetoken con el conetenido, una clave para la encriptacion, el
         tiempo de expiracion y su id para identificarlo*/
         jwt.sign(payload, process.env.JWT_SECRET, {
-            expiresIn: '12h',
+            expiresIn: '120000',
             jwtid: jwt_id
         }, (err, token) => {
             if (err) {
@@ -70,7 +70,33 @@ const generateTokenRefreshToken = async(id, tipo) => {
     return { token, refreshToken }
 }
 
+const getRefreshToken = async(jwt_id, id_token) => {
+    const mysqlParams = [
+        id_token,
+        jwt_id
+    ];
+    try {
+        const rToken = await queryParams('stp_getbyid_token(?,?)', mysqlParams);
+        if (rToken[0][0]) {
+            return rToken[0][0];
+        } else {
+            return null;
+        }
+    } catch (error) {
+        throw new Error(error);
+    }
+
+}
+
+const expiredRefreshToken = (rToken) => {
+    if (moment().isAfter(rToken.fecha_expiracion)) return true;
+
+    return false;
+}
+
 //Exportamos la funcion que devolvera nuestro token y refreshToken
 module.exports = {
-    generateTokenRefreshToken
+    generateTokenRefreshToken,
+    getRefreshToken,
+    expiredRefreshToken
 }
