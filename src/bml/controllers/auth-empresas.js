@@ -1,7 +1,7 @@
 //Se requiere del metodo queryParams del archivo data-access.js
 const { queryParams } = require('../../dal/data-access');
 //Se requiere del metodo generateTokenRefreshToken del archivo jwt.js
-const { getJWT_ID, generateTokenRefreshToken, getRefreshToken } = require('../helpers/jwt');
+const { getEmail, getJWT_ID, generateTokenRefreshToken, getRefreshToken } = require('../helpers/jwt');
 //Se requiere de la dependencia bcryptjs y la almacenamos en una constante
 const bcrypt = require('bcryptjs');
 
@@ -35,11 +35,10 @@ const loginEmpresa = async(req, res) => {
             });
         } else {
 
-            //Se guarda en una constante el id de la empresa
-            const id_empresa = empresa[0][0].id_empresa;
-            /*Se crean los token con el metodo generateTokenRefreshToken pasando el id de
-            de la empresa y el tipo 2 para indicar que es la empresa*/
-            const tokens = await generateTokenRefreshToken(id_empresa, 2);
+            //Se guarda en una constante el email de la empresa
+            const email = empresa[0][0].email;
+            //Generamos los tokens de la empresa
+            const tokens = await generateTokenRefreshToken(email);
 
             //Retornamos la informacion de la empresa con sus tokens
             res.json({
@@ -168,8 +167,42 @@ const renewPass = async(req, res) => {
 
 }
 
-//Funcion para renovar el Token 
+//Funcion para renovar el Token
 const renewToken = async(req, res) => {
+    //Se crean una constante que sera igual a el header que tiene la peticion 
+    const token = req.header('x-token');
+    //Generamos el id del empresa con la funcion getId
+    const email = getEmail(token);
+
+    //Creamos una constante con el parametro para el procedimiento almacenado
+    const mysqlParam = [email];
+
+    //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
+    const empresa = await queryParams('stp_login_empresa(?)', mysqlParam);
+    //Se verifica si no existe el empresa en la BD
+    if (!empresa[0][0]) {
+        res.json({
+            status: false,
+            message: 'Ocurrio un error al realizar la consulta',
+            data: null
+        });
+    }
+
+    //Generamos los tokens de la empresa
+    const tokens = await generateTokenRefreshToken(email);
+
+    //Retornamos la informacion del empresa con sus tokens
+    res.json({
+        status: true,
+        message: 'Acceso correcto',
+        data: empresa[0][0],
+        token: tokens.token,
+        refreshToken: tokens.refreshToken
+    });
+}
+
+//Funcion para renovar el Token con el RefreshToken
+const renewRefreshtoken = async(req, res) => {
     //Se crean dos constantes que seran igual a los header que tiene la peticion 
     const token = req.header('x-token');
     const id_token = req.header('r-token');
@@ -177,13 +210,13 @@ const renewToken = async(req, res) => {
     const jwt_id = getJWT_ID(token);
     //Generamos el refreshToken con la funcion getRefreshToken
     const refreshToken = await getRefreshToken(jwt_id, id_token);
-    //Guardamos el id_empresa del refreshToken
-    const id_empresa = refreshToken.id_empresa;
+    //Guardamos el email del refreshToken
+    const email = refreshToken.email;
     //Creamos una constante con el parametro para el procedimiento almacenado
-    const mysqlParam = [id_empresa];
+    const mysqlParam = [email];
 
     //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
-    const empresa = await queryParams('stp_getbyid_empresa(?)', mysqlParam);
+    const empresa = await queryParams('stp_login_empresa(?)', mysqlParam);
     //Se verifica si no existe el empresa en la BD
     if (!empresa[0][0]) {
         res.json({
@@ -202,9 +235,8 @@ const renewToken = async(req, res) => {
     //Se verifica si los renglones afectados de la BD son diferentes de cero
     if (result.affectedRows != 0) {
 
-        /*Se crean los token con el metodo generateTokenRefreshToken pasando el id de
-        del empresa y el tipo 1 para indicar que es el empresa*/
-        const tokens = await generateTokenRefreshToken(id_empresa, 2);
+        //Generamos los tokens de la empresa
+        const tokens = await generateTokenRefreshToken(email);
 
         //Retornamos la informacion del empresa con sus tokens
         res.json({
@@ -252,5 +284,6 @@ module.exports = {
     registerEmpresas,
     renewPass,
     renewToken,
+    renewRefreshtoken,
     validarEmail
 }

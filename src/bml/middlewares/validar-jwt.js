@@ -7,6 +7,18 @@ const { getJWT_ID, getRefreshToken, expiredRefreshToken } = require('../helpers/
 const validJWT = async(req, res, next) => {
     //Se crea una constante que sera igual al token que se manda por el header de la peticion
     const token = req.header('x-token');
+    //Se guarda en una constante el email que se envia por el header de la peticion
+    const email = req.header('email');
+
+    //Si el el token y el email estan vacios
+    if (!token & !email)  {
+        return res.json({
+            status: false,
+            message: 'La peticion no tiene token y tampoco email',
+            data: null
+        });
+    }
+
     //Si el token esta vacio
     if (!token) {
         return res.json({
@@ -15,11 +27,26 @@ const validJWT = async(req, res, next) => {
             data: null
         });
     }
+    //Si el email esta vacio 
+    if (!email) {
+        return res.json({
+            status: false,
+            message: 'La peticion no tiene email',
+            data: null
+        });
+    }
+
     try {
         //En una constante se guarda el resultado de validar el token
-        const { id } = jwt.verify(token, process.env.JWT_SECRET);
-        //Se iguala el id del enpoint con el de la validacion
-        req.id = id;
+        const payload = jwt.verify(token, process.env.JWT_SECRET);
+        //Si el id del token es diferente del que trae la peticion
+        if (email != payload.email) {
+            return res.json({
+                status: false,
+                message: 'Token invalido',
+                data: null
+            });
+        }
         //Se deja pasar la peticion
         next();
     } catch (error) {

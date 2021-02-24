@@ -1,7 +1,7 @@
 //Se requiere del metodo queryParams del archivo data-access.js
 const { queryParams } = require('../../dal/data-access');
 //Se requiere del metodo generateTokenRefreshToken del archivo jwt.js
-const { getJWT_ID, generateTokenRefreshToken, getRefreshToken } = require('../helpers/jwt');
+const { getEmail, getJWT_ID, generateTokenRefreshToken, getRefreshToken } = require('../helpers/jwt');
 //Se requiere de la dependencia bcryptjs y la almacenamos en una constante
 const bcrypt = require('bcryptjs');
 
@@ -34,11 +34,10 @@ const loginPostulante = async(req, res) => {
             });
         } else {
 
-            //Se guarda en una constante el id del postulante
-            const id_postulante = postulante[0][0].id_postulante;
-            /*Se crean los token con el metodo generateTokenRefreshToken pasando el id de
-            del postulante y el tipo 1 para indicar que es el postulante*/
-            const tokens = await generateTokenRefreshToken(id_postulante, 1);
+            //Se guarda en una constante el email del postulante
+            const email = postulante[0][0].email;
+            //Generamos los tokens del postulante
+            const tokens = await generateTokenRefreshToken(email);
 
             //Retornamos la informacion del postulante con sus tokens
             res.json({
@@ -171,8 +170,41 @@ const renewPass = async(req, res) => {
     }
 }
 
-//Funcion para renovar el Token 
+//Funcion para renovar el Token
 const renewToken = async(req, res) => {
+    //Se crean una constante que sera igual a el header que tiene la peticion 
+    const token = req.header('x-token');
+    //Generamos el email del postulante con la funcion getEmail
+    const email = getEmail(token);
+    //Creamos una constante con el parametro para el procedimiento almacenado
+    const mysqlParam = [email];
+    //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
+    const postulante = await queryParams('stp_login_postulante(?)', mysqlParam);
+
+    //Se verifica si no existe el postulante en la BD
+    if (!postulante[0][0]) {
+        res.json({
+            status: false,
+            message: 'Ocurrio un error al realizar la consulta',
+            data: null
+        });
+    }
+
+    //Generamos los tokens del postulante
+    const tokens = await generateTokenRefreshToken(email);
+
+    //Retornamos la informacion del postulante con sus tokens
+    res.json({
+        status: true,
+        message: 'Acceso correcto',
+        data: postulante[0][0],
+        token: tokens.token,
+        refreshToken: tokens.refreshToken
+    });
+}
+
+//Funcion para renovar el Token con el RefreshToken
+const renewRefreshtoken = async(req, res) => {
     //Se crean dos constantes que seran igual a los header que tiene la peticion 
     const token = req.header('x-token');
     const id_token = req.header('r-token');
@@ -180,13 +212,13 @@ const renewToken = async(req, res) => {
     const jwt_id = getJWT_ID(token);
     //Generamos el refreshToken con la funcion getRefreshToken
     const refreshToken = await getRefreshToken(jwt_id, id_token);
-    //Guardamos el id_postulante del refreshToken
-    const id_postulante = refreshToken.id_postulante;
+    //Guardamos el email del refreshToken
+    const email = refreshToken.email;
     //Creamos una constante con el parametro para el procedimiento almacenado
-    const mysqlParam = [id_postulante];
+    const mysqlParam = [email];
 
     //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
-    const postulante = await queryParams('stp_getbyid_postulante(?)', mysqlParam);
+    const postulante = await queryParams('stp_login_postulante(?)', mysqlParam);
     //Se verifica si no existe el postulante en la BD
     if (!postulante[0][0]) {
         res.json({
@@ -205,9 +237,8 @@ const renewToken = async(req, res) => {
     //Se verifica si los renglones afectados de la BD son diferentes de cero
     if (result.affectedRows != 0) {
 
-        /*Se crean los token con el metodo generateTokenRefreshToken pasando el id de
-        del postulante y el tipo 1 para indicar que es el postulante*/
-        const tokens = await generateTokenRefreshToken(id_postulante, 1);
+        //Generamos los tokens del postulante
+        const tokens = await generateTokenRefreshToken(email);
 
         //Retornamos la informacion del postulante con sus tokens
         res.json({
@@ -255,5 +286,6 @@ module.exports = {
     registerPostulante,
     renewPass,
     renewToken,
+    renewRefreshtoken,
     validEmail
 };

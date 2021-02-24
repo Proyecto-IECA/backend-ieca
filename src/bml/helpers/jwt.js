@@ -6,10 +6,10 @@ const moment = require('moment');
 const { queryParams } = require('../../dal/data-access');
 
 //Funcion que recibe un id para retornar un una promesa un jsonwebtoken junto con su id
-const generateJWT = (id) => {
+const generateJWT = (email) => {
     return new Promise((resolve, reject) => {
         //Se declara una constante que sera el contenido para el jsonwebtoken
-        const payload = { id };
+        const payload = { email };
         //Se genera un uuid que sera el id del jsonwebtoken almacenado en una constante
         const jwt_id = uuid.v4();
 
@@ -29,10 +29,10 @@ const generateJWT = (id) => {
     });
 }
 
-//Funcion para generar un Token y un RefreshToken con un id
-const generateTokenRefreshToken = async(id, tipo) => {
+//Funcion para generar un Token y un RefreshToken con un email
+const generateTokenRefreshToken = async(email) => {
     //Generemos un jsonwebtoken con ayuda de la funcion generateJWT
-    const generateToken = await generateJWT(id);
+    const generateToken = await generateJWT(email);
     //En una constante guardamos el token que nos retorno la funcion anterior
     const token = generateToken.token;
     //En otra constante guardamos el id del token que se retorno de la funcion anterior
@@ -43,18 +43,11 @@ const generateTokenRefreshToken = async(id, tipo) => {
     const mysqlParamsT = [
         jwt_id,
         fecha_expiracion,
-        id
+        email
     ];
 
-    //Declaramos una variable sin inicializar
-    let generateRToken;
-
-    //Si el tipo es uno el token le pertenece al postulante y se ejecutara su procedimiento almacenado
-    if (tipo == 1)  {
-        generateRToken = await queryParams('stp_add_token_postulante(?, ?, ?)', mysqlParamsT);
-    } else {
-        generateRToken = await queryParams('stp_add_token_empresa(?, ?, ?)', mysqlParamsT);
-    }
+    //Insertamos el refreshToken en la BD y lo guardamos en una constante
+    const generateRToken = await queryParams('stp_add_token(?, ?, ?)', mysqlParamsT);
 
     //Pasamos a formato de cadena el refreshToken con ayuda de la libreria uuid
     const refreshToken = uuid.stringify(generateRToken[0][0].id_token);
@@ -73,6 +66,16 @@ const getJWT_ID = (token) => {
     const jwt_id = payload.jti;
     //Lo retornamos
     return jwt_id;
+}
+
+//Funcion para obtener el email del token
+const getEmail = (token) => {
+    //Validamos el token y obtenemos su payload
+    const payload = jwt.verify(token, process.env.JWT_SECRET);
+    //Guardamos en una constante el id
+    const email = payload.email;
+    //Lo retornamos
+    return email;
 }
 
 //Funcion para obtener el refreshToken de la BD
@@ -110,6 +113,7 @@ const expiredRefreshToken = (rToken) => {
 module.exports = {
     generateTokenRefreshToken,
     getJWT_ID,
+    getEmail,
     getRefreshToken,
     expiredRefreshToken
 }

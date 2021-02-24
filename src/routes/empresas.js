@@ -3,11 +3,13 @@ const Router = require('express');
 //Se requieren los metodos de las empresas del archivo empresas.js
 const { getEmpresas, getEmpresa, updateEmpresa, deleteEmpresa } = require('../bml/controllers/empresas');
 
+const { validJWT } = require('../bml/middlewares/validar-jwt');
+
 //Se crea una constante del tipo router
 const router = Router();
 
 //Rutas de nuestras empresas
-router.get('/', getEmpresas);
+router.get('/', validJWT, getEmpresas);
 router.get('/:id', getEmpresa);
 router.put('/:id', updateEmpresa);
 router.delete('/:id', deleteEmpresa);
