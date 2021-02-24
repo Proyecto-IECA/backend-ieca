@@ -257,24 +257,39 @@ const renewRefreshtoken = async(req, res) => {
 
 const validarEmail = async(req, res) => {
     const { email } = req.body;
-    const mysqlParams = [
-        email
-    ];
 
-    let result = await queryParams('stp_validaremail_empresa(?)', mysqlParams);
+    const mysqlParam = [email];
 
-    if (result.affectedRows != 0) {
-        res.json({
-            status: true,
-            message: 'Email validado correctamente',
-            data: result.affectedRows
-        });
+    //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
+    let empresa = await queryParams('stp_login_empresa(?)', mysqlParam);
+
+
+    if (empresa[0] != '') {
+        const mysqlParams = [
+            email
+        ];
+
+        let result = await queryParams('stp_validaremail_empresa(?)', mysqlParams);
+
+        if (result.affectedRows != 0) {
+            res.json({
+                status: true,
+                message: 'Email validado correctamente',
+                data: result.affectedRows
+            });
+        } else {
+            res.json({
+                status: false,
+                message: 'Ocurrio un error al validar el email',
+                data: result.affectedRows
+            });
+        }
     } else {
         res.json({
             status: false,
-            message: 'Ocurrio un error al validar el email',
-            data: result.affectedRows
-        });
+            message: 'Este Email no existe ',
+            data: null
+        })
     }
 }
 
