@@ -86,19 +86,19 @@ const registerPostulante = async(req, res) => {
         ];
 
         //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
-        let result = await queryParams('stp_add_postulante(?, ?, ?, ?, ?, ?)', mysqlParams);
-        //Se verifica si los renglones afectados de la BD son diferentes de cero
-        if (result.affectedRows != 0) {
+        let postulante = await queryParams('stp_add_postulante(?, ?, ?, ?, ?, ?, ?)', mysqlParams);
+        //Se verifica si se registro y devolvio el postulante
+        if (postulante[0][0]) {
             res.json({
                 status: true,
                 message: 'Cuenta registrada de manera exitosa',
-                data: result.affectedRows
+                data: postulante[0][0]
             });
         } else {
             res.json({
                 status: false,
                 message: 'Ocurrio un error al crear la cuenta',
-                data: result.affectedRows
+                data: null
             });
         }
     } else {

@@ -66,7 +66,8 @@ const registerEmpresas = async(req, res) => {
     //Creamos una constante con el parametro para el procedimiento almacenado        const mysqlParam = [email];
 
     //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
-    let empresa = await queryParams('stp_login_empresa(?)', mysqlParam); //Se verifica si el email no existe en la BD
+    let empresa = await queryParams('stp_login_empresa(?)', mysqlParam);
+    //Se verifica si el email no existe en la BD
     if (empresa[0] == '') {
         //Se generan unos bits aleatorios para la encriptacion de la contraseña
         const salt = bcrypt.genSaltSync();
@@ -83,19 +84,19 @@ const registerEmpresas = async(req, res) => {
         ];
 
         //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
-        let result = await queryParams('stp_add_empresa(?, ?, ?, ?, ?, ?)', mysqlParams);
-        //Se verifica si los renglones afectados de la BD son diferentes de cero
-        if (result.affectedRows != 0) {
+        let empresa = await queryParams('stp_add_empresa(?, ?, ?, ?, ?, ?)', mysqlParams);
+        //Se verifica si se registro y devolvio la empresa
+        if (empresa[0][0]) {
             res.json({
                 status: true,
                 message: 'Cuenta registrada de manera exitosa',
-                data: result.affectedRows
+                data: empresa[0][0]
             });
         } else {
             res.json({
                 status: false,
                 message: 'Ocurrio un error al crear la cuenta',
-                data: result.affectedRows
+                data: null
             });
         }
     } else {
