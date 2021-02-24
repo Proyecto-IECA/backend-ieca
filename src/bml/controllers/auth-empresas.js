@@ -63,7 +63,8 @@ const registerEmpresas = async(req, res) => {
         email,
         pass
     } = req.body;
-    //Creamos una constante con el parametro para el procedimiento almacenado        const mysqlParam = [email];
+    //Creamos una constante con el parametro para el procedimiento almacenado        
+    const mysqlParam = [email];
 
     //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
     let empresa = await queryParams('stp_login_empresa(?)', mysqlParam);
