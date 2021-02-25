@@ -38,7 +38,7 @@ router.post('/register', [
 ], registerPostulante);
 
 //Ruta para renovar el password del postulante
-router.put('/renewpass', [
+router.put('/renew-pass', [
     //Se valida cada uno de los parametros para actualizar el password del postulante
     check('email', 'El email es obligatorio').isEmail(),
     check('pass', 'El password es obligatorio').notEmpty(),
@@ -63,7 +63,12 @@ router.get('/renew-refreshtoken',
     renewRefreshtoken
 );
 
-router.put('/validemail', validEmail);
+router.put('/valid-email',
+    //Se valida el token
+    validJWT,
+    //Se manda a llamar la funcion para validar el email
+    validEmail
+);
 
 //Exportamos el router
 module.exports = router;

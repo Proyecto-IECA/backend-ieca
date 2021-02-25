@@ -4,7 +4,9 @@ const { queryParams } = require('../../dal/data-access');
 const { getEmail, getJWT_ID, generateTokenRefreshToken, getRefreshToken } = require('../helpers/jwt');
 //Se requiere de la dependencia bcryptjs y la almacenamos en una constante
 const bcrypt = require('bcryptjs');
+
 const { enviarEmail } = require('../helpers/email');
+
 //Funcion para logearse si eres postulante
 const loginPostulante = async(req, res) => {
     //Se crea una constante con los atributos del body de nuetra peticion
@@ -14,6 +16,7 @@ const loginPostulante = async(req, res) => {
 
     //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
     let postulante = await queryParams('stp_login_postulante(?)', mysqlParam);
+
     //Se verifica si existe el email en la BD
     if (postulante[0] == '') {
         res.json({
@@ -33,7 +36,6 @@ const loginPostulante = async(req, res) => {
                 data: null
             });
         } else {
-
             //Se guarda en una constante el email del postulante
             const email = postulante[0][0].email;
             //Generamos los tokens del postulante
@@ -68,6 +70,7 @@ const registerPostulante = async(req, res) => {
 
     //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
     let postulante = await queryParams('stp_login_postulante(?)', mysqlParam);
+
     //Se verifica si el email no existe en la BD
     if (postulante[0] == '') {
         //Se generan unos bits aleatorios para la encriptacion de la contraseña
@@ -86,19 +89,22 @@ const registerPostulante = async(req, res) => {
         ];
 
         //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
-        let postulante = await queryParams('stp_add_postulante(?, ?, ?, ?, ?, ?, ?)', mysqlParams);
-        //Se verifica si se registro y devolvio el postulante
-        if (postulante[0][0]) {
+        let result = await queryParams('stp_add_postulante(?, ?, ?, ?, ?, ?, ?)', mysqlParams);
+
+        //Se verifica si los renglones afectados de la BD son diferentes de cero
+        if (result.affectedRows != 0) {
+            const envio = await enviarEmail(email, tokens.token);
+            console.log(envio);
             res.json({
                 status: true,
                 message: 'Cuenta registrada de manera exitosa',
-                data: postulante[0][0]
+                data: result.affectedRows
             });
         } else {
             res.json({
                 status: false,
                 message: 'Ocurrio un error al crear la cuenta',
-                data: null
+                data: result.affectedRows
             });
         }
     } else {
@@ -139,6 +145,7 @@ const renewPass = async(req, res) => {
 
             //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
             let result = await queryParams('stp_renewpass_postulante(?, ?)', mysqlParams);
+
             //Se verifica si los renglones afectados de la BD son diferentes de cero
             if (result.affectedRows != 0) {
                 res.json({
@@ -178,7 +185,7 @@ const renewToken = async(req, res) => {
     //Creamos una constante con el parametro para el procedimiento almacenado
     const mysqlParam = [email];
     //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
-    const postulante = await queryParams('stp_login_postulante(?)', mysqlParam);
+    let postulante = await queryParams('stp_login_postulante(?)', mysqlParam);
 
     //Se verifica si no existe el postulante en la BD
     if (!postulante[0][0]) {
@@ -217,7 +224,7 @@ const renewRefreshtoken = async(req, res) => {
     const mysqlParam = [email];
 
     //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
-    const postulante = await queryParams('stp_login_postulante(?)', mysqlParam);
+    let postulante = await queryParams('stp_login_postulante(?)', mysqlParam);
     //Se verifica si no existe el postulante en la BD
     if (!postulante[0][0]) {
         res.json({
@@ -231,7 +238,7 @@ const renewRefreshtoken = async(req, res) => {
     const mysqlParamT = [id_token];
 
     //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
-    const result = await queryParams('stp_update_token(?)', mysqlParamT);
+    let result = await queryParams('stp_update_token(?)', mysqlParamT);
 
     //Se verifica si los renglones afectados de la BD son diferentes de cero
     if (result.affectedRows != 0) {
@@ -257,24 +264,35 @@ const renewRefreshtoken = async(req, res) => {
 }
 
 const validEmail = async(req, res) => {
-    const { email } = req.body;
-    const mysqlParams = [
-        email
-    ];
+    //Se crean una constante que sera igual a el header que tiene la peticion 
+    const token = req.header('x-token');
+    //Generamos el email del postulante con la funcion getEmail
+    const email = getEmail(token);
+    //Creamos una constante con el parametro para el procedimiento almacenado
+    const mysqlParams = [email];
 
-    let result = await queryParams('stp_validaremail_postulante(?)', mysqlParams);
+    //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
+    let postulante = await queryParams('stp_validaremail_postulante(?)', mysqlParams);
 
-    if (result.affectedRows != 0) {
+    //Se verifica si existe el postulante en la BD
+    if (postulante[0][0]) {
+
+        //Generamos los tokens del postulante
+        const tokens = await generateTokenRefreshToken(email);
+
+        //Retornamos la informacion del postulante con sus tokens
         res.json({
             status: true,
             message: 'Email validado correctamente',
-            data: result.affectedRows
+            data: postulante[0][0],
+            token: tokens.token,
+            refreshToken: tokens.refreshToken
         });
     } else {
         res.json({
             status: false,
             message: 'Ocurrio un error al validar el email',
-            data: result.affectedRows
+            data: null
         });
     }
 }
