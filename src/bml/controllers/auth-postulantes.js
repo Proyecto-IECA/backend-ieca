@@ -38,8 +38,7 @@ const loginPostulante = async(req, res) => {
             const email = postulante[0][0].email;
             //Generamos los tokens del postulante
             const tokens = await generateTokenRefreshToken(email);
-            const envio = await enviarEmail();
-            console.log(envio);
+
             //Retornamos la informacion del postulante con sus tokens
             res.json({
                 status: true,
@@ -109,7 +108,6 @@ const registerPostulante = async(req, res) => {
             data: null
         })
     }
-
 }
 
 //Funcion para actualizar la contraseña del postulante

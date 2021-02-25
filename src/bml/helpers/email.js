@@ -1,18 +1,16 @@
 const nodemailer = require('nodemailer');
 
 const transporter = nodemailer.createTransport({
-    host: 'smtp.hostinger.mx',
-    port: 587,
-    secure: false,
+    host: 'Gmail',
     auth: {
-        user: 'ieca@productividad-empresarial.com',
-        pass: 'Iecamola@22'
+        user: process.env.USER_EMAIL,
+        pass: process.env.PASSEMAIL
     }
 });
 
 const enviarEmail = async() => {
     return transporter.sendMail({
-        from: '"Ieca Server" <ieca@productividad-empresarial.com>',
+        from: '"Ieca Server" <correoIeca22@gmail.com>',
         to: 'carlosorozco4565@gmail.com',
         subject: 'Hola',
         text: 'Hello World'
