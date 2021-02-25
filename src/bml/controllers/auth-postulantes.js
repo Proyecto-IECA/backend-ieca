@@ -1,7 +1,7 @@
 //Se requiere del metodo queryParams del archivo data-access.js
 const { queryParams } = require('../../dal/data-access');
 //Se requiere del metodo generateTokenRefreshToken del archivo jwt.js
-const { getEmail, getJWT_ID, generateTokenRefreshToken, getRefreshToken } = require('../helpers/jwt');
+const { getEmail, getJWT_ID, generateJWT, generateTokenRefreshToken, getRefreshToken } = require('../helpers/jwt');
 //Se requiere de la dependencia bcryptjs y la almacenamos en una constante
 const bcrypt = require('bcryptjs');
 
@@ -93,13 +93,18 @@ const registerPostulante = async(req, res) => {
 
         //Se verifica si los renglones afectados de la BD son diferentes de cero
         if (result.affectedRows != 0) {
-            const envio = await enviarEmail(email, tokens.token);
-            console.log(envio);
+
+
             res.json({
                 status: true,
                 message: 'Cuenta registrada de manera exitosa',
                 data: result.affectedRows
             });
+            //Generamos los tokens del postulante
+            const tokens = await generateJWT(email);
+
+            enviarEmail(email, tokens.token);
+
         } else {
             res.json({
                 status: false,
