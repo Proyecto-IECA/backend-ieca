@@ -5,6 +5,8 @@ const { getEmail, getJWT_ID, generateTokenRefreshToken, getRefreshToken } = requ
 //Se requiere de la dependencia bcryptjs y la almacenamos en una constante
 const bcrypt = require('bcryptjs');
 
+const nodemailer = require('nodemailer');
+
 //Funcion para logearse si eres empresa
 const loginEmpresa = async(req, res) => {
     //Se crea una constante con los atributos del body de nuetra peticion
@@ -295,6 +297,36 @@ const validarEmail = async(req, res) => {
     }
 }
 
+
+const sendEmail = (req, res) => {
+    // Definimos el transporter
+    var transporter = nodemailer.createTransport({
+        service: 'Gmail',
+        auth: {
+            user: 'correoIeca22@gmail.com',
+            pass: 'Iecamola@23'
+        }
+    });
+    // Definimos el email
+    var mailOptions = {
+        from: 'correoIeca22@gmail.com',
+        to: 'jv517749@gmail.com',
+        subject: 'Asunto',
+        text: 'Contenido del email'
+    };
+    // Enviamos el email
+    transporter.sendMail(mailOptions, function(error, info) {
+        if (error) {
+            console.log(error);
+            res.send(500, error.message);
+        } else {
+            console.log("Email sent");
+            res.status(200).jsonp(req.body);
+        }
+    });
+};
+
+
 //Exportamos las funciones para utilizar en nuestros endpoints
 module.exports = {
     loginEmpresa,
@@ -302,5 +334,6 @@ module.exports = {
     renewPass,
     renewToken,
     renewRefreshtoken,
-    validarEmail
+    validarEmail,
+    sendEmail
 }
