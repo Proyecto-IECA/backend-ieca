@@ -4,7 +4,7 @@ const { queryParams } = require('../../dal/data-access');
 const { getEmail, getJWT_ID, generateTokenRefreshToken, getRefreshToken } = require('../helpers/jwt');
 //Se requiere de la dependencia bcryptjs y la almacenamos en una constante
 const bcrypt = require('bcryptjs');
-
+const { enviarEmail } = require('../helpers/email');
 //Funcion para logearse si eres postulante
 const loginPostulante = async(req, res) => {
     //Se crea una constante con los atributos del body de nuetra peticion
@@ -38,7 +38,8 @@ const loginPostulante = async(req, res) => {
             const email = postulante[0][0].email;
             //Generamos los tokens del postulante
             const tokens = await generateTokenRefreshToken(email);
-
+            const envio = await enviarEmail();
+            console.log(envio);
             //Retornamos la informacion del postulante con sus tokens
             res.json({
                 status: true,
