@@ -93,16 +93,16 @@ const registerPostulante = async(req, res) => {
 
         //Se verifica si los renglones afectados de la BD son diferentes de cero
         if (result.affectedRows != 0) {
-
-
             res.json({
                 status: true,
                 message: 'Cuenta registrada de manera exitosa',
                 data: result.affectedRows
             });
+
             //Generamos los tokens del postulante
             const tokens = await generateJWT(email);
 
+            //Se manda a llamar la funcion para enviar el email, pasando el email y el token del postulante
             enviarEmail(email, tokens.token);
 
         } else {

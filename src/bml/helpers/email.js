@@ -11,7 +11,7 @@ const transporter = nodemailer.createTransport({
 });
 
 const enviarEmail = async(email, token) => {
-    const url = 'http://localhost:4200/activar-cuenta/?token=' + token;
+    const url = 'http://localhost:4200/#/activar-cuenta/?token=' + token;
     return transporter.sendMail({
         from: '"Ieca Server" <ieca@productividad-empresarial.com>',
         to: email,
