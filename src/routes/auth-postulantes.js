@@ -1,7 +1,7 @@
 //Se requiere el uso del framework express para manejo de las rutas
 const Router = require('express');
 //Se requieren los metodos de auth-postulantes del archivo auth-postulantes.js
-const { loginPostulante, renewPass, renewToken, renewRefreshtoken, validEmail, registerPostulante } = require('../bml/controllers/auth-postulantes');
+const { loginPostulante, renewPass, renewToken, renewRefreshtoken, validEmail, registerPostulante, sendEmail } = require('../bml/controllers/auth-postulantes');
 //Se requiere el uso de check de express-validator
 const { check } = require('express-validator');
 //Se requiere la funcion validFields del archivo validar-campos.js
@@ -39,11 +39,12 @@ router.post('/register', [
 
 //Ruta para renovar el password del postulante
 router.put('/renew-pass', [
+    validJWT,
     //Se valida cada uno de los parametros para actualizar el password del postulante
     check('email', 'El email es obligatorio').isEmail(),
     check('pass', 'El password es obligatorio').notEmpty(),
     //Se utiliza la funcion para validar los campos para dejar o no pasar la peticion
-    validFields
+    validFields,
     //Se manda llamar la funcion para renovar el password del postulante
 ], renewPass);
 
@@ -69,6 +70,15 @@ router.put('/valid-email',
     //Se manda a llamar la funcion para validar el email
     validEmail
 );
+
+//Ruta para enviar un email
+router.get('/send-email', [
+    //Se valida el parametro para enviar un emain
+    check('email', 'El email es obligatorio').isEmail(),
+    //Se utiliza la funcion para validar los campos para dejar o no pasar la peticion
+    validFields
+    //Se mansa a llamar la funcion para enviar el email
+], sendEmail);
 
 //Exportamos el router
 module.exports = router;

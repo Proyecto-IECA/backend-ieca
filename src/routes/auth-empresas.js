@@ -1,7 +1,7 @@
 //Se requiere el uso del framework express para manejo de las rutas
 const Router = require('express');
 //Se requieren los metodos de auth-empresas del archivo auth-postulantes.js
-const { loginEmpresa, renewPass, renewToken, renewRefreshtoken, validEmail, registerEmpresas } = require('../bml/controllers/auth-empresas');
+const { loginEmpresa, renewPass, renewToken, renewRefreshtoken, validEmail, registerEmpresas, sendEmail } = require('../bml/controllers/auth-empresas');
 //Se requiere el uso de check de express-validator
 const { check } = require('express-validator');
 //Se requiere la funcion validFields del archivo validar-campos.js
@@ -37,7 +37,8 @@ router.post('/register', [
 ], registerEmpresas);
 
 //Ruta para renovar el password de la empresa
-router.put('/renewpass', [
+router.put('/renew-pass', [
+    validJWT,
     //Se valida cada uno de los parametros para actualizar el password del postulante 
     check('email', 'El email es obliogatorio').isEmail(),
     check('pass', 'El password es obligatorio').notEmpty(),
@@ -62,12 +63,22 @@ router.get('/renew-refreshtoken',
     renewRefreshtoken
 );
 
+//Ruta para validar el email
 router.put('/valid-email',
     //Se valida el token
     validJWTRegister,
     //Se manda a llamar la funcion para validar el email
     validEmail
 );
+
+//Ruta para enviar un email
+router.get('/send-email', [
+    //Se valida el parametro para enviar un emain
+    check('email', 'El email es obligatorio').isEmail(),
+    //Se utiliza la funcion para validar los campos para dejar o no pasar la peticion
+    validFields
+    //Se mansa a llamar la funcion para enviar el email
+], sendEmail);
 
 //Exportamos el router
 module.exports = router;
