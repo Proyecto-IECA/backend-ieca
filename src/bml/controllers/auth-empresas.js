@@ -88,6 +88,7 @@ const registerEmpresas = async(req, res) => {
         let empresa = await queryParams('stp_add_empresa(?, ?, ?, ?, ?, ?)', mysqlParams);
         //Se verifica si se registro y devolvio la empresa
         if (empresa[0][0]) {
+
             res.json({
                 status: true,
                 message: 'Cuenta registrada de manera exitosa',
