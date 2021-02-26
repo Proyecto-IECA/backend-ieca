@@ -2,10 +2,10 @@
 const { queryParams } = require('../../dal/data-access');
 //Se requiere del metodo generateTokenRefreshToken del archivo jwt.js
 const { getEmail, getJWT_ID, generateJWT, generateTokenRefreshToken, getRefreshToken } = require('../helpers/jwt');
+//Se requiere la funcion para enviar el email
+const { enviarEmail } = require('../helpers/email');
 //Se requiere de la dependencia bcryptjs y la almacenamos en una constante
 const bcrypt = require('bcryptjs');
-
-const { enviarEmail } = require('../helpers/email');
 
 //Funcion para logearse si eres empresa
 const loginEmpresa = async(req, res) => {
@@ -87,20 +87,23 @@ const registerEmpresas = async(req, res) => {
         ];
 
         //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
-        let empresa = await queryParams('stp_add_empresa(?, ?, ?, ?, ?, ?)', mysqlParams);
+        let result = await queryParams('stp_add_empresa(?, ?, ?, ?, ?, ?)', mysqlParams);
+
         //Se verifica si se registro y devolvio la empresa
-        if (empresa.affectedRows != 0) {
+        if (result.affectedRows != 0) {
 
             res.json({
                 status: true,
                 message: 'Cuenta registrada de manera exitosa',
-                data: empresa.affectedRows
+                data: result.affectedRows
             });
-            //Generamos los tokens del postulante
+
+            //Generamos los tokens de la empresa
             const tokens = await generateJWT(email);
 
-            //Se manda a llamar la funcion para enviar el email, pasando el email y el token del postulante
+            //Se manda a llamar la funcion para enviar el email, pasando el email y el token de la empresa
             enviarEmail(email, tokens.token);
+
         } else {
             res.json({
                 status: false,
@@ -276,13 +279,13 @@ const validEmail = async(req, res) => {
     //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
     let empresa = await queryParams('stp_validaremail_empresa(?)', mysqlParams);
 
-    //Se verifica si existe el postulante en la BD
+    //Se verifica si existe la empresa en la BD
     if (empresa[0][0]) {
 
-        //Generamos los tokens del postulante
+        //Generamos los tokens de la empresa
         const tokens = await generateTokenRefreshToken(email);
 
-        //Retornamos la informacion del postulante con sus tokens
+        //Retornamos la informacion de la empresa con sus tokens
         res.json({
             status: true,
             message: 'Email validado correctamente',

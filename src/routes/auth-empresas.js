@@ -7,7 +7,7 @@ const { check } = require('express-validator');
 //Se requiere la funcion validFields del archivo validar-campos.js
 const { validFields } = require('../bml/middlewares/validar-campos');
 //Se requiere la funcion para validar el refreshToken
-const { validRefreshToken, validJWT } = require('../bml/middlewares/validar-jwt');
+const { validRefreshToken, validJWT, validJWTRegister } = require('../bml/middlewares/validar-jwt');
 
 //Se crea una constante del tipo router
 const router = Router();
@@ -62,7 +62,12 @@ router.get('/renew-refreshtoken',
     renewRefreshtoken
 );
 
-router.put('/valid-email', validEmail);
+router.put('/valid-email',
+    //Se valida el token
+    validJWTRegister,
+    //Se manda a llamar la funcion para validar el email
+    validEmail
+);
 
 //Exportamos el router
 module.exports = router;

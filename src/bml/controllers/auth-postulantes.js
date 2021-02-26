@@ -2,10 +2,10 @@
 const { queryParams } = require('../../dal/data-access');
 //Se requiere del metodo generateTokenRefreshToken del archivo jwt.js
 const { getEmail, getJWT_ID, generateJWT, generateTokenRefreshToken, getRefreshToken } = require('../helpers/jwt');
+//Se requiere la funcion para enviar el email
+const { enviarEmail } = require('../helpers/email');
 //Se requiere de la dependencia bcryptjs y la almacenamos en una constante
 const bcrypt = require('bcryptjs');
-
-const { enviarEmail } = require('../helpers/email');
 
 //Funcion para logearse si eres postulante
 const loginPostulante = async(req, res) => {
