@@ -1,7 +1,7 @@
 //Se requiere el uso del framework express para manejo de las rutas
 const Router = require('express');
 //Se requieren los metodos de auth-empresas del archivo auth-postulantes.js
-const { loginEmpresa, renewPass, renewToken, renewRefreshtoken, validarEmail, registerEmpresas } = require('../bml/controllers/auth-empresas');
+const { loginEmpresa, renewPass, renewToken, renewRefreshtoken, validEmail, registerEmpresas } = require('../bml/controllers/auth-empresas');
 //Se requiere el uso de check de express-validator
 const { check } = require('express-validator');
 //Se requiere la funcion validFields del archivo validar-campos.js
@@ -62,7 +62,7 @@ router.get('/renew-refreshtoken',
     renewRefreshtoken
 );
 
-router.put('/validaremail', validarEmail);
+router.put('/valid-email', validEmail);
 
 //Exportamos el router
 module.exports = router;
