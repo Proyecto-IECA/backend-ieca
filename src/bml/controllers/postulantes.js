@@ -5,6 +5,7 @@ const { query, queryParams } = require('../../dal/data-access');
 const getPostulantes = async(req, res) => {
     //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
     let postulantes = await query('stp_getall_postulante()');
+
     //Se verifica si la respuesta devolvio algo para retornar los postulante
     if (postulantes[0]) {
         res.json({
@@ -32,6 +33,7 @@ const getPostulante = async(req, res) => {
 
     //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
     let postulante = await queryParams('stp_getbyid_postulante(?)', mysqlParams);
+
     //Se verifica si el primer objeto de nuestra respuesta tiene algo
     if (postulante[0][0]) {
         res.json({
@@ -88,6 +90,7 @@ const updatePostulante = async(req, res) => {
 
     //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
     let result = await queryParams('stp_update_postulante(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', mysqlParams);
+
     //Se verifica si los renglones afectados de la BD son diferentes de cero
     if (result.affectedRows != 0) {
         res.json({
@@ -115,6 +118,7 @@ const deletePostulante = async(req, res) => {
 
     //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado 
     let result = await queryParams('stp_delete_postulante(?)', mysqlParams);
+
     //Se verifica si los renglones afectados de la BD son diferentes de cero
     if (result.affectedRows != 0) {
         res.json({

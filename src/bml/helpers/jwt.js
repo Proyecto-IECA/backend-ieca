@@ -111,6 +111,7 @@ const expiredRefreshToken = (rToken) => {
 
 //Exportamos las funciones
 module.exports = {
+    generateJWT,
     generateTokenRefreshToken,
     getJWT_ID,
     getEmail,

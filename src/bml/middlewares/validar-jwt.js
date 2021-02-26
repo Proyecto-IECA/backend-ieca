@@ -39,6 +39,7 @@ const validJWT = async(req, res, next) => {
     try {
         //En una constante se guarda el resultado de validar el token
         const payload = jwt.verify(token, process.env.JWT_SECRET);
+
         //Si el id del token es diferente del que trae la peticion
         if (email != payload.email) {
             return res.json({
@@ -47,6 +48,35 @@ const validJWT = async(req, res, next) => {
                 data: null
             });
         }
+
+        //Se deja pasar la peticion
+        next();
+    } catch (error) {
+        return res.json({
+            status: false,
+            message: 'Token invalido',
+            data: null
+        });
+    }
+}
+
+const validJWTRegister = async(req, res, next) => {
+    //Se crea una constante que sera igual al token que se manda por el header de la peticion
+    const token = req.header('x-token');
+
+    //Si el token esta vacio
+    if (!token) {
+        return res.json({
+            status: false,
+            message: 'La peticion no tiene token',
+            data: null
+        });
+    }
+
+    try {
+        //Se valida  el token
+        jwt.verify(token, process.env.JWT_SECRET);
+
         //Se deja pasar la peticion
         next();
     } catch (error) {
@@ -120,5 +150,6 @@ const validRefreshToken = async(req, res, next) => {
 //Se exporta la funcion para validar el token
 module.exports = {
     validJWT,
+    validJWTRegister,
     validRefreshToken
 }
