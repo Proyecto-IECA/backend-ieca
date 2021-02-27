@@ -117,7 +117,7 @@ const registerPostulante = async(req, res) => {
     const tokens = await generateJWT(email);
 
     //Enviamos el email al correo del postulante
-    enviarEmail(email, tokens.token);
+    enviarEmail(email, tokens.token, 1);
 }
 
 //Funcion para actualizar la contraseña del postulante
@@ -322,7 +322,7 @@ const sendEmail = async(req, res) => {
     const tokens = await generateJWT(email);
 
     //Enviamos el email al correo del postulante
-    enviarEmail(email, tokens.token);
+    enviarEmail(email, tokens.token, 1);
 
     res.json({
         status: true,
