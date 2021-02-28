@@ -116,8 +116,9 @@ const registerPostulante = async(req, res) => {
     //Generamos los tokens del postulante
     const tokens = await generateJWT(email);
 
+    const url = 'http://localhost:4200/#/validarEmail/?tipo=';
     //Enviamos el email al correo del postulante
-    enviarEmail(email, tokens.token, 1);
+    enviarEmail(url, email, tokens.token, 1);
 }
 
 //Funcion para actualizar la contraseña del postulante

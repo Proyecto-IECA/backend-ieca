@@ -1,5 +1,6 @@
 //Se requiere el uso del framework express para manejo de las rutas
 const Router = require('express');
+//Se requiere la funcion de sendEmailValidadPassword del archivo email
 const { sendEmailValidPassword } = require('../bml/controllers/email');
 //Se requiere el uso de check de express-validator
 const { check } = require('express-validator');
@@ -9,7 +10,7 @@ const { validFields } = require('../bml/middlewares/validar-campos');
 //Se crea una constante del tipo router
 const router = Router();
 
-//Ruta para enviar un email
+//Ruta para enviar un email de validar password
 router.post('/send-email-password', [
     //Se valida el parametro para enviar un emain
     check('email', 'El email es obligatorio').isEmail(),
@@ -18,4 +19,5 @@ router.post('/send-email-password', [
     //Se mansa a llamar la funcion para enviar el email
 ], sendEmailValidPassword);
 
+//Exportamos el router
 module.exports = router;

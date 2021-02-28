@@ -11,7 +11,7 @@ const transporter = nodemailer.createTransport({
 });
 
 const enviarEmail = async(urlT, email, token, tipo) => {
-    const url = urlT + token + '&tipo=' + tipo;
+    const url = urlT + tipo + '&token=' + token;
     return transporter.sendMail({
         from: '"Ieca Server" <ieca@productividad-empresarial.com>',
         to: email,

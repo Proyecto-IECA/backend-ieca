@@ -64,7 +64,7 @@ router.get('/renew-refreshtoken',
     renewRefreshtoken
 );
 
-router.put('/valid-email',
+router.get('/valid-email',
     //Se valida el token
     validJWTRegister,
     //Se manda a llamar la funcion para validar el email

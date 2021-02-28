@@ -10,11 +10,13 @@ const sendEmailValidPassword = async(req, res) => {
     const { email } = req.body;
     //Creamos una constante con el parametro para el procedimiento almacenado
     const mysqlParam = [email];
+    //Creamos una constante con la url de la peticion
+    const url = 'http://localhost:4200/#/forgetPassword/?tipo=';
 
     //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
-    const postulante = await queryParams('stp_login_postulante(?)', mysqlParam);
-    const url = 'http://localhost:4200/#/forgetPassword/?token=';
-    //Si el email no existe en la BD
+    let postulante = await queryParams('stp_login_postulante(?)', mysqlParam);
+
+    //Si el email existe en la tabla de postulantes en la BD
     if (postulante[0] != '') {
         //Generamos los tokens del postulante
         const tokens = await generateJWT(email);
@@ -29,12 +31,15 @@ const sendEmailValidPassword = async(req, res) => {
         });
     }
 
-    const empresa = queryParams('stp_login_empresa(?)', mysqlParam);
-    if (empresa[0] != undefined) {
-        //Generamos los tokens del postulante
+    //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
+    let empresa = await queryParams('stp_login_empresa(?)', mysqlParam);
+
+    //Si el email existe en la tabla de empresas en la BD
+    if (empresa[0] != '') {
+        //Generamos los tokens de la empresa
         const tokens = await generateJWT(email);
 
-        //Enviamos el email al correo del postulante
+        //Enviamos el email al correo de la empresa
         enviarEmail(url, email, tokens.token, 2);
 
         return res.json({
@@ -51,6 +56,7 @@ const sendEmailValidPassword = async(req, res) => {
     })
 }
 
+//Exportamos la funcion para enciar el correo para recuperar la contraseña
 module.exports = {
     sendEmailValidPassword
 }
