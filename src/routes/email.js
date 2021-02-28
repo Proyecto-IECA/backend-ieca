@@ -10,7 +10,7 @@ const { validFields } = require('../bml/middlewares/validar-campos');
 const router = Router();
 
 //Ruta para enviar un email
-router.get('/send-email-password', [
+router.post('/send-email-password', [
     //Se valida el parametro para enviar un emain
     check('email', 'El email es obligatorio').isEmail(),
     //Se utiliza la funcion para validar los campos para dejar o no pasar la peticion
