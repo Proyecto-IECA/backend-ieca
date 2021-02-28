@@ -22,5 +22,6 @@ app.use("/api/postulantes", require("./routes/postulantes"));
 app.use("/api/auth-postulantes", require("./routes/auth-postulantes"));
 app.use("/api/empresas", require("./routes/empresas"));
 app.use("/api/auth-empresas", require("./routes/auth-empresas"));
+app.use("/api/auth", require("./routes/email"));
 //Se asigna el puerto para la escucha del servidor 
 app.listen(process.env.PORT);
