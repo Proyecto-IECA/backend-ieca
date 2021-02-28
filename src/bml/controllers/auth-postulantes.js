@@ -300,38 +300,6 @@ const validEmail = async(req, res) => {
     });
 }
 
-const sendEmail = async(req, res) => {
-    //Se crea una constante con el atributo del body de nuetra peticion
-    const { email } = req.body;
-    //Creamos una constante con el parametro para el procedimiento almacenado
-    const mysqlParam = [email];
-
-    //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
-    const postulante = await queryParams('stp_login_postulante(?)', mysqlParam);
-
-    //Si el email no existe en la BD
-    if (!postulante[0][0]) {
-        return res.json({
-            status: false,
-            message: 'No hay registro de un usario con ese email',
-            data: null
-        });
-    }
-
-    //Generamos los tokens del postulante
-    const tokens = await generateJWT(email);
-
-    //Enviamos el email al correo del postulante
-    enviarEmail(email, tokens.token, 1);
-
-    res.json({
-        status: true,
-        message: 'Envio correcto del email',
-        data: null
-    })
-
-}
-
 //Exportamos las funciones para utilizar en nuestros endpoints
 module.exports = {
     loginPostulante,
@@ -339,6 +307,5 @@ module.exports = {
     renewPass,
     renewToken,
     renewRefreshtoken,
-    validEmail,
-    sendEmail
+    validEmail
 };
