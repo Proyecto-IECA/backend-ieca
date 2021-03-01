@@ -10,8 +10,8 @@ const sendEmailValidPassword = async(req, res) => {
     const { email } = req.body;
     //Creamos una constante con el parametro para el procedimiento almacenado
     const mysqlParam = [email];
-    //Creamos una constante con la url de la peticion
-    const url = 'http://localhost:4200/#/forgetPassword/?tipo=';
+    //Creamos una constante con la url para el email
+    const url = 'http://localhost:4200/#/forgetPassword/';
 
     //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
     let postulante = await queryParams('stp_login_postulante(?)', mysqlParam);

@@ -115,9 +115,11 @@ const registerEmpresas = async(req, res) => {
 
     //Generamos los tokens de la empresa
     const tokens = await generateJWT(email);
+    //Creamos una constante con la url para el email
+    const url = 'http://localhost:4200/#/validarEmail/';
 
     //Enviamos el email al correo de la empresa
-    enviarEmail(email, tokens.token, 2);
+    enviarEmail(url, email, tokens.token, 2);
 }
 
 //Funcion para actualizar la contraseña del empresa
