@@ -124,8 +124,12 @@ const registerPostulante = async(req, res) => {
 
 //Funcion para actualizar la contraseña del postulante
 const renewPass = async(req, res) => {
+    //Se crean una constante que sera igual a el header que tiene la peticion 
+    const token = req.header('x-token');
+    //Generamos el email del postulante con la funcion getEmail
+    const email = getEmail(token);
     //Se crea una constante con los atributos del body de nuetra peticion
-    const { email, pass } = req.body;
+    const { pass } = req.body;
     //Creamos una constante con el parametro para el procedimiento almacenado
     const mySqlParam = [email];
 
