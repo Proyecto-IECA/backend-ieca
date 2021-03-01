@@ -40,7 +40,6 @@ router.post('/register', [
 router.put('/renew-pass', [
     validJWTRegister,
     //Se valida cada uno de los parametros para actualizar el password del postulante 
-    check('email', 'El email es obliogatorio').isEmail(),
     check('pass', 'El password es obligatorio').notEmpty(),
     //Se utiliza la funcion para validar los campos para dejar pasar la peticion
     validFields
