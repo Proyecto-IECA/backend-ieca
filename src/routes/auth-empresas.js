@@ -38,7 +38,7 @@ router.post('/register', [
 
 //Ruta para renovar el password de la empresa
 router.put('/renew-pass', [
-    validJWT,
+    validJWTRegister,
     //Se valida cada uno de los parametros para actualizar el password del postulante 
     check('email', 'El email es obliogatorio').isEmail(),
     check('pass', 'El password es obligatorio').notEmpty(),
