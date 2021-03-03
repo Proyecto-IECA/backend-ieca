@@ -1,7 +1,7 @@
 //Se requiere del metodo queryParams del archivo data-access.js
 const { queryParams } = require('../../dal/data-access');
 //Se requiere del metodo generateTokenRefreshToken del archivo jwt.js
-const { getEmail, getJWT_ID, generateJWT, generateTokenRefreshToken, getRefreshToken } = require('../helpers/jwt');
+const { getEmail, getJWT_ID, generateJWTEmail, generateTokenRefreshToken, getRefreshToken } = require('../helpers/jwt');
 //Se requiere la funcion para enviar el email
 const { enviarEmail } = require('../helpers/email');
 //Se requiere de la dependencia bcryptjs y la almacenamos en una constante
@@ -114,7 +114,7 @@ const registerPostulante = async(req, res) => {
     });
 
     //Generamos los tokens del postulante
-    const tokens = await generateJWT(email);
+    const tokens = await generateJWTEmail(email);
     //Creamos una constante con la url para el email
     const url = 'http://localhost:4200/#/validarEmail/';
 

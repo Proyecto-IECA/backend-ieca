@@ -1,7 +1,7 @@
 //Se requiere del metodo queryParams del archivo data-access.js
 const { queryParams } = require('../../dal/data-access');
 //Se requiere del metodo generateTokenRefreshToken del archivo jwt.js
-const { generateJWT } = require('../helpers/jwt');
+const { generateJWTEmail } = require('../helpers/jwt');
 //Se requiere la funcion para enviar el email
 const { enviarEmail } = require('../helpers/email');
 
@@ -19,7 +19,7 @@ const sendEmailValidPassword = async(req, res) => {
     //Si el email existe en la tabla de postulantes en la BD
     if (postulante[0] != '') {
         //Generamos los tokens del postulante
-        const tokens = await generateJWT(email);
+        const tokens = await generateJWTEmail(email);
 
         //Enviamos el email al correo del postulante
         enviarEmail(url, email, tokens.token, 1);

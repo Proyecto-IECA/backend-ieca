@@ -29,6 +29,30 @@ const generateJWT = (email) => {
     });
 }
 
+//Funcion que recibe un id para retornar un una promesa un jsonwebtoken junto con su id
+const generateJWTEmail = (email) => {
+    return new Promise((resolve, reject) => {
+        //Se declara una constante que sera el contenido para el jsonwebtoken
+        const payload = { email };
+        //Se genera un uuid que sera el id del jsonwebtoken almacenado en una constante
+        const jwt_id = uuid.v4();
+
+        /*Se genera el jsonwetoken con el conetenido, una clave para la encriptacion, el
+        tiempo de expiracion y su id para identificarlo*/
+        jwt.sign(payload, process.env.JWT_SECRET, {
+            expiresIn: '10 minutes',
+            jwtid: jwt_id
+        }, (err, token) => {
+            if (err) {
+                reject('No se pudo generar el JWT');
+                throw new Error(err);
+            } else {
+                resolve({ token, jwt_id });
+            }
+        });
+    });
+}
+
 //Funcion para generar un Token y un RefreshToken con un email
 const generateTokenRefreshToken = async(email) => {
     //Generemos un jsonwebtoken con ayuda de la funcion generateJWT
@@ -112,6 +136,7 @@ const expiredRefreshToken = (rToken) => {
 //Exportamos las funciones
 module.exports = {
     generateJWT,
+    generateJWTEmail,
     generateTokenRefreshToken,
     getJWT_ID,
     getEmail,
