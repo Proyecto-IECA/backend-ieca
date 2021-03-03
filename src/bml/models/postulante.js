@@ -1,0 +1,53 @@
+class Postulante {
+    constructor(
+        id_postulante,
+        nombre,
+        apellido_paterno,
+        apellido_materno,
+        fecha_nacimiento,
+        sexo,
+        telefono_casa,
+        telefono_celular,
+        pais,
+        codigo_postal,
+        ciudad,
+        domicilio,
+        foto_perfil,
+        cv,
+        calificacion,
+        email,
+        cursos_certificaciones,
+        experiencias_academicas,
+        experiencias_laborales,
+        habilidades_postulante,
+        idiomas_postulante,
+        perfiles_postulante,
+        valores_postulante
+    ) {
+        this.id_postulante = id_postulante,
+            this.nombre = nombre,
+            this.apellido_paterno = apellido_paterno,
+            this.apellido_materno = apellido_materno,
+            this.fecha_nacimiento = fecha_nacimiento,
+            this.sexo = sexo,
+            this.telefono_casa = telefono_casa,
+            this.telefono_celular = telefono_celular,
+            this.pais = pais,
+            this.codigo_postal = codigo_postal,
+            this.ciudad = ciudad,
+            this.domicilio = domicilio,
+            this.foto_perfil = foto_perfil,
+            this.cv = cv,
+            this.calificacion = calificacion,
+            this.email = email,
+            this.cursos_certificaciones = cursos_certificaciones,
+            this.experiencias_academicas = experiencias_academicas,
+            this.experiencias_laborales = experiencias_laborales,
+            this.habilidades_postulante = habilidades_postulante,
+            this.idiomas_postulante = idiomas_postulante,
+            this.perfiles_postulante = perfiles_postulante,
+            this.valores_postulante = valores_postulante
+    }
+}
+
+module.exports = Postulante;

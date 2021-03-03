@@ -1,5 +1,14 @@
 //Se requiere del metodo query y queryParams del archivo data-access.js
 const { query, queryParams } = require('../../dal/data-access');
+//Se requiere el uso de los siguientes modelos
+const Postulante = require('../models/postulante');
+const CursoCertificacion = require('../models/curso_certificacion');
+const ExperienciaAcademica = require('../models/experiencia_academica');
+const ExperienciaLaboral = require('../models/experiencia_laboral');
+const HabilidadPostulante = require('../models/habilidad_postulante');
+const IdiomaPostulante = require('../models/idioma_postulante');
+const PerfilPostulante = require('../models/perfil_postulante');
+const ValorPostulante = require('../models/valor_postulante');
 
 //Funcion para obtener todos los pustulantes
 const getPostulantes = async(req, res) => {
@@ -27,27 +36,76 @@ const getPostulante = async(req, res) => {
     //Se crea una constante que sera el id y se recibira por params de nuestra peticion
     const { id } = req.params;
     //Creamos una constante con los parametros para el procedimiento almacenado
-    const mysqlParams = [
+    const mysqlParam = [
         id_postulante = id
     ];
 
     //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
-    let postulante = await queryParams('stp_getbyid_postulante(?)', mysqlParams);
+    let resultQuery = await queryParams('stp_getbyid_postulante(?)', mysqlParam);
 
-    //Se verifica si el primer objeto de nuestra respuesta tiene algo
-    if (postulante[0][0]) {
-        res.json({
-            status: true,
-            message: 'Consulta Exitosa',
-            data: postulante[0][0]
-        });
-    } else {
-        res.json({
+    //Si el email no existe en la BD
+    if (!resultQuery[0][0]) {
+        return res.json({
             status: false,
             message: 'Ocurrio un error al realizar la consulta',
             data: null
         });
     }
+
+    //Declaramos un postulante con la respuesta de la BD
+    let postulante = new Postulante();
+    postulante = resultQuery[0][0];
+
+    //Se obtienen los cursos y certificaciones del postulante
+    let cursosCertificaciones = new CursoCertificacion();
+    resultQuery = await queryParams('stp_getbyid_cursos_certificaciones(?)', mysqlParam);
+    cursosCertificaciones = resultQuery[0];
+
+    //Se obtienen las experiencias academicas del postulante
+    let experienciasAcademicas = new ExperienciaAcademica();
+    resultQuery = await queryParams('stp_getbyid_experiencias_academicas(?)', mysqlParam);
+    experienciasAcademicas = resultQuery[0];
+
+    //Se obtienen las experiencias laborales del postulante
+    let experienciasLaborales = new ExperienciaLaboral();
+    resultQuery = await queryParams('stp_getbyid_experiencias_laborales(?)', mysqlParam);
+    experienciasLaborales = resultQuery[0];
+
+    //Se obtienen las habilidades del postulante
+    let habilidadesPostulante = new HabilidadPostulante();
+    resultQuery = await queryParams('stp_getbyid_habilidades_postulante(?)', mysqlParam);
+    habilidadesPostulante = resultQuery[0];
+
+    //Se obtienen los idiomas que domina el postulante
+    let idiomasPostulante = new IdiomaPostulante();
+    resultQuery = await queryParams('stp_getbyid_idiomas_postulante(?)', mysqlParam);
+    idiomasPostulante = resultQuery[0];
+
+    //Se obtienen los perfiles del postulante
+    let perfilesPostulante = new PerfilPostulante();
+    resultQuery = await queryParams('stp_getbyid_perfiles_postulante(?)', mysqlParam);
+    perfilesPostulante = resultQuery[0];
+
+    //Se obtienen los valores del postulante
+    let valoresPostulante = new ValorPostulante();
+    resultQuery = await queryParams('stp_getbyid_valores_postulante(?)', mysqlParam);
+    valoresPostulante = resultQuery[0];
+
+    //Se completa el perfil del postulante
+    postulante.cursos_certificaciones = cursosCertificaciones;
+    postulante.experiencias_academicas = experienciasAcademicas;
+    postulante.experiencias_laborales = experienciasLaborales;
+    postulante.habilidades_postulante = habilidadesPostulante;
+    postulante.idiomas_postulante = idiomasPostulante;
+    postulante.perfiles_postulante = perfilesPostulante;
+    postulante.valores_postulante = valoresPostulante;
+
+    res.json({
+        status: true,
+        message: 'Consulta Exitosa',
+        data: postulante
+    })
+
 }
 
 //Funcion para actualizar el perfil del postulante
