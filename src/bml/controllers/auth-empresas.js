@@ -278,7 +278,7 @@ const renewRefreshtoken = async(req, res) => {
 const validEmail = async(req, res) => {
     //Se crean una constante que sera igual a el header que tiene la peticion 
     const token = req.header('x-token');
-    //Generamos el email del postulante con la funcion getEmail
+    //Generamos el email de la empresa con la funcion getEmail
     const email = getEmail(token);
     //Creamos una constante con el parametro para el procedimiento almacenado
     const mysqlParams = [email];
@@ -308,6 +308,8 @@ const validEmail = async(req, res) => {
     });
 }
 
+
+
 //Exportamos las funciones para utilizar en nuestros endpoints
 module.exports = {
     loginEmpresa,
@@ -315,5 +317,5 @@ module.exports = {
     renewPass,
     renewToken,
     renewRefreshtoken,
-    validEmail
+    validEmail,
 }

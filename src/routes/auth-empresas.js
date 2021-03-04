@@ -70,5 +70,6 @@ router.get('/valid-email',
     validEmail
 );
 
+
 //Exportamos el router
 module.exports = router;
