@@ -201,7 +201,7 @@ const renewToken = async(req, res) => {
 
     //Si el email no existe en la BD
     if (!empresa[0][0]) {
-        res.json({
+        return res.json({
             status: false,
             message: 'No hay registro de un usario con ese email',
             data: null
@@ -307,8 +307,6 @@ const validEmail = async(req, res) => {
         refreshToken: tokens.refreshToken
     });
 }
-
-
 
 //Exportamos las funciones para utilizar en nuestros endpoints
 module.exports = {

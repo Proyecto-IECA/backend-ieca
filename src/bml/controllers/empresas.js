@@ -49,7 +49,7 @@ const getEmpresa = async(req, res) => {
 }
 
 //Funcion para actualizar el perfil de la empresa
-const comRegEmpresa = async(req, res) => {
+const updateEmpresa = async(req, res) => {
     //Se crea una constante con los atributos del body de nuetra peticion
     const {
         nombre,
@@ -138,6 +138,6 @@ const deleteEmpresa = async(req, res) => {
 module.exports = {
     getEmpresas,
     getEmpresa,
-    comRegEmpresa,
+    updateEmpresa,
     deleteEmpresa
 };
