@@ -49,9 +49,7 @@ const getEmpresa = async(req, res) => {
 }
 
 //Funcion para actualizar el perfil de la empresa
-const updateEmpresa = async(req, res) => {
-    //Se crea una constante con el atributo de los params de nuetra peticion
-    const { id } = req.params;
+const comRegEmpresa = async(req, res) => {
     //Se crea una constante con los atributos del body de nuetra peticion
     const {
         nombre,
@@ -62,9 +60,26 @@ const updateEmpresa = async(req, res) => {
         telefono,
         giro
     } = req.body;
+    //Se crean una constante que sera igual a el header que tiene la peticion 
+    const token = req.header('x-token');
+    //Generamos el id del empresa con la funcion getId
+    const emaill = getEmail(token);
+    //Creamos una constante con el parametro para el procedimiento almacenado
+    const mysqlParam = [emaill];
+    //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
+    let empresa = await queryParams('stp_login_empresa(?)', mysqlParam);
+
+    //Si el email no existe en la BD
+    if (!empresa[0][0]) {
+        res.json({
+            status: false,
+            message: 'No hay registro de un usario con ese email',
+            data: null
+        });
+    }
     //Creamos una constante con los parametros para el procedimiento almacenado
     const mysqlParams = [
-        id_empresa = id,
+        email = emaill,
         nombre,
         administrador,
         foto_empresa,
@@ -81,7 +96,7 @@ const updateEmpresa = async(req, res) => {
         res.json({
             status: true,
             message: 'Informacion actualizada de manera exitosa',
-            data: result.affectedRows
+            data: result[0][0]
         });
     } else {
         res.json({
@@ -123,6 +138,6 @@ const deleteEmpresa = async(req, res) => {
 module.exports = {
     getEmpresas,
     getEmpresa,
-    updateEmpresa,
+    comRegEmpresa,
     deleteEmpresa
 };
