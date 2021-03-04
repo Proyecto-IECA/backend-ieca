@@ -1,6 +1,6 @@
 //Se requiere del metodo queryParams del archivo data-access.js
 const { queryParams } = require('../../dal/data-access');
-//Se requiere del metodo generateTokenRefreshToken del archivo jwt.js
+//Se requiere los metodos para operar los JWT del archivo jwt.js
 const { getEmail, getJWT_ID, generateJWTEmail, generateTokenRefreshToken, getRefreshToken } = require('../helpers/jwt');
 //Se requiere la funcion para enviar el email
 const { enviarEmail } = require('../helpers/email');

@@ -9,6 +9,7 @@ const HabilidadPostulante = require('../models/habilidad_postulante');
 const IdiomaPostulante = require('../models/idioma_postulante');
 const PerfilPostulante = require('../models/perfil_postulante');
 const ValorPostulante = require('../models/valor_postulante');
+const { getEmail } = require('../helpers/jwt');
 
 //Funcion para obtener todos los pustulantes
 const getPostulantes = async(req, res) => {
@@ -52,7 +53,7 @@ const getPostulante = async(req, res) => {
         });
     }
 
-    //Declaramos un postulante con la respuesta de la BD
+    //Creamos un postulante con la respuesta de la BD
     let postulante = new Postulante();
     postulante = resultQuery[0][0];
 
@@ -110,8 +111,11 @@ const getPostulante = async(req, res) => {
 
 //Funcion para actualizar el perfil del postulante
 const updatePostulante = async(req, res) => {
-    //Se crea una constante con el atributo de los params de nuetra peticion
-    const { id } = req.params;
+    //Se crean una constante que sera igual a el header que tiene la peticion 
+    const token = req.header('x-token');
+    //Generamos el email del postulante con la funcion getEmail
+    const email = getEmail(token);
+
     //Se crea una constante con los atributos del body de nuetra peticion
     const {
         nombre,
@@ -128,9 +132,10 @@ const updatePostulante = async(req, res) => {
         foto_perfil,
         cv,
     } = req.body;
+
     //Creamos una constante con los parametros para el procedimiento almacenado
     const mysqlParams = [
-        id_postulante = id,
+        email,
         nombre,
         apellido_paterno,
         apellido_materno,
@@ -147,22 +152,26 @@ const updatePostulante = async(req, res) => {
     ];
 
     //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
-    let result = await queryParams('stp_update_postulante(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', mysqlParams);
+    let resultQuery = await queryParams('stp_update_postulante(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', mysqlParams);
+
+    //Creamos un postulante con la respuesta de la BD
+    let postulante = new Postulante();
+    postulante = resultQuery[0][0];
 
     //Se verifica si los renglones afectados de la BD son diferentes de cero
-    if (result.affectedRows != 0) {
-        res.json({
-            status: true,
-            message: 'Informacion actualizada de manera exitosa',
-            data: result.affectedRows
-        });
-    } else {
-        res.json({
+    if (!postulante) {
+        return res.json({
             status: false,
             message: 'Ocurrio un error al actualizar la informacion',
-            data: result.affectedRows
+            data: null
         });
     }
+
+    res.json({
+        status: true,
+        message: 'Informacion actualizada de manera exitosa',
+        data: postulante
+    });
 }
 
 //Funcion para dar de baja al postulante
