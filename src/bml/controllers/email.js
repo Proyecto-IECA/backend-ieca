@@ -37,7 +37,7 @@ const sendEmailValidPassword = async(req, res) => {
     //Si el email existe en la tabla de empresas en la BD
     if (empresa[0] != '') {
         //Generamos los tokens de la empresa
-        const tokens = await generateJWT(email);
+        const tokens = await generateJWTEmail(email);
 
         //Enviamos el email al correo de la empresa
         enviarEmail(url, email, tokens.token, 2);
