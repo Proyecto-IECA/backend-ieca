@@ -56,7 +56,43 @@ const sendEmailValidPassword = async(req, res) => {
     })
 }
 
+const sendEmailValidEmail = async(req, res) => {
+    //Se crea una constante con el atributo del body de nuetra peticion
+    const { email, tipo } = req.body;
+    //Creamos una constante con el parametro para el procedimiento almacenado
+    const mysqlParam = [email];
+    //Creamos una constante con la url para el email
+    const url = 'http://localhost:4200/#/validarEmail/';
+
+    if (tipo == 1) {
+
+        //Generamos los tokens del postulante
+        const tokens = await generateJWTEmail(email);
+
+        //Enviamos el email al correo del postulante
+        enviarEmail(url, email, tokens.token, 1);
+        return res.json({
+            status: true,
+            message: 'Envio correcto del email',
+            data: null
+        });
+    }
+
+    //Generamos los tokens de la empresa
+    const tokens = await generateJWTEmail(email);
+
+    //Enviamos el email al correo de la empresa
+    enviarEmail(url, email, tokens.token, 2);
+
+    return res.json({
+        status: true,
+        message: 'Envio correcto del email',
+        data: null
+    });
+}
+
 //Exportamos la funcion para enciar el correo para recuperar la contraseña
 module.exports = {
-    sendEmailValidPassword
+    sendEmailValidPassword,
+    sendEmailValidEmail
 }
