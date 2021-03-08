@@ -1,5 +1,7 @@
 //Se requiere del metodo query y queryParams del archivo data-access.js
 const { query, queryParams } = require('../../dal/data-access');
+//Se requiere el metodo para obtener el email del JWT
+const { getEmail } = require('../helpers/jwt');
 //Se requiere el uso de los siguientes modelos
 const Postulante = require('../models/postulante');
 const CursoCertificacion = require('../models/curso_certificacion');
@@ -9,7 +11,6 @@ const HabilidadPostulante = require('../models/habilidad_postulante');
 const IdiomaPostulante = require('../models/idioma_postulante');
 const PerfilPostulante = require('../models/perfil_postulante');
 const ValorPostulante = require('../models/valor_postulante');
-const { getEmail } = require('../helpers/jwt');
 
 //Funcion para obtener todos los pustulantes
 const getPostulantes = async(req, res) => {
