@@ -1,7 +1,7 @@
 //Se requiere el uso del framework express para manejo de las rutas
 const Router = require('express');
 //Se requieren los metodos de los postulantes del archivo postulantes.js
-const { getPostulantes, getPostulante, updatePostulante, deletePostulante } = require('../bml/controllers/postulantes');
+const { getPostulantes, getPostulante, updatePostulante, deletePostulante, validPerfilCompletoPostulante } = require('../bml/controllers/postulantes');
 //Se requiere el uso de check de express-validator
 const { check } = require('express-validator');
 //Se requiere la funcion validFields del archivo validar-campos.js
@@ -13,11 +13,19 @@ const { validJWT } = require('../bml/middlewares/validar-jwt');
 const router = Router();
 
 //Ruta para obtner el perfil completo de un postulante
-router.get('/:id',
+router.get('/perfil-completo/:id',
     //Se valida el token,
     validJWT,
     //Se manda a llamar la funcion para obtener al postulante
     getPostulante
+);
+
+//Ruta para saber si el perfil esta completo
+router.get('/valid-perfil-completo',
+    //Se valida el token,
+    validJWT,
+    //Se manda a llamar la funcion para saber si el perfil esta completo
+    validPerfilCompletoPostulante
 );
 
 //Ruta para completar y actualizar el perfil del usuario
@@ -37,6 +45,7 @@ router.put('/update', [
 //Rutas de nuestros postulantes
 router.get('/', validJWT, getPostulantes);
 router.delete('/:id', deletePostulante);
+
 
 //Exportamos el router
 module.exports = router;

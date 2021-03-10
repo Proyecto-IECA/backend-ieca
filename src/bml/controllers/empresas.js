@@ -64,9 +64,9 @@ const updateEmpresa = async(req, res) => {
     //Se crean una constante que sera igual a el header que tiene la peticion 
     const token = req.header('x-token');
     //Generamos el id del empresa con la funcion getId
-    const emaill = getEmail(token);
+    const email = getEmail(token);
     //Creamos una constante con el parametro para el procedimiento almacenado
-    const mysqlParam = [emaill];
+    const mysqlParam = [email];
     //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
     let empresa = await queryParams('stp_login_empresa(?)', mysqlParam);
 

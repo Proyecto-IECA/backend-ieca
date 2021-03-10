@@ -175,13 +175,124 @@ const updatePostulante = async(req, res) => {
     });
 }
 
+const validPerfilCompletoPostulante = async(req, res) => {
+    //Se crean una constante que sera igual a el header que tiene la peticion 
+    const token = req.header('x-token');
+    //Generamos el email del postulante con la funcion getEmail
+    const email = getEmail(token);
+
+    //Creamos una constante con el parametro para el procedimiento almacenado
+    const mysqlParam = [email];
+
+    //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
+    let resultQuery = await queryParams('stp_login_postulante(?)', mysqlParam);
+    if (!resultQuery[0][0])  {
+        return res.json({
+            status: false,
+            message: 'No existe ese usario',
+            data: null
+        });
+    }
+
+    //Creamos un postulante con la respuesta de la BD
+    let postulante = new Postulante();
+    postulante = resultQuery[0][0];
+
+    if (postulante.cv) {
+        return res.json({
+            status: true,
+            message: 'Perfil completo',
+            date: true
+        });
+    }
+
+    if (!postulante.domicilio) {
+        return res.json({
+            status: false,
+            message: 'Perfil incompleto',
+            date: false
+        });
+    }
+
+    if (!postulante.telefono_celular) {
+        return res.json({
+            status: false,
+            message: 'Perfil incompleto',
+            date: false
+        });
+    }
+
+    const mysqlParam2 = [
+        id_postulante = postulante.id_postulante
+    ];
+
+    //Se obtienen las experiencias laborales del postulante
+    let experienciasLaborales = new ExperienciaLaboral();
+    resultQuery = await queryParams('stp_getbyid_experiencias_laborales(?)', mysqlParam2);
+    experienciasLaborales = resultQuery[0];
+
+    if (experienciasLaborales == '') {
+        return res.json({
+            status: false,
+            message: 'Perfil incompleto',
+            date: false
+        });
+    }
+
+    //Se obtienen las experiencias academicas del postulante
+    let experienciasAcademicas = new ExperienciaAcademica();
+    resultQuery = await queryParams('stp_getbyid_experiencias_academicas(?)', mysqlParam2);
+    experienciasAcademicas = resultQuery[0];
+
+    if (experienciasAcademicas == '') {
+        return res.json({
+            status: false,
+            message: 'Perfil incompleto',
+            date: false
+        });
+    }
+
+    //Se obtienen los perfiles del postulante
+    let perfilesPostulante = new PerfilPostulante();
+    resultQuery = await queryParams('stp_getbyid_perfiles_postulante(?)', mysqlParam2);
+    perfilesPostulante = resultQuery[0];
+
+    if (perfilesPostulante == '') {
+        return res.json({
+            status: false,
+            message: 'Perfil incompleto',
+            date: false
+        });
+    }
+
+    //Se obtienen las habilidades del postulante
+    let habilidadesPostulante = new HabilidadPostulante();
+    resultQuery = await queryParams('stp_getbyid_habilidades_postulante(?)', mysqlParam2);
+    habilidadesPostulante = resultQuery[0];
+
+    if (habilidadesPostulante == '') {
+        return res.json({
+            status: false,
+            message: 'Perfil incompleto',
+            date: false
+        });
+    }
+
+    res.json({
+        status: true,
+        message: 'Perfil completo',
+        date: true
+    })
+
+}
+
 //Funcion para dar de baja al postulante
 const deletePostulante = async(req, res) => {
     //Se crea una constante con el atributo de los params de nuetra peticion
     const { id } = req.params;
     //Creamos una constante con los parametros para el procedimiento almacenado
     const mysqlParams = [
-        id_postualnte = id
+        id_postulante = id
     ];
 
     //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado 
@@ -209,4 +320,5 @@ module.exports = {
     getPostulante,
     updatePostulante,
     deletePostulante,
+    validPerfilCompletoPostulante
 };
