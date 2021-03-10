@@ -23,7 +23,10 @@ app.use('/api/auth-postulantes', require('./routes/auth-postulantes'));
 app.use('/api/empresas', require('./routes/empresas'));
 app.use('/api/auth-empresas', require('./routes/auth-empresas'));
 app.use('/api/auth', require('./routes/email'));
-app.use('/api/perfiles', require('./routes/perfiles'));
+app.use('/api/perfiles', require('./routes/extra-postulantes/perfiles'));
 app.use('/api/experiencias-laborales', require('./routes/experiencias_laborales'));
+app.use('/api/habilidades', require('./routes/extra-postulantes/habilidades'));
+app.use('/api/valores', require('./routes/extra-postulantes/valores'));
+app.use('/api/idiomas', require('./routes/extra-postulantes/idiomas'));
 //Se asigna el puerto para la escucha del servidor 
 app.listen(process.env.PORT);
