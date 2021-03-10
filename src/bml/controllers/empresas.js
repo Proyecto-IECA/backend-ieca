@@ -1,5 +1,6 @@
 //Se requiere del metodo query y queryParams del archivo data-access.js
 const { query, queryParams } = require('../../dal/data-access');
+const { getEmail } = require('../helpers/jwt');
 
 //Funcion para obtener todos las empresas
 const getEmpresas = async(req, res) => {

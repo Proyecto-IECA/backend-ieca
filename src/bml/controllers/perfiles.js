@@ -1,5 +1,6 @@
 //Se requiere del metodo query y queryParams del archivo data-access.js
 const { query, queryParams } = require('../../dal/data-access');
+const { dividirCadena } = require('../helpers/extra');
 
 const getallPerfiles = async(req, res) => {
     //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
@@ -21,6 +22,33 @@ const getallPerfiles = async(req, res) => {
     }
 }
 
+const addperfiles = async(req, res) => {
+    const {
+        descripcion
+    } = req.body;
+    const mysqlParam = [
+        descripcion
+    ];
+
+    let result = await queryParams('stp_add_perfiles(?)', mysqlParam);
+
+    if (result.affectedRows != 0) {
+        res.json({
+            status: true,
+            message: 'Perfil agregado correctamente',
+            data: 1
+        });
+    } else {
+        res.json({
+            status: false,
+            message: 'Ocurrio un error al agregar el perfil',
+            data: null
+        });
+    }
+}
+
+
 module.exports = {
     getallPerfiles,
+    addperfiles,
 }
