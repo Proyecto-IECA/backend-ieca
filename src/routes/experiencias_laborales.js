@@ -1,5 +1,5 @@
 const Router = require('express');
-const { addExperienciaLaboral } = require('../bml/controllers/experiencias-laborales');
+const { addExperienciaLaboral, deleteExperienciaLaboral } = require('../bml/controllers/experiencias-laborales');
 const { check } = require('express-validator');
 const { validFields } = require('../bml/middlewares/validar-campos');
 const { validJWT } = require('../bml/middlewares/validar-jwt');
@@ -16,5 +16,11 @@ router.post('/add', [
     check('id_postulante', 'El id del postulante es obligatorio').notEmpty(),
     validFields
 ], addExperienciaLaboral);
+
+router.delete('/delete/:id', [
+    validJWT,
+    check('id_postulante', 'El id del postulante es obligatorio').notEmpty(),
+    validFields
+], deleteExperienciaLaboral);
 
 module.exports = router;

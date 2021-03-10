@@ -1,6 +1,5 @@
 //Se requiere del metodo query y queryParams del archivo data-access.js
 const { query, queryParams } = require('../../dal/data-access');
-const { dividirCadena } = require('../helpers/extra');
 
 const getallPerfiles = async(req, res) => {
     //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
