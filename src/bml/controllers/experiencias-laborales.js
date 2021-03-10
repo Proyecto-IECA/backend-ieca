@@ -47,6 +47,54 @@ const addExperienciaLaboral = async(req, res) => {
     });
 }
 
+const updateExperienciaLaboral = async(req, res) =>  {
+    const { id } = req.params;
+    const {
+        puesto,
+        empresa,
+        actividades,
+        fecha_entrada,
+        fecha_salida,
+        trabajando,
+        id_postulante
+    } = req.body;
+
+    const mysqlParams = [
+        id_experiencia_laboral = id,
+        puesto,
+        empresa,
+        actividades,
+        fecha_entrada,
+        fecha_salida,
+        trabajando,
+        id_postulante
+    ];
+
+    let resulQuery = await queryParams('stp_update_experiencia_laboral(?, ?, ?, ?, ?, ?, ?, ?)', mysqlParams);
+
+    if (resulQuery.affectedRows == 0) {
+        return res.json({
+            status: false,
+            message: 'Ocurrio un error al actualizar la experiencia laboral',
+            data: null
+        });
+    }
+
+    const mysqlParam = [
+        id_postulante
+    ];
+
+    let experienciasLaborales = new ExperienciaLaboral();
+    resultQuery = await queryParams('stp_getbyid_experiencias_laborales(?)', mysqlParam);
+    experienciasLaborales = resultQuery[0];
+
+    res.json({
+        status: true,
+        message: 'Se actualizo de manera exitosa la experiencia laboral',
+        data: experienciasLaborales
+    });
+}
+
 const deleteExperienciaLaboral = async(req, res) => {
     const { id } = req.params;
     const mysqlParam = [
@@ -60,7 +108,7 @@ const deleteExperienciaLaboral = async(req, res) => {
             status: false,
             message: 'Ocurrio un error al eliminar la experiencia laboral',
             data: null
-        })
+        });
     }
 
     const { id_postulante } = req.body;
@@ -76,11 +124,12 @@ const deleteExperienciaLaboral = async(req, res) => {
         status: true,
         message: 'Se elimino de manera exitosa la experiencia laboral',
         data: experienciasLaborales
-    })
+    });
 
 }
 
 module.exports = {
     addExperienciaLaboral,
     deleteExperienciaLaboral,
+    updateExperienciaLaboral
 }
