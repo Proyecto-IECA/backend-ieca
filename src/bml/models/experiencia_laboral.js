@@ -4,10 +4,8 @@ class ExperienciaLaboral {
         puesto,
         empresa,
         actividades,
-        mes_entrada,
-        anio_entrada,
-        mes_salida,
-        anio_salida,
+        fecha_entrada,
+        fecha_salida,
         trabajando,
         id_postulante
     ) {
@@ -15,10 +13,8 @@ class ExperienciaLaboral {
             this.puesto = puesto,
             this.empresa = empresa,
             this.actividades = actividades,
-            this.mes_entrada = mes_entrada,
-            this.anio_entrada = anio_entrada,
-            this.mes_salida = mes_salida,
-            this.anio_salida = anio_salida,
+            this.fecha_entrada = fecha_entrada,
+            this.fecha_salida = fecha_salida,
             this.trabajando = trabajando,
             this.id_postulante = id_postulante
     }

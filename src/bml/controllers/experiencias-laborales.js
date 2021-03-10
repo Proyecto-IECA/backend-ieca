@@ -6,10 +6,8 @@ const addExperienciaLaboral = async(req, res) => {
         puesto,
         empresa,
         actividades,
-        mes_entrada,
-        anio_entrada,
-        mes_salida,
-        anio_salida,
+        fecha_entrada,
+        fecha_salida,
         trabajando,
         id_postulante
     } = req.body;
@@ -18,15 +16,13 @@ const addExperienciaLaboral = async(req, res) => {
         puesto,
         empresa,
         actividades,
-        mes_entrada,
-        anio_entrada,
-        mes_salida,
-        anio_salida,
+        fecha_entrada,
+        fecha_salida,
         trabajando,
         id_postulante
     ];
 
-    let resultQuery = await queryParams('stp_add_experiencia_laboral(?, ?, ?, ?, ?, ?, ?, ?, ?)', mysqlParams);
+    let resultQuery = await queryParams('stp_add_experiencia_laboral(?, ?, ?, ?, ?, ?, ?)', mysqlParams);
 
     if (!resultQuery[0]) {
         return res.json({
