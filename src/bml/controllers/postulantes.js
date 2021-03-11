@@ -159,7 +159,7 @@ const updatePostulante = async(req, res) => {
     let postulante = new Postulante();
     postulante = resultQuery[0][0];
 
-    //Se verifica si los renglones afectados de la BD son diferentes de cero
+    //Se verifica si el postulante no esta vacio
     if (!postulante) {
         return res.json({
             status: false,

@@ -19,7 +19,7 @@ const loginEmpresa = async(req, res) => {
 
     //Si el email no existe en la BD
     if (!empresa[0][0]) {
-        res.json({
+        return res.json({
             status: false,
             message: 'El Email es incorrecto',
             data: null
