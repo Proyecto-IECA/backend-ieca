@@ -192,19 +192,6 @@ const renewToken = async(req, res) => {
     const token = req.header('x-token');
     //Generamos el email del postulante con la funcion getEmail
     const email = getEmail(token);
-    //Creamos una constante con el parametro para el procedimiento almacenado
-    const mysqlParam = [email];
-    //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
-    let postulante = await queryParams('stp_login_postulante(?)', mysqlParam);
-
-    //Si el email no existe en la BD
-    if (!postulante[0][0]) {
-        return res.json({
-            status: false,
-            message: 'No hay registro de un usario con ese email',
-            data: null
-        });
-    }
 
     //Generamos los tokens del postulante
     const tokens = await generateTokenRefreshToken(email);

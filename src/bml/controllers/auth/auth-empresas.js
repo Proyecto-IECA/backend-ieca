@@ -51,8 +51,6 @@ const loginEmpresa = async(req, res) => {
         token: tokens.token,
         refreshToken: tokens.refreshToken
     });
-
-
 }
 
 //Funcion para registrarte como empresa
@@ -194,19 +192,6 @@ const renewToken = async(req, res) => {
     const token = req.header('x-token');
     //Generamos el id del empresa con la funcion getId
     const email = getEmail(token);
-    //Creamos una constante con el parametro para el procedimiento almacenado
-    const mysqlParam = [email];
-    //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
-    let empresa = await queryParams('stp_login_empresa(?)', mysqlParam);
-
-    //Si el email no existe en la BD
-    if (!empresa[0][0]) {
-        return res.json({
-            status: false,
-            message: 'No hay registro de un usario con ese email',
-            data: null
-        });
-    }
 
     //Generamos los tokens de la empresa
     const tokens = await generateTokenRefreshToken(email);

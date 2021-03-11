@@ -27,7 +27,7 @@ const addExperienciaAcademica = async(req, res) => {
     if (resultQuery.affectedRows == 0) {
         return res.json({
             status: false,
-            message: 'ocurrio un error al registrar la experiencia academica',
+            message: 'Ocurrio un error al registrar la experiencia academica',
             data: null
         });
     }

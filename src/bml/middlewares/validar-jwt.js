@@ -1,5 +1,6 @@
 //Se implementan las dependencias necesarias
 const jwt = require('jsonwebtoken');
+const { queryParams } = require('../../dal/data-access');
 //Se implementan las funciones necesarias del archivo jwt.js
 const { getJWT_ID, getRefreshToken, expiredRefreshToken } = require('../helpers/jwt')
 
@@ -36,6 +37,21 @@ const validJWT = async(req, res, next) => {
         });
     }
 
+    const mysqlParam = [
+        email
+    ];
+
+    const resultQueryP = await queryParams('stp_login_postulante(?)', mysqlParam);
+    const resultQueryE = await queryParams('stp_login_empresa(?)', mysqlParam);
+
+    if (!resultQueryP[0][0] && !resultQueryE[0][0]) {
+        return res.json({
+            status: false,
+            message: 'No se encontro el usuario',
+            data: null
+        })
+    }
+
     try {
         //En una constante se guarda el resultado de validar el token
         const payload = jwt.verify(token, process.env.JWT_SECRET);
@@ -60,6 +76,7 @@ const validJWT = async(req, res, next) => {
     }
 }
 
+//Funcion para validar el token antes de ejecutar las peticiones HTTP
 const validJWTRegister = async(req, res, next) => {
     //Se crea una constante que sera igual al token que se manda por el header de la peticion
     const token = req.header('x-token');
