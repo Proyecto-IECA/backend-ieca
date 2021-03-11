@@ -1,33 +1,33 @@
 //Se requiere del metodo queryParams del archivo data-access.js
-const { queryParams } = require('../../dal/data-access');
-//Se requiere del metodo generateTokenRefreshToken del archivo jwt.js
-const { getEmail, getJWT_ID, generateJWT, generateTokenRefreshToken, getRefreshToken } = require('../helpers/jwt');
+const { queryParams } = require('../../../dal/data-access');
+//Se requiere los metodos para operar los JWT del archivo jwt.js
+const { getEmail, getJWT_ID, generateJWTEmail, generateTokenRefreshToken, getRefreshToken } = require('../../helpers/jwt');
 //Se requiere la funcion para enviar el email
-const { enviarEmail } = require('../helpers/email');
+const { enviarEmail } = require('../../helpers/email');
 //Se requiere de la dependencia bcryptjs y la almacenamos en una constante
 const bcrypt = require('bcryptjs');
 
-//Funcion para logearse si eres empresa
-const loginEmpresa = async(req, res) => {
+//Funcion para logearse si eres postulante
+const loginPostulante = async(req, res) => {
     //Se crea una constante con los atributos del body de nuetra peticion
     const { email, pass } = req.body;
     //Creamos una constante con el parametro para el procedimiento almacenado
-    const mysqlParams = [email];
+    const mysqlParam = [email];
 
     //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
-    let empresa = await queryParams('stp_login_empresa(?)', mysqlParams);
+    let postulante = await queryParams('stp_login_postulante(?)', mysqlParam);
 
     //Si el email no existe en la BD
-    if (!empresa[0][0]) {
-        res.json({
+    if (!postulante[0][0]) {
+        return res.json({
             status: false,
             message: 'El Email es incorrecto',
             data: null
         });
     }
 
-    //Se compara el password que se manda por el endpoint con el password de la empresa
-    const validPassword = bcrypt.compareSync(pass, empresa[0][0].pass);
+    //Se compara el password que se manda a traves de la peticion con el password del postulante 
+    const validPassword = bcrypt.compareSync(pass, postulante[0][0].pass);
 
     //Si la comparacion de las contraseñas es falsa
     if (!validPassword) {
@@ -38,47 +38,46 @@ const loginEmpresa = async(req, res) => {
         });
     }
 
-    //Se guarda en una constante el email de la empresa
-    const emailE = empresa[0][0].email;
-    //Generamos los tokens de la empresa
-    const tokens = await generateTokenRefreshToken(emailE);
+    //Se guarda en una constante el email del postulante
+    const emailP = postulante[0][0].email;
+    //Generamos los tokens del postulante
+    const tokens = await generateTokenRefreshToken(emailP);
 
-    //Retornamos la informacion de la empresa con sus tokens
+    //Retornamos la informacion del postulante con sus tokens
     res.json({
         status: true,
         message: 'Acceso correcto',
-        data: empresa[0][0],
+        data: postulante[0][0],
         token: tokens.token,
         refreshToken: tokens.refreshToken
     });
-
-
 }
 
-//Funcion para registrarte como empresa
-const registerEmpresas = async(req, res) => {
+//Funcion para registrarte como postulante
+const registerPostulante = async(req, res) => {
     //Se crea una constante con los atributos del body de nuetra peticion
     const {
         nombre,
-        administrador,
-        ubicacion,
-        giro,
+        apellido_paterno,
+        apellido_materno,
+        fecha_nacimiento,
+        sexo,
         email,
         pass
     } = req.body;
-    //Creamos una constante con el parametro para el procedimiento almacenado        
+    //Creamos una constante con el parametro para el procedimiento almacenado
     const mysqlParam = [email];
 
     //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
-    let empresa = await queryParams('stp_login_empresa(?)', mysqlParam);
+    let postulante = await queryParams('stp_login_postulante(?)', mysqlParam);
 
     //Si el email existe en la BD
-    if (empresa[0][0]) {
+    if (postulante[0][0]) {
         return res.json({
             status: false,
             message: 'Ya existe un usuario con ese email',
             data: null
-        });
+        })
     }
 
     //Se generan unos bits aleatorios para la encriptacion de la contraseña
@@ -88,22 +87,23 @@ const registerEmpresas = async(req, res) => {
     //Creamos una constante con los parametros para el procedimiento almacenado
     const mysqlParams = [
         nombre,
-        administrador,
-        ubicacion,
-        giro,
+        apellido_paterno,
+        apellido_materno,
+        fecha_nacimiento,
+        sexo,
         email,
         passwordEncrypt
     ];
 
     //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
-    let result = await queryParams('stp_add_empresa(?, ?, ?, ?, ?, ?)', mysqlParams);
+    let result = await queryParams('stp_add_postulante(?, ?, ?, ?, ?, ?, ?)', mysqlParams);
 
     //Si los renglones afectados de la BD son iguales a cero
     if (result.affectedRows == 0) {
         return res.json({
             status: false,
             message: 'Ocurrio un error al crear la cuenta',
-            data: null
+            data: result.affectedRows
         });
     }
 
@@ -113,64 +113,62 @@ const registerEmpresas = async(req, res) => {
         data: result.affectedRows
     });
 
-    //Generamos los tokens de la empresa
-    const tokens = await generateJWT(email);
+    //Generamos los tokens del postulante
+    const tokens = await generateJWTEmail(email);
     //Creamos una constante con la url para el email
     const url = 'http://localhost:4200/#/validarEmail/';
 
-    //Enviamos el email al correo de la empresa
-    enviarEmail(url, email, tokens.token, 2);
+    //Enviamos el email al correo del postulante
+    enviarEmail(url, email, tokens.token, 1);
 }
 
-//Funcion para actualizar la contraseña del empresa
+//Funcion para actualizar la contraseña del postulante
 const renewPass = async(req, res) => {
     //Se crean una constante que sera igual a el header que tiene la peticion 
     const token = req.header('x-token');
-    //Generamos el id del empresa con la funcion getId
+    //Generamos el email del postulante con la funcion getEmail
     const email = getEmail(token);
     //Se crea una constante con los atributos del body de nuetra peticion
     const { pass } = req.body;
     //Creamos una constante con el parametro para el procedimiento almacenado
-    const mysqlParam = [email];
+    const mySqlParam = [email];
 
     //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
-    let empresa = await queryParams('stp_login_empresa(?)', mysqlParam);
+    let postulante = await queryParams('stp_login_postulante(?)', mySqlParam);
 
     //Si el email no existe en la BD
-    if (!empresa[0][0]) {
+    if (!postulante[0][0]) {
         return res.json({
             status: false,
-            message: 'Este Email no existe',
+            message: 'Este email no a sido registrado aun',
             data: null
-        })
-
+        });
     }
 
-    //Se compara el password que se manda por el endpoint con el password de la empresa 
-    const validPassword = bcrypt.compareSync(pass, empresa[0][0].pass);
+    //Se compara el password que se manda por la peticio  con el password del postulante 
+    const validpassword = bcrypt.compareSync(pass, postulante[0][0].pass);
 
     //Si la comparacion de las contraseñas es igual
-    if (validPassword) {
+    if (validpassword) {
         return res.json({
             status: false,
             message: 'No puedes actualizar la contraseña por la misma contraseña',
             data: null
         });
-
     }
 
     //Se generan unos bits aleatorios para la encriptacion de la contraseña
     const salt = bcrypt.genSaltSync();
     //Se encripta la contraseña 
-    const passwordEncrypt = bcrypt.hashSync(pass, salt);
+    const passwordEncryption = bcrypt.hashSync(pass, salt);
     //Creamos una constante con los parametros para el procedimiento almacenado
     const mysqlParams = [
         email,
-        passwordEncrypt
+        passwordEncryption
     ];
 
     //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
-    let result = await queryParams('stp_renewpass_empresa(?, ?)', mysqlParams);
+    let result = await queryParams('stp_renewpass_postulante(?, ?)', mysqlParams);
 
     //Si los renglones afectados de la BD son iguales a cero
     if (result.affectedRows == 0) {
@@ -192,15 +190,15 @@ const renewPass = async(req, res) => {
 const renewToken = async(req, res) => {
     //Se crean una constante que sera igual a el header que tiene la peticion 
     const token = req.header('x-token');
-    //Generamos el id del empresa con la funcion getId
+    //Generamos el email del postulante con la funcion getEmail
     const email = getEmail(token);
     //Creamos una constante con el parametro para el procedimiento almacenado
     const mysqlParam = [email];
     //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
-    let empresa = await queryParams('stp_login_empresa(?)', mysqlParam);
+    let postulante = await queryParams('stp_login_postulante(?)', mysqlParam);
 
     //Si el email no existe en la BD
-    if (!empresa[0][0]) {
+    if (!postulante[0][0]) {
         return res.json({
             status: false,
             message: 'No hay registro de un usario con ese email',
@@ -208,14 +206,14 @@ const renewToken = async(req, res) => {
         });
     }
 
-    //Generamos los tokens de la empresa
+    //Generamos los tokens del postulante
     const tokens = await generateTokenRefreshToken(email);
 
-    //Retornamos la informacion del empresa con sus tokens
+    //Retornamos la informacion del postulante con sus tokens
     res.json({
         status: true,
         message: 'Acceso correcto',
-        data: empresa[0][0],
+        data: postulante[0][0],
         token: tokens.token,
         refreshToken: tokens.refreshToken
     });
@@ -236,10 +234,10 @@ const renewRefreshtoken = async(req, res) => {
     const mysqlParam = [email];
 
     //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
-    let empresa = await queryParams('stp_login_empresa(?)', mysqlParam);
+    let postulante = await queryParams('stp_login_postulante(?)', mysqlParam);
 
     //Si el email no existe en la BD
-    if (!empresa[0][0]) {
+    if (!postulante[0][0]) {
         return res.json({
             status: false,
             message: 'No hay registro de un usario con ese email',
@@ -262,14 +260,14 @@ const renewRefreshtoken = async(req, res) => {
         });
     }
 
-    //Generamos los tokens de la empresa
+    //Generamos los tokens del postulante
     const tokens = await generateTokenRefreshToken(email);
 
-    //Retornamos la informacion del empresa con sus tokens
+    //Retornamos la informacion del postulante con sus tokens
     res.json({
         status: true,
         message: 'Acceso correcto',
-        data: empresa[0][0],
+        data: postulante[0][0],
         token: tokens.token,
         refreshToken: tokens.refreshToken
     });
@@ -278,16 +276,16 @@ const renewRefreshtoken = async(req, res) => {
 const validEmail = async(req, res) => {
     //Se crean una constante que sera igual a el header que tiene la peticion 
     const token = req.header('x-token');
-    //Generamos el email de la empresa con la funcion getEmail
+    //Generamos el email del postulante con la funcion getEmail
     const email = getEmail(token);
     //Creamos una constante con el parametro para el procedimiento almacenado
     const mysqlParams = [email];
 
     //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
-    let empresa = await queryParams('stp_validaremail_empresa(?)', mysqlParams);
+    let postulante = await queryParams('stp_validaremail_postulante(?)', mysqlParams);
 
     //Si el email no existe en la BD
-    if (!empresa[0][0]) {
+    if (!postulante[0][0]) {
         return res.json({
             status: false,
             message: 'Ocurrio un error al validar el email',
@@ -295,14 +293,14 @@ const validEmail = async(req, res) => {
         });
     }
 
-    //Generamos los tokens de la empresa
+    //Generamos los tokens del postulante
     const tokens = await generateTokenRefreshToken(email);
 
-    //Retornamos la informacion de la empresa con sus tokens
+    //Retornamos la informacion del postulante con sus tokens
     res.json({
         status: true,
         message: 'Email validado correctamente',
-        data: empresa[0][0],
+        data: postulante[0][0],
         token: tokens.token,
         refreshToken: tokens.refreshToken
     });
@@ -310,10 +308,10 @@ const validEmail = async(req, res) => {
 
 //Exportamos las funciones para utilizar en nuestros endpoints
 module.exports = {
-    loginEmpresa,
-    registerEmpresas,
+    loginPostulante,
+    registerPostulante,
     renewPass,
     renewToken,
     renewRefreshtoken,
-    validEmail,
-}
+    validEmail
+};

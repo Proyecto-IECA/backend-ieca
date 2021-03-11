@@ -1,13 +1,13 @@
 //Se requiere el uso del framework express para manejo de las rutas
 const Router = require('express');
 //Se requieren los metodos de auth-postulantes del archivo auth-postulantes.js
-const { loginPostulante, renewPass, renewToken, renewRefreshtoken, validEmail, registerPostulante } = require('../bml/controllers/auth-postulantes');
+const { loginPostulante, renewPass, renewToken, renewRefreshtoken, validEmail, registerPostulante } = require('../../bml/controllers/auth/auth-postulantes');
 //Se requiere el uso de check de express-validator
 const { check } = require('express-validator');
 //Se requiere la funcion validFields del archivo validar-campos.js
-const { validFields } = require('../bml/middlewares/validar-campos');
+const { validFields } = require('../../bml/middlewares/validar-campos');
 //Se requiere la funcion para validar el refreshToken y el token
-const { validRefreshToken, validJWT, validJWTRegister } = require('../bml/middlewares/validar-jwt');
+const { validRefreshToken, validJWT, validJWTRegister } = require('../../bml/middlewares/validar-jwt');
 
 //Se crea una constante del tipo router
 const router = Router();

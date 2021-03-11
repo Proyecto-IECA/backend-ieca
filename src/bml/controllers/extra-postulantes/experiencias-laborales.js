@@ -1,5 +1,5 @@
-const { queryParams } = require('../../dal/data-access');
-const ExperienciaLaboral = require('../models/experiencia_laboral');
+const { queryParams } = require('../../../dal/data-access');
+const ExperienciaLaboral = require('../../models/experiencia_laboral');
 
 const addExperienciaLaboral = async(req, res) => {
     const {

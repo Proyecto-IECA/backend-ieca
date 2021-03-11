@@ -1,9 +1,9 @@
 //Se requiere del metodo query y queryParams del archivo data-access.js
-const { query, queryParams } = require('../../dal/data-access');
+const { query, queryParams } = require('../../../dal/data-access');
 
-const getallIdiomas = async(req, res) => {
+const getallValores = async(req, res) => {
     //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
-    let perfil = await query('stp_getall_idioma()');
+    let perfil = await query('stp_getall_valores()');
 
     //Se verifica si la respuesta devolvio algo para retornar los postulante
     if (perfil[0]) {
@@ -21,31 +21,29 @@ const getallIdiomas = async(req, res) => {
     }
 }
 
-const addIdiomas = async(req, res) => {
+const addValores = async(req, res) => {
     const {
         descripcion,
-        nivel,
         id_postulante
     } = req.body;
 
     const mysqlParam = [
         descripcion,
-        nivel,
         id_postulante
     ];
 
-    let result = await queryParams('stp_add_idiomas_postulante(?, ?, ?)', mysqlParam);
+    let result = await queryParams('stp_add_valores_postulantes(?, ?)', mysqlParam);
 
     if (result.affectedRows != 0) {
         res.json({
             status: true,
-            message: 'Idioma agregado correctamente',
+            message: 'valores agregado correctamente',
             data: 1
         });
     } else {
         res.json({
             status: false,
-            message: 'Ocurrio un error al agregar el Idioma',
+            message: 'Ocurrio un error al agregar los valores',
             data: null
         });
     }
@@ -53,6 +51,6 @@ const addIdiomas = async(req, res) => {
 
 
 module.exports = {
-    getallIdiomas,
-    addIdiomas,
+    getallValores,
+    addValores,
 }

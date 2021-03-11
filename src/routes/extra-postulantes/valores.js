@@ -3,7 +3,7 @@ const Router = require('express');
 const { validFields } = require('../../bml/middlewares/validar-campos');
 const { check } = require('express-validator');
 const { validJWT } = require('../../bml/middlewares/validar-jwt');
-const { getallValores, addValores } = require('../../bml/extra-postulantes/valores');
+const { getallValores, addValores } = require('../../bml/controllers/extra-postulantes/valores');
 
 //Se crea una constante del tipo router
 const router = Router();

@@ -3,7 +3,7 @@ const Router = require('express');
 const { validFields } = require('../../bml/middlewares/validar-campos');
 const { check } = require('express-validator');
 const { validJWT } = require('../../bml/middlewares/validar-jwt');
-const { getallIdiomas, addIdiomas } = require('../../bml/extra-postulantes/idiomas');
+const { getallIdiomas, addIdiomas } = require('../../bml/controllers/extra-postulantes/idiomas');
 
 //Se crea una constante del tipo router
 const router = Router();

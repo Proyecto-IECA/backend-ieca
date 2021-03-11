@@ -1,8 +1,8 @@
 const Router = require('express');
-const { addExperienciaLaboral, deleteExperienciaLaboral, updateExperienciaLaboral } = require('../bml/controllers/experiencias-laborales');
+const { addExperienciaLaboral, deleteExperienciaLaboral, updateExperienciaLaboral } = require('../../bml/controllers/extra-postulantes/experiencias-laborales');
 const { check } = require('express-validator');
-const { validFields } = require('../bml/middlewares/validar-campos');
-const { validJWT } = require('../bml/middlewares/validar-jwt');
+const { validFields } = require('../../bml/middlewares/validar-campos');
+const { validJWT } = require('../../bml/middlewares/validar-jwt');
 
 const router = Router();
 
