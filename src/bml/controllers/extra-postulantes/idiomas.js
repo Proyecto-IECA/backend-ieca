@@ -51,8 +51,35 @@ const addIdiomas = async(req, res) => {
     }
 }
 
+const deleteIdiomas = async(req, res) => {
+    //Se crea una constante con el atributo de los params de nuetra peticion
+    const { id } = req.params;
+    //Creamos una constante con los parametros para el procedimiento almacenado
+    const mysqlParams = [
+        id_empresa = id
+    ];
+
+    //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
+    let result = await queryParams('stp_delete_idioma_postulantes(?)', mysqlParams);
+    //Se verifica si los renglones afectados de la BD son diferentes de cero
+    if (result.affectedRows != 0) {
+        res.json({
+            status: true,
+            message: 'idioma eliminada correctamente',
+            data: result.affectedRows
+        });
+    } else {
+        res.json({
+            status: false,
+            message: 'Ocurrio un error al eliminar el idioma',
+            data: result.affectedRows
+        })
+    }
+}
+
 
 module.exports = {
     getallIdiomas,
     addIdiomas,
+    deleteIdiomas
 }

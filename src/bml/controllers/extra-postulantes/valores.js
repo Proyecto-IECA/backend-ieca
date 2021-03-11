@@ -49,8 +49,34 @@ const addValores = async(req, res) => {
     }
 }
 
+const deleteValores = async(req, res) => {
+    //Se crea una constante con el atributo de los params de nuetra peticion
+    const { id } = req.params;
+    //Creamos una constante con los parametros para el procedimiento almacenado
+    const mysqlParams = [
+        id_empresa = id
+    ];
+
+    //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
+    let result = await queryParams('stp_delete_valores_postulante(?)', mysqlParams);
+    //Se verifica si los renglones afectados de la BD son diferentes de cero
+    if (result.affectedRows != 0) {
+        res.json({
+            status: true,
+            message: 'valor eliminado correctamente',
+            data: result.affectedRows
+        });
+    } else {
+        res.json({
+            status: false,
+            message: 'Ocurrio un error al eliminar los valores',
+            data: result.affectedRows
+        })
+    }
+}
 
 module.exports = {
     getallValores,
     addValores,
+    deleteValores
 }

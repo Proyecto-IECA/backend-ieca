@@ -1,6 +1,6 @@
 //Se requiere el uso del framework express para manejo de las rutas
 const Router = require('express');
-const { getallPerfiles, addperfiles } = require('../../bml/controllers/extra-postulantes/perfiles');
+const { getallPerfiles, addperfiles, deletePerfiles } = require('../../bml/controllers/extra-postulantes/perfiles');
 const { validFields } = require('../../bml/middlewares/validar-campos');
 const { check } = require('express-validator');
 const { validJWT } = require('../../bml/middlewares/validar-jwt');
@@ -15,5 +15,6 @@ router.post('/add', [
     check('descripcion', 'La descripcion es obligatorio').notEmpty(),
     validFields
 ], addperfiles);
+router.delete('/:id', deletePerfiles);
 //Exportamos el router
 module.exports = router;
