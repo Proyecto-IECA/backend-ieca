@@ -3,7 +3,7 @@ const Router = require('express');
 const { validFields } = require('../../bml/middlewares/validar-campos');
 const { check } = require('express-validator');
 const { validJWT } = require('../../bml/middlewares/validar-jwt');
-const { getallHabilidades, addHabilidades } = require('../../bml/controllers/extra-postulantes/habilidades');
+const { getallHabilidades, addHabilidades, deleteHabilidades } = require('../../bml/controllers/extra-postulantes/habilidades');
 
 //Se crea una constante del tipo router
 const router = Router();
@@ -15,5 +15,6 @@ router.post('/add', [
     check('descripcion', 'La descripcion es obligatorio').notEmpty(),
     validFields
 ], addHabilidades);
+router.delete('/:id', deleteHabilidades);
 //Exportamos el router
 module.exports = router;
