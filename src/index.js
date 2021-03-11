@@ -25,6 +25,7 @@ app.use('/api/auth-empresas', require('./routes/auth/auth-empresas'));
 app.use('/api/auth', require('./routes/email'));
 app.use('/api/perfiles', require('./routes/extra-postulantes/perfiles'));
 app.use('/api/experiencias-laborales', require('./routes/extra-postulantes/experiencias_laborales'));
+app.use('/api/experiencias-academicas', require('./routes/extra-postulantes/experiencias_academicas'));
 app.use('/api/habilidades', require('./routes/extra-postulantes/habilidades'));
 app.use('/api/valores', require('./routes/extra-postulantes/valores'));
 app.use('/api/idiomas', require('./routes/extra-postulantes/idiomas'));

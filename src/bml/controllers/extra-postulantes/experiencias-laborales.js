@@ -125,7 +125,6 @@ const deleteExperienciaLaboral = async(req, res) => {
         message: 'Se elimino de manera exitosa la experiencia laboral',
         data: experienciasLaborales
     });
-
 }
 
 module.exports = {

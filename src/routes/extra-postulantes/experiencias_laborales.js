@@ -12,8 +12,8 @@ router.post('/add', [
     check('empresa', 'La empresa es obligatoria').notEmpty(),
     check('actividades', 'las actividades son obligatorias').notEmpty(),
     check('fecha_entrada', 'La fecha de entrada es obligatoria').notEmpty(),
-    check('trabajando', 'El estado del trabajo es obligatorio').notEmpty(),
-    check('id_postulante', 'El id del postulante es obligatorio').notEmpty(),
+    check('trabajando', 'El estado del trabajo es obligatorio').isBoolean(),
+    check('id_postulante', 'El id del postulante es obligatorio').isNumeric(),
     validFields
 ], addExperienciaLaboral);
 
@@ -23,14 +23,14 @@ router.put('/update/:id', [
     check('empresa', 'La empresa es obligatoria').notEmpty(),
     check('actividades', 'las actividades son obligatorias').notEmpty(),
     check('fecha_entrada', 'La fecha de entrada es obligatoria').notEmpty(),
-    check('trabajando', 'El estado del trabajo es obligatorio').notEmpty(),
-    check('id_postulante', 'El id del postulante es obligatorio').notEmpty(),
+    check('trabajando', 'El estado del trabajo es obligatorio').isBoolean(),
+    check('id_postulante', 'El id del postulante es obligatorio').isNumeric(),
     validFields
 ], updateExperienciaLaboral);
 
 router.delete('/delete/:id', [
     validJWT,
-    check('id_postulante', 'El id del postulante es obligatorio').notEmpty(),
+    check('id_postulante', 'El id del postulante es obligatorio').isNumeric(),
     validFields
 ], deleteExperienciaLaboral);
 
