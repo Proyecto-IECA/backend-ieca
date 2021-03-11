@@ -2,6 +2,8 @@
 const { query, queryParams } = require('../../dal/data-access');
 const { getEmail } = require('../helpers/jwt');
 
+const Empresa = require('../models/empresa');
+
 //Funcion para obtener todos las empresas
 const getEmpresas = async(req, res) => {
     //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
@@ -108,6 +110,51 @@ const updateEmpresa = async(req, res) => {
     }
 }
 
+const validPerfilCompletoEmpresa = async(req, res) => {
+    //Se crean una constante que sera igual a el header que tiene la peticion 
+    const token = req.header('x-token');
+    //Generamos el email del postulante con la funcion getEmail
+    const email = getEmail(token);
+
+    //Creamos una constante con el parametro para el procedimiento almacenado
+    const mysqlParam = [email];
+
+    //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
+    let resultQuery = await queryParams('stp_login_empresa(?)', mysqlParam);
+    if (!resultQuery[0][0])  {
+        return res.json({
+            status: false,
+            message: 'No existe ese usario',
+            data: null
+        });
+    }
+
+    let empresa = new Empresa();
+    empresa = resultQuery[0][0];
+
+    if (!empresa.telefono) {
+        return res.json({
+            status: false,
+            message: 'Perfil incompleto',
+            date: false
+        });
+    }
+
+    if (!empresa.foto_empresa) {
+        return res.json({
+            status: false,
+            message: 'Perfil incompleto',
+            date: false
+        });
+    }
+
+    res.json({
+        status: true,
+        message: 'Perfil completo',
+        date: true
+    })
+}
+
 //Funcion para dar de baja la empresa
 const deleteEmpresa = async(req, res) => {
     //Se crea una constante con el atributo de los params de nuetra peticion
@@ -140,5 +187,6 @@ module.exports = {
     getEmpresas,
     getEmpresa,
     updateEmpresa,
-    deleteEmpresa
+    deleteEmpresa,
+    validPerfilCompletoEmpresa
 };

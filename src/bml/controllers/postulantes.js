@@ -222,6 +222,14 @@ const validPerfilCompletoPostulante = async(req, res) => {
         });
     }
 
+    if (!postulante.foto_perfil) {
+        return res.json({
+            status: false,
+            message: 'Perfil incompleto',
+            date: false
+        });
+    }
+
     const mysqlParam2 = [
         id_postulante = postulante.id_postulante
     ];
