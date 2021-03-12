@@ -203,11 +203,20 @@ const renewToken = async(req, res) => {
     //Generamos los tokens del postulante
     const tokens = await generateTokenRefreshToken(email);
 
+    const mysqlParam = [email];
+
+    //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
+    let resultQuery = await queryParams('stp_login_postulante(?)', mysqlParam);
+
+    let postulante = new Postulante();
+    postulante = resultQuery[0][0];
+    postulante.pass = '';
+
     //Retornamos la informacion del postulante con sus tokens
     res.json({
         status: true,
         message: 'Acceso correcto',
-        data: postulante[0][0],
+        data: postulante,
         token: tokens.token,
         refreshToken: tokens.refreshToken
     });

@@ -13,10 +13,10 @@ const loginEmpresa = async(req, res) => {
     //Se crea una constante con los atributos del body de nuetra peticion
     const { email, pass } = req.body;
     //Creamos una constante con el parametro para el procedimiento almacenado
-    const mysqlParams = [email];
+    const mysqlParam = [email];
 
     //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
-    let resultQuery = await queryParams('stp_login_empresa(?)', mysqlParams);
+    let resultQuery = await queryParams('stp_login_empresa(?)', mysqlParam);
 
     //Si el email no existe en la BD
     if (!resultQuery[0][0]) {
@@ -202,11 +202,20 @@ const renewToken = async(req, res) => {
     //Generamos los tokens de la empresa
     const tokens = await generateTokenRefreshToken(email);
 
+    const mysqlParam = [email];
+
+    //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
+    let resultQuery = await queryParams('stp_login_empresa(?)', mysqlParam);
+
+    let empresa = new Empresa();
+    empresa = resultQuery[0][0];
+    empresa.pass = '';
+
     //Retornamos la informacion del empresa con sus tokens
     res.json({
         status: true,
         message: 'Acceso correcto',
-        data: empresa[0][0],
+        data: empresa,
         token: tokens.token,
         refreshToken: tokens.refreshToken
     });
