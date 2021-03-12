@@ -133,7 +133,7 @@ const validPerfilCompletoEmpresa = async(req, res) => {
         return res.json({
             status: false,
             message: "Perfil incompleto",
-            date: false,
+            data: false,
         });
     }
 
@@ -141,14 +141,14 @@ const validPerfilCompletoEmpresa = async(req, res) => {
         return res.json({
             status: false,
             message: "Perfil incompleto",
-            date: false,
+            data: false,
         });
     }
 
     res.json({
         status: true,
         message: "Perfil completo",
-        date: true,
+        data: true,
     });
 };
 
