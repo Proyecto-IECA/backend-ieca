@@ -9,14 +9,14 @@ class Vacante {
         disponible,
         id_empresa
     ) {
-        this.id_vacante = id_vacante,
-            this.puesto = puesto,
-            this.fecha_publicacion = fecha_publicacion,
-            this.imagen = imagen,
-            this.sueldo = sueldo,
-            this.descripcion = descripcion,
-            this.disponible = disponible,
-            this.id_empresa = id_empresa
+        (this.id_vacante = id_vacante),
+        (this.puesto = puesto),
+        (this.fecha_publicacion = fecha_publicacion),
+        (this.imagen = imagen),
+        (this.sueldo = sueldo),
+        (this.descripcion = descripcion),
+        (this.disponible = disponible),
+        (this.id_empresa = id_empresa);
     }
 }
 

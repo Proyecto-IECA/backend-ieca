@@ -4,7 +4,7 @@ const conString = {
     user: process.env.USER_DB,
     password: process.env.PASSWORD_DB,
     database: process.env.DATABASE_DB,
-    port: process.env.PORT_DB
+    port: process.env.PORT_DB,
 };
 
 //Se exporta la constante

@@ -1,7 +1,7 @@
 //Se requiere el uso del framework express para manejo de las rutas
 const Router = require('express');
 //Se requieren los metodos de los postulantes del archivo postulantes.js
-const { getPostulantes, getPostulante, updatePostulante, deletePostulante, validPerfilCompletoPostulante } = require('../bml/controllers/postulantes');
+const { getPostulantes, getPostulante, updatePostulante, deletePostulante, validPerfilCompletoPostulante, updateFotoPostulante } = require('../bml/controllers/postulantes');
 //Se requiere el uso de check de express-validator
 const { check } = require('express-validator');
 //Se requiere la funcion validFields del archivo validar-campos.js
@@ -41,6 +41,13 @@ router.put('/update', [
     validFields
     //Se manda llamar la funcion para actualizar al postulante
 ], updatePostulante);
+
+router.put('/update-foto', [
+    validJWT,
+    //Se valida cada uno de los parametros para actualizar al postulante
+    check('foto_perfil', 'La foto es oligatoria').notEmpty(),
+    validFields
+], updateFotoPostulante)
 
 //Rutas de nuestros postulantes
 router.get('/', validJWT, getPostulantes);

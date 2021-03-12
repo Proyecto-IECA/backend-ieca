@@ -11,17 +11,17 @@ class Empresa {
         calificacion,
         email
     ) {
-        this.id_empresa = id_empresa,
-            this.nombre = nombre,
-            this.administrador = administrador,
-            this.foto_empresa = foto_empresa,
-            this.pagina_web = pagina_web,
-            this.ubicacion = ubicacion,
-            this.telefono = telefono,
-            this.giro = giro,
-            this.calificacion = calificacion,
-            this.email = email
+        (this.id_empresa = id_empresa),
+        (this.nombre = nombre),
+        (this.administrador = administrador),
+        (this.foto_empresa = foto_empresa),
+        (this.pagina_web = pagina_web),
+        (this.ubicacion = ubicacion),
+        (this.telefono = telefono),
+        (this.giro = giro),
+        (this.calificacion = calificacion),
+        (this.email = email);
     }
 }
 
-module.exports = Empresa
+module.exports = Empresa;

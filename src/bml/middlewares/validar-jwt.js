@@ -1,22 +1,26 @@
 //Se implementan las dependencias necesarias
-const jwt = require('jsonwebtoken');
-const { queryParams } = require('../../dal/data-access');
+const jwt = require("jsonwebtoken");
+const { queryParams } = require("../../dal/data-access");
 //Se implementan las funciones necesarias del archivo jwt.js
-const { getJWT_ID, getRefreshToken, expiredRefreshToken } = require('../helpers/jwt')
+const {
+    getJWT_ID,
+    getRefreshToken,
+    expiredRefreshToken,
+} = require("../helpers/jwt");
 
 //Funcion para validar el token antes de ejecutar las peticiones HTTP
 const validJWT = async(req, res, next) => {
     //Se crea una constante que sera igual al token que se manda por el header de la peticion
-    const token = req.header('x-token');
+    const token = req.header("x-token");
     //Se guarda en una constante el email que se envia por el header de la peticion
-    const email = req.header('email');
+    const email = req.header("email");
 
     //Si el el token y el email estan vacios
-    if (!token & !email)  {
+    if (!token & !email) {
         return res.json({
             status: false,
-            message: 'La peticion no tiene token y tampoco email',
-            data: null
+            message: "La peticion no tiene token y tampoco email",
+            data: null,
         });
     }
 
@@ -24,32 +28,30 @@ const validJWT = async(req, res, next) => {
     if (!token) {
         return res.json({
             status: false,
-            message: 'La peticion no tiene token',
-            data: null
+            message: "La peticion no tiene token",
+            data: null,
         });
     }
-    //Si el email esta vacio 
+    //Si el email esta vacio
     if (!email) {
         return res.json({
             status: false,
-            message: 'La peticion no tiene email',
-            data: null
+            message: "La peticion no tiene email",
+            data: null,
         });
     }
 
-    const mysqlParam = [
-        email
-    ];
+    const mysqlParam = [email];
 
-    const resultQueryP = await queryParams('stp_login_postulante(?)', mysqlParam);
-    const resultQueryE = await queryParams('stp_login_empresa(?)', mysqlParam);
+    const resultQueryP = await queryParams("stp_login_postulante(?)", mysqlParam);
+    const resultQueryE = await queryParams("stp_login_empresa(?)", mysqlParam);
 
     if (!resultQueryP[0][0] && !resultQueryE[0][0]) {
         return res.json({
             status: false,
-            message: 'No se encontro el usuario',
-            data: null
-        })
+            message: "No se encontro el usuario",
+            data: null,
+        });
     }
 
     try {
@@ -60,8 +62,8 @@ const validJWT = async(req, res, next) => {
         if (email != payload.email) {
             return res.json({
                 status: false,
-                message: 'Token invalido',
-                data: null
+                message: "Token invalido",
+                data: null,
             });
         }
 
@@ -70,23 +72,23 @@ const validJWT = async(req, res, next) => {
     } catch (error) {
         return res.json({
             status: false,
-            message: 'Token invalido',
-            data: null
+            message: "Token invalido",
+            data: null,
         });
     }
-}
+};
 
 //Funcion para validar el token antes de ejecutar las peticiones HTTP
 const validJWTRegister = async(req, res, next) => {
     //Se crea una constante que sera igual al token que se manda por el header de la peticion
-    const token = req.header('x-token');
+    const token = req.header("x-token");
 
     //Si el token esta vacio
     if (!token) {
         return res.json({
             status: false,
-            message: 'La peticion no tiene token',
-            data: null
+            message: "La peticion no tiene token",
+            data: null,
         });
     }
 
@@ -99,24 +101,24 @@ const validJWTRegister = async(req, res, next) => {
     } catch (error) {
         return res.json({
             status: false,
-            message: 'Token invalido',
-            data: null
+            message: "Token invalido",
+            data: null,
         });
     }
-}
+};
 
 //Funcion para validar el refreshToken antes de ejecutar las peticiones HTTP
 const validRefreshToken = async(req, res, next) => {
-    //Se crean dos constantes que seran igual a los header que tiene la peticion 
-    const token = req.header('x-token');
-    const rToken = req.header('r-token');
+    //Se crean dos constantes que seran igual a los header que tiene la peticion
+    const token = req.header("x-token");
+    const rToken = req.header("r-token");
 
     //Si el token y refrehToken estan vacios
     if (!token & !rToken) {
         return res.json({
             status: false,
-            message: 'La peticion no tiene token y refreshToken',
-            data: null
+            message: "La peticion no tiene token y refreshToken",
+            data: null,
         });
     }
 
@@ -124,8 +126,8 @@ const validRefreshToken = async(req, res, next) => {
     if (!token) {
         return res.json({
             status: false,
-            message: 'La peticion no tiene token',
-            data: null
+            message: "La peticion no tiene token",
+            data: null,
         });
     }
 
@@ -133,8 +135,8 @@ const validRefreshToken = async(req, res, next) => {
     if (!rToken) {
         return res.json({
             status: false,
-            message: 'La peticion no tiene refreshToken',
-            data: null
+            message: "La peticion no tiene refreshToken",
+            data: null,
         });
     }
 
@@ -149,8 +151,8 @@ const validRefreshToken = async(req, res, next) => {
         if (expired) {
             return res.json({
                 status: false,
-                message: 'RefreshToken expirado',
-                data: null
+                message: "RefreshToken expirado",
+                data: null,
             });
         }
         //Se deja pasar la peticion
@@ -158,15 +160,15 @@ const validRefreshToken = async(req, res, next) => {
     } catch (error) {
         return res.json({
             status: false,
-            message: 'RefreshToken invalido',
-            data: null
+            message: "RefreshToken invalido",
+            data: null,
         });
     }
-}
+};
 
 //Se exporta la funcion para validar el token
 module.exports = {
     validJWT,
     validJWTRegister,
     validRefreshToken
-}
+};
