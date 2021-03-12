@@ -6,6 +6,7 @@ const { getEmail, getJWT_ID, generateJWT, generateTokenRefreshToken, getRefreshT
 const { enviarEmail } = require('../../helpers/email');
 //Se requiere de la dependencia bcryptjs y la almacenamos en una constante
 const bcrypt = require('bcryptjs');
+const Empresa = require('../../models/empresa');
 
 //Funcion para logearse si eres empresa
 const loginEmpresa = async(req, res) => {
@@ -15,10 +16,10 @@ const loginEmpresa = async(req, res) => {
     const mysqlParams = [email];
 
     //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
-    let empresa = await queryParams('stp_login_empresa(?)', mysqlParams);
+    let resultQuery = await queryParams('stp_login_empresa(?)', mysqlParams);
 
     //Si el email no existe en la BD
-    if (!empresa[0][0]) {
+    if (!resultQuery[0][0]) {
         return res.json({
             status: false,
             message: 'El Email es incorrecto',
@@ -26,8 +27,11 @@ const loginEmpresa = async(req, res) => {
         });
     }
 
+    let empresa = new Empresa();
+    empresa = resultQuery[0][0];
+
     //Se compara el password que se manda por el endpoint con el password de la empresa
-    const validPassword = bcrypt.compareSync(pass, empresa[0][0].pass);
+    const validPassword = bcrypt.compareSync(pass, empresa.pass);
 
     //Si la comparacion de las contraseñas es falsa
     if (!validPassword) {
@@ -38,8 +42,10 @@ const loginEmpresa = async(req, res) => {
         });
     }
 
+    empresa.pass = '';
+
     //Se guarda en una constante el email de la empresa
-    const emailE = empresa[0][0].email;
+    const emailE = empresa.email;
     //Generamos los tokens de la empresa
     const tokens = await generateTokenRefreshToken(emailE);
 
@@ -47,7 +53,7 @@ const loginEmpresa = async(req, res) => {
     res.json({
         status: true,
         message: 'Acceso correcto',
-        data: empresa[0][0],
+        data: empresa,
         token: tokens.token,
         refreshToken: tokens.refreshToken
     });

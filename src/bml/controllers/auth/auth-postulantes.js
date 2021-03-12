@@ -7,6 +7,8 @@ const { enviarEmail } = require('../../helpers/email');
 //Se requiere de la dependencia bcryptjs y la almacenamos en una constante
 const bcrypt = require('bcryptjs');
 
+const Postulante = require('../../models/postulante');
+
 //Funcion para logearse si eres postulante
 const loginPostulante = async(req, res) => {
     //Se crea una constante con los atributos del body de nuetra peticion
@@ -15,10 +17,10 @@ const loginPostulante = async(req, res) => {
     const mysqlParam = [email];
 
     //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
-    let postulante = await queryParams('stp_login_postulante(?)', mysqlParam);
+    let resultQuery = await queryParams('stp_login_postulante(?)', mysqlParam);
 
     //Si el email no existe en la BD
-    if (!postulante[0][0]) {
+    if (!resultQuery[0][0]) {
         return res.json({
             status: false,
             message: 'El Email es incorrecto',
@@ -26,8 +28,11 @@ const loginPostulante = async(req, res) => {
         });
     }
 
+    let postulante = new Postulante();
+    postulante = resultQuery[0][0];
+
     //Se compara el password que se manda a traves de la peticion con el password del postulante 
-    const validPassword = bcrypt.compareSync(pass, postulante[0][0].pass);
+    const validPassword = bcrypt.compareSync(pass, postulante.pass);
 
     //Si la comparacion de las contraseñas es falsa
     if (!validPassword) {
@@ -38,8 +43,10 @@ const loginPostulante = async(req, res) => {
         });
     }
 
+    postulante.pass = '';
+
     //Se guarda en una constante el email del postulante
-    const emailP = postulante[0][0].email;
+    const emailP = postulante.email;
     //Generamos los tokens del postulante
     const tokens = await generateTokenRefreshToken(emailP);
 
@@ -47,7 +54,7 @@ const loginPostulante = async(req, res) => {
     res.json({
         status: true,
         message: 'Acceso correcto',
-        data: postulante[0][0],
+        data: postulante,
         token: tokens.token,
         refreshToken: tokens.refreshToken
     });
