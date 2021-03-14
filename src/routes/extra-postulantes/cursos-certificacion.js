@@ -22,10 +22,8 @@ router.put('/update/:id', [
     validFields
 ], updateCursoCertificacion);
 
-router.delete('/delete/:id', [
+router.delete('/delete/:id_p/id',
     validJWT,
-    check('id_postulante', 'El id del postulante es obligatorio').isNumeric(),
-    validFields
-], deleteCursoCertificacion);
+    deleteCursoCertificacion);
 
 module.exports = router;

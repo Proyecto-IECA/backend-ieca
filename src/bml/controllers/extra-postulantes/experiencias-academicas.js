@@ -104,7 +104,7 @@ const updateExperienciaAcademica = async(req, res) => {
 };
 
 const deleteExperienciaAcademica = async(req, res) => {
-    const { id } = req.params;
+    const { id_p, id } = req.params;
     const mysqlParam = [(id_experiencia_academica = id)];
 
     let resultQuery = await queryParams(
@@ -120,9 +120,7 @@ const deleteExperienciaAcademica = async(req, res) => {
         });
     }
 
-    const { id_postulante } = req.body;
-
-    const mysqlParam2 = [id_postulante];
+    const mysqlParam2 = [id_p];
 
     let experienciasAcademicas = new ExperienciaAcademica();
     resultQuery = await queryParams(

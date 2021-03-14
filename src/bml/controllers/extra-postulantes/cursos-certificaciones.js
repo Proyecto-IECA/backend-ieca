@@ -2,12 +2,12 @@ const { queryParams } = require("../../../dal/data-access");
 const CursoCertificacion = require("../../models/curso_certificacion");
 
 const addCursoCertificacion = async(req, res) => {
-    const { nombre, descripcion, constancia, link, id_postulante } = req.body;
+    const { nombre, descripcion, link, id_postulante } = req.body;
 
-    const mysqlParams = [nombre, descripcion, constancia, link, id_postulante];
+    const mysqlParams = [nombre, descripcion, link, id_postulante];
 
     let resulQuery = await queryParams(
-        "stp_add_curso_certificacion(?, ?, ?, ?, ?)",
+        "stp_add_curso_certificacion(?, ?, ?, ?)",
         mysqlParams
     );
 
@@ -38,18 +38,17 @@ const addCursoCertificacion = async(req, res) => {
 
 const updateCursoCertificacion = async(req, res) => {
     const { id } = req.params;
-    const { nombre, descripcion, constancia, link, id_postulante } = req.body;
+    const { nombre, descripcion, link, id_postulante } = req.body;
 
     const mysqlParams = [
         (id_curso_certificacion = id),
         nombre,
         descripcion,
-        constancia,
         link,
     ];
 
     let resulQuery = await queryParams(
-        "stp_update_curso_certificacion(?, ?, ?, ?, ?)",
+        "stp_update_curso_certificacion(?, ?, ?, ?)",
         mysqlParams
     );
 
@@ -79,7 +78,7 @@ const updateCursoCertificacion = async(req, res) => {
 };
 
 const deleteCursoCertificacion = async(req, res) => {
-    const { id } = req.params;
+    const { id_p, id } = req.params;
     const mysqlParam = [(id_curso_certificacion = id)];
 
     let resultQuery = await queryParams(
@@ -95,9 +94,7 @@ const deleteCursoCertificacion = async(req, res) => {
         });
     }
 
-    const { id_postulante } = req.body;
-
-    const mysqlParam2 = [id_postulante];
+    const mysqlParam2 = [id_p];
 
     //Se obtienen los cursos y certificaciones del postulante
     let cursosCertificaciones = new CursoCertificacion();
