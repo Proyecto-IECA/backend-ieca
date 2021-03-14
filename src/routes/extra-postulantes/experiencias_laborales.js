@@ -28,10 +28,8 @@ router.put('/update/:id', [
     validFields
 ], updateExperienciaLaboral);
 
-router.delete('/delete/:id', [
+router.delete('/delete/:id_p/:id',
     validJWT,
-    check('id_postulante', 'El id del postulante es obligatorio').isNumeric(),
-    validFields
-], deleteExperienciaLaboral);
+    deleteExperienciaLaboral);
 
 module.exports = router;
