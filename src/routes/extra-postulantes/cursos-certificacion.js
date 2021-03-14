@@ -22,7 +22,7 @@ router.put('/update/:id', [
     validFields
 ], updateCursoCertificacion);
 
-router.delete('/delete/:id_p/id',
+router.delete('/delete/:id_p/:id',
     validJWT,
     deleteCursoCertificacion);
 
