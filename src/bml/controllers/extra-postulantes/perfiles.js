@@ -47,7 +47,7 @@ const addperfiles = async(req, res) => {
 
     const mysqlParam = [id_postulante];
 
-    await queryParams('stp_delete_perfiles_postulantes(?)', mysqlParam);
+    await queryParams('stp_delete_perfiles_postulante(?)', mysqlParam);
 
     perfiles.forEach(async(perfil) => {
         let mysqlParams = [perfil.descripcion, perfil.id_postulante];

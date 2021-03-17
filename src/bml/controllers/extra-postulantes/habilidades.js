@@ -17,7 +17,7 @@ const getHabilidades = async(req, res) => {
     res.json({
         status: true,
         message: "Consulta Exitosa",
-        data: habilidades[0],
+        data: habilidades[0]
     });
 };
 
@@ -46,7 +46,7 @@ const addHabilidades = async(req, res) => {
 
     const mysqlParam = [id_postulante];
 
-    await queryParams("stp_delete_habilidades_postulantes(?)", mysqlParam);
+    await queryParams("stp_delete_habilidades_postulante(?)", mysqlParam);
 
     habilidades.forEach(async(habilidad) => {
         let mysqlParams = [habilidad.descripcion, habilidad.id_postulante];
