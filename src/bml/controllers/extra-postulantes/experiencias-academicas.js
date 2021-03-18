@@ -120,7 +120,7 @@ const deleteExperienciaAcademica = async(req, res) => {
         });
     }
 
-    const mysqlParam2 = [id_p];
+    const mysqlParam2 = [(id_postulante = id_p)];
 
     let experienciasAcademicas = new ExperienciaAcademica();
     resultQuery = await queryParams(

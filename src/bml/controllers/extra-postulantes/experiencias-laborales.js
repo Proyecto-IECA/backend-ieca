@@ -121,7 +121,7 @@ const deleteExperienciaLaboral = async(req, res) => {
         });
     }
 
-    const mysqlParam2 = [id_p];
+    const mysqlParam2 = [(id_postulante = id_p)];
 
     let experienciasLaborales = new ExperienciaLaboral();
     resultQuery = await queryParams(

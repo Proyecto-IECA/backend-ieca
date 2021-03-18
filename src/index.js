@@ -35,6 +35,7 @@ app.use('/api/idiomas', require('./routes/extra-postulantes/idiomas'));
 //Rutas de Empresa
 app.use('/api/empresas', require('./routes/empresas'));
 app.use('/api/vacantes', require('./routes/extra-empresas/vacantes'));
+app.use('/api/sucursales', require('./routes/extra-empresas/sucursales'));
 
 //Se asigna el puerto para la escucha del servidor 
 app.listen(process.env.PORT);

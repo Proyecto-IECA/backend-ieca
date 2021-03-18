@@ -94,7 +94,7 @@ const deleteCursoCertificacion = async(req, res) => {
         });
     }
 
-    const mysqlParam2 = [id_p];
+    const mysqlParam2 = [(id_postulante = id_p)];
 
     //Se obtienen los cursos y certificaciones del postulante
     let cursosCertificaciones = new CursoCertificacion();
