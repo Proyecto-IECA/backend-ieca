@@ -9,7 +9,7 @@ const { validJWT } = require('../bml/middlewares/validar-jwt');
 const router = Router();
 
 //Rutas de nuestras empresas
-router.get('/perfil-completo/:id', getEmpresa);
+router.get('/perfil-completo/:id', validJWT, getEmpresa);
 router.get('/valid-perfil-completo', validJWT, validPerfilCompletoEmpresa);
 router.put('/update', validJWT, updateEmpresa);
 

@@ -1,5 +1,5 @@
 const Router = require('express');
-const { addSucursal, updateSucursal, deleteSucursal } = require('../../bml/controllers/extra-empresas/sucursales');
+const { addSucursal, updateSucursal, deleteSucursal } = require('../../bml/controllers/extra-empresas/sucursales_empresa');
 const { check } = require('express-validator');
 const { validFields } = require('../../bml/middlewares/validar-campos');
 const { validJWT } = require('../../bml/middlewares/validar-jwt');

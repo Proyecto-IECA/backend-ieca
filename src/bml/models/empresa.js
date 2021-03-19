@@ -9,7 +9,8 @@ class Empresa {
         telefono,
         giro,
         calificacion,
-        email
+        email,
+        sucursales_empresa
     ) {
         (this.id_empresa = id_empresa),
         (this.nombre = nombre),
@@ -21,6 +22,7 @@ class Empresa {
         (this.giro = giro),
         (this.calificacion = calificacion),
         (this.email = email);
+        (this.sucursales_empresa = sucursales_empresa)
     }
 }
 

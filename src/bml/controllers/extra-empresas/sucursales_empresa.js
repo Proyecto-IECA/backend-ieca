@@ -1,5 +1,5 @@
 const { queryParams } = require("../../../dal/data-access");
-const Sucursal = require("../../models/sucursales");
+const Sucursal = require("../../models/sucursales_empresa");
 
 const addSucursal = async(req, res) => {
     const { id_empresa, direccion, etiqueta } = req.body;
@@ -65,9 +65,9 @@ const updateSucursal = async(req, res) => {
 const deleteSucursal = async(req, res) => {
     const { id_e, id } = req.params;
 
-    const mysqlParam = [(id_sucursal = id)];
+    const mysqlParams = [(id_sucursal = id), (id_empresa = id_e)];
 
-    let resulQuery = await queryParams("stp_delete_sucursal(?)", mysqlParam);
+    let resulQuery = await queryParams("stp_delete_sucursal(?, ?)", mysqlParams);
 
     if (resulQuery.affectedRows == 0) {
         return res.json({
@@ -77,10 +77,10 @@ const deleteSucursal = async(req, res) => {
         });
     }
 
-    const mysqlParam2 = [(id_empresa = id_e)];
+    const mysqlParam = [(id_empresa = id_e)];
 
     let sucursales = new Sucursal();
-    resultQuery = await queryParams("stp_getbyid_sucursales(?)", mysqlParam2);
+    resultQuery = await queryParams("stp_getbyid_sucursales(?)", mysqlParam);
     sucursales = resultQuery[0];
 
     res.json({

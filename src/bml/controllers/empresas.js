@@ -3,6 +3,7 @@ const { query, queryParams } = require("../../dal/data-access");
 const { getEmail } = require("../helpers/jwt");
 
 const Empresa = require("../models/empresa");
+const Sucursales = require('../models/sucursales_empresa');
 
 //Funcion para obtener todos las empresas
 const getEmpresas = async(req, res) => {
@@ -45,11 +46,17 @@ const getEmpresa = async(req, res) => {
     let empresa = new Empresa();
     empresa = resultQuery[0][0];
 
+    let sucursalesEmpresa = new Sucursales();
+    resultQuery = await queryParams("stp_getbyid_sucursales(?)", mysqlParam);
+    sucursalesEmpresa = resultQuery[0];
+    empresa.sucursales_empresa = sucursalesEmpresa;
+
     res.json({
         status: true,
         message: "Consulta exitosa",
         data: empresa,
     });
+
 };
 
 //Funcion para actualizar el perfil de la empresa
@@ -63,7 +70,6 @@ const updateEmpresa = async(req, res) => {
     const {
         nombre,
         administrador,
-        foto_empresa,
         pagina_web,
         ubicacion,
         telefono,
@@ -75,7 +81,6 @@ const updateEmpresa = async(req, res) => {
         email,
         nombre,
         administrador,
-        foto_empresa,
         pagina_web,
         ubicacion,
         telefono,
@@ -84,7 +89,7 @@ const updateEmpresa = async(req, res) => {
 
     //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
     let resultQuery = await queryParams(
-        "stp_update_empresa(?, ?, ?, ?, ?, ?, ?, ?)",
+        "stp_update_empresa(?, ?, ?, ?, ?, ?, ?)",
         mysqlParams
     );
 
