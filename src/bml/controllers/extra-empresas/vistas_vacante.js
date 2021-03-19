@@ -1,11 +1,12 @@
 const { queryParams } = require("../../../dal/data-access");
+const VistaVacante = require('../../models/vista_vacantes');
 
 const addVistaVacante = async(req, res) => {
     const { id_vacante, id_postulante } = req.body;
 
     const mysqlParams = [id_vacante, id_postulante];
 
-    let resulQuery = await ("stp_add_vista_vacante(?, ?)", mysqlParams);
+    let resulQuery = await queryParams("stp_add_vista_vacante(?, ?)", mysqlParams);
 
     if (resulQuery.affectedRows == 0) {
         return res.json({

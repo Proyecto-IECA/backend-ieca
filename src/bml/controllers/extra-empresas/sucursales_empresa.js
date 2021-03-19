@@ -18,6 +18,15 @@ const addSucursal = async(req, res) => {
 
     const mysqlParam = [id_empresa];
 
+    resultQuery = await queryParams('stp_mas_numero_sucursal(?)', mysqlParam);
+    if (resultQuery.affectedRows == 0) {
+        return res.json({
+            status: false,
+            message: "Error al actualizar el numero de sucursales",
+            data: null,
+        });
+    }
+
     let sucursales = new Sucursal();
     resultQuery = await queryParams("stp_getbyid_sucursales(?)", mysqlParam);
     sucursales = resultQuery[0];
@@ -65,11 +74,11 @@ const updateSucursal = async(req, res) => {
 const deleteSucursal = async(req, res) => {
     const { id_e, id } = req.params;
 
-    const mysqlParams = [(id_sucursal = id), (id_empresa = id_e)];
+    const mysqlParams = [(id_sucursal = id)];
 
-    let resulQuery = await queryParams("stp_delete_sucursal(?, ?)", mysqlParams);
+    let resultQuery = await queryParams("stp_delete_sucursal(?)", mysqlParams);
 
-    if (resulQuery.affectedRows == 0) {
+    if (resultQuery.affectedRows == 0) {
         return res.json({
             status: false,
             message: "Ocurrio un error al borrar la sucursal",
@@ -78,6 +87,15 @@ const deleteSucursal = async(req, res) => {
     }
 
     const mysqlParam = [(id_empresa = id_e)];
+
+    resultQuery = await queryParams('stp_min_numero_sucursal(?)', mysqlParam);
+    if (resultQuery.affectedRows == 0) {
+        return res.json({
+            status: false,
+            message: "Error al actualizar el numero de sucursales",
+            data: null,
+        });
+    }
 
     let sucursales = new Sucursal();
     resultQuery = await queryParams("stp_getbyid_sucursales(?)", mysqlParam);

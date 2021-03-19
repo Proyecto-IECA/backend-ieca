@@ -11,3 +11,5 @@ class VistaVacante {
         (this.fecha = fecha);
     }
 }
+
+module.exports = VistaVacante;
