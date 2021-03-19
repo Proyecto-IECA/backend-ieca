@@ -3,7 +3,7 @@ const { query, queryParams } = require("../../dal/data-access");
 const { getEmail } = require("../helpers/jwt");
 
 const Empresa = require("../models/empresa");
-const Sucursales = require('../models/sucursales_empresa');
+const Sucursales = require("../models/sucursales_empresa");
 
 //Funcion para obtener todos las empresas
 const getEmpresas = async(req, res) => {
@@ -56,7 +56,6 @@ const getEmpresa = async(req, res) => {
         message: "Consulta exitosa",
         data: empresa,
     });
-
 };
 
 //Funcion para actualizar el perfil de la empresa
@@ -109,6 +108,33 @@ const updateEmpresa = async(req, res) => {
         status: true,
         message: "Informacion actualizada de manera exitosa",
         data: empresa,
+    });
+};
+
+const updateFotoEmpresa = async(req, res) => {
+    const token = req.header("x-token");
+    const email = getEmail(token);
+
+    const { foto_empresa } = req.body;
+    const mysqlParams = [email, foto_empresa];
+
+    let resultQuery = await queryParams(
+        "stp_update_foto_empresa(?, ?)",
+        mysqlParams
+    );
+
+    if (resultQuery.affectedRows == 0) {
+        return res.json({
+            status: false,
+            message: "Ocurrio un error al cargar la foto",
+            data: null,
+        });
+    }
+
+    res.json({
+        status: true,
+        message: "Exito al cargar la foto",
+        data: resultQuery[0][0],
     });
 };
 
@@ -189,4 +215,5 @@ module.exports = {
     updateEmpresa,
     deleteEmpresa,
     validPerfilCompletoEmpresa,
+    updateFotoEmpresa
 };

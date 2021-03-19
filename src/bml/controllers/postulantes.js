@@ -147,7 +147,7 @@ const updatePostulante = async(req, res) => {
         pais,
         codigo_postal,
         ciudad,
-        domicilio
+        domicilio,
     } = req.body;
 
     //Creamos una constante con los parametros para el procedimiento almacenado
@@ -163,7 +163,7 @@ const updatePostulante = async(req, res) => {
         pais,
         codigo_postal,
         ciudad,
-        domicilio
+        domicilio,
     ];
 
     //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
@@ -199,25 +199,25 @@ const updateFotoPostulante = async(req, res) => {
     const email = getEmail(token);
 
     const { foto_perfil } = req.body;
-    const mysqlParams = [
-        email,
-        foto_perfil
-    ];
+    const mysqlParams = [email, foto_perfil];
 
-    let resultQuery = await queryParams('stp_update_foto_postulante(?, ?)', mysqlParams);
+    let resultQuery = await queryParams(
+        "stp_update_foto_postulante(?, ?)",
+        mysqlParams
+    );
 
     if (resultQuery.affectedRows == 0) {
         return res.json({
             status: false,
-            message: 'Ocurrio un error al cargar la foto',
-            data: null
+            message: "Ocurrio un error al cargar la foto",
+            data: null,
         });
     }
 
     res.json({
         status: true,
-        message: 'Exito al cargar la foto',
-        data: resultQuery[0][0]
+        message: "Exito al cargar la foto",
+        data: resultQuery[0][0],
     });
 };
 
@@ -382,5 +382,5 @@ module.exports = {
     updatePostulante,
     deletePostulante,
     validPerfilCompletoPostulante,
-    updateFotoPostulante
+    updateFotoPostulante,
 };

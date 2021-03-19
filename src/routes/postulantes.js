@@ -47,7 +47,7 @@ router.put('/update-foto', [
     //Se valida cada uno de los parametros para actualizar al postulante
     check('foto_perfil', 'La foto es oligatoria').notEmpty(),
     validFields
-], updateFotoPostulante)
+], updateFotoPostulante);
 
 //Rutas de nuestros postulantes
 router.get('/', validJWT, getPostulantes);
