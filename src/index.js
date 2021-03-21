@@ -34,8 +34,9 @@ app.use('/api/idiomas', require('./routes/extra-postulantes/idiomas'));
 
 //Rutas de Empresa
 app.use('/api/empresas', require('./routes/empresas'));
-app.use('/api/vacantes', require('./routes/extra-empresas/vacantes'));
 app.use('/api/sucursales', require('./routes/extra-empresas/sucursales_empresa'));
+app.use('/api/vacantes', require('./routes/extra-empresas/vacantes'));
+app.use('/api/perfiles-vacante', require('./routes/extra-empresas/perfiles'));
 app.use('/api/vistas-vacante', require('./routes/extra-empresas/vistas_vacante'));
 
 //Se asigna el puerto para la escucha del servidor 
