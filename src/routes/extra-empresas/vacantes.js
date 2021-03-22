@@ -6,7 +6,7 @@ const { validJWT } = require('../../bml/middlewares/validar-jwt');
 
 const router = Router();
 
-router.get('/vacantes-empresa',
+router.get('/vacantes-empresa/:id',
     validJWT,
     getVacantesEmpresa);
 
@@ -19,7 +19,7 @@ router.post('/add', [
     check('puesto', 'El puesto es obligatorio').notEmpty(),
     check('descripcion', 'La descripcion es obligatoria').notEmpty(),
     check('id_empresa', 'El id_empresa es obligatorio').isNumeric(),
-    check('modalida', 'La modalidad es obligatorio').notEmpty(),
+    check('modalidad', 'La modalidad es obligatorio').notEmpty(),
     check('nivel', 'El nivel es obligatorio').notEmpty(),
     validFields
 ], addVacante);
@@ -28,12 +28,12 @@ router.put('/update/:id', [
     validJWT,
     check('puesto', 'El puesto es obligatorio').notEmpty(),
     check('descripcion', 'La descripcion es obligatoria').notEmpty(),
-    check('modalida', 'La modalidad es obligatorio').notEmpty(),
+    check('modalidad', 'La modalidad es obligatorio').notEmpty(),
     check('nivel', 'El nivel es obligatorio').notEmpty(),
     check('id_empresa', 'El id_empresa es obligatorio').isNumeric(),
 ], updateVacante);
 
-router.put('/update-imagen', [
+router.put('/update-imagen/:id', [
     validJWT,
     check('imagen', 'La imagen es obligatoria').notEmpty(),
     validFields
@@ -43,12 +43,18 @@ router.delete('/delete/:id_e/:id',
     validJWT,
     deleteVacante);
 
-router.put('/desactivar/:id_e/:id',
+router.put('/desactivar', [
     validJWT,
-    desactivarVacante);
+    check('id_empresa', 'El id de la empresa es obligatorio').isNumeric(),
+    check('id_vacante', 'El id de la vacante es obligatorio').isNumeric(),
+    validFields
+], desactivarVacante);
 
-router.put('/activar/:id_e/:id',
+router.put('/activar', [
     validJWT,
-    activarVacante);
+    check('id_empresa', 'El id de la empresa es obligatorio').isNumeric(),
+    check('id_vacante', 'El id de la vacante es obligatorio').isNumeric(),
+    validFields
+], activarVacante);
 
 module.exports = router;

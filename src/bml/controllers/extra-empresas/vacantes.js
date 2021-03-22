@@ -101,7 +101,7 @@ const addVacante = async(req, res) => {
 
     const mysqlParam = [id_empresa];
 
-    resultQuery = await queryParams("stp_getbyid_vacante(?)", mysqlParam);
+    resultQuery = await queryParams("stp_getall_vacantes_empresa(?)", mysqlParam);
 
     let vacantes = new Vacante();
     vacantes = resultQuery[0];
@@ -151,14 +151,14 @@ const updateVacante = async(req, res) => {
 
     const mysqlParam = [id_empresa];
 
-    resultQuery = await queryParams("stp_getbyid_vacante(?)", mysqlParam);
+    resultQuery = await queryParams("stp_getall_vacantes_empresa(?)", mysqlParam);
 
     let vacantes = new Vacante();
     vacantes = resultQuery[0];
 
     res.json({
         status: true,
-        message: "Se publico de manera exitosa la vacante",
+        message: "Se actualizo de manera exitosa la vacante",
         data: vacantes,
     });
 };
@@ -170,12 +170,12 @@ const updateImagenVacante = async(req, res) => {
 
     const mysqlParams = [(id_vacante = id), imagen];
 
-    let resulQuery = await queryParams(
+    let resultQuery = await queryParams(
         "stp_update_foto_vacante(?, ?)",
         mysqlParams
     );
 
-    if (resulQuery.affectedRows == 0) {
+    if (resultQuery.affectedRows == 0) {
         return res.json({
             status: false,
             message: "Ocurrio un error al cargar la foto",
@@ -186,7 +186,7 @@ const updateImagenVacante = async(req, res) => {
     res.json({
         status: true,
         message: "Exito al cargar la foto",
-        data: resulQuery[0][0],
+        data: resultQuery[0][0],
     });
 };
 
@@ -207,7 +207,10 @@ const deleteVacante = async(req, res) => {
 
     const mysqlParam2 = [(id_empresa = id_e)];
 
-    resultQuery = await queryParams("stp_getbyid_vacante(?)", mysqlParam2);
+    resultQuery = await queryParams(
+        "stp_getall_vacantes_empresa(?)",
+        mysqlParam2
+    );
 
     let vacantes = new Vacante();
     vacantes = resultQuery[0];
@@ -220,11 +223,11 @@ const deleteVacante = async(req, res) => {
 };
 
 const desactivarVacante = async(req, res) => {
-    const { id_e, id } = req.params;
+    const { id_empresa, id_vacante } = req.body;
 
-    const mysqlParam = [id];
+    const mysqlParam = [id_vacante];
 
-    let resulQuery = await queryParams("stp_desactivar_vacante", mysqlParam);
+    let resulQuery = await queryParams("stp_desactivar_vacante(?)", mysqlParam);
 
     if (resulQuery.affectedRows == 0) {
         return res.json({
@@ -234,9 +237,12 @@ const desactivarVacante = async(req, res) => {
         });
     }
 
-    const mysqlParam2 = [(id_empresa = id_e)];
+    const mysqlParam2 = [id_empresa];
 
-    resultQuery = await queryParams("stp_getbyid_vacante(?)", mysqlParam2);
+    resultQuery = await queryParams(
+        "stp_getall_vacantes_empresa(?)",
+        mysqlParam2
+    );
 
     let vacantes = new Vacante();
     vacantes = resultQuery[0];
@@ -249,11 +255,11 @@ const desactivarVacante = async(req, res) => {
 };
 
 const activarVacante = async(req, res) => {
-    const { id_e, id } = req.params;
+    const { id_empresa, id_vacante } = req.body;
 
-    const mysqlParam = [id];
+    const mysqlParam = [id_vacante];
 
-    let resulQuery = await queryParams("stp_activar_vacante", mysqlParam);
+    let resulQuery = await queryParams("stp_activar_vacante(?)", mysqlParam);
 
     if (resulQuery.affectedRows == 0) {
         return res.json({
@@ -263,9 +269,12 @@ const activarVacante = async(req, res) => {
         });
     }
 
-    const mysqlParam2 = [(id_empresa = id_e)];
+    const mysqlParam2 = [id_empresa];
 
-    resultQuery = await queryParams("stp_getbyid_vacante(?)", mysqlParam2);
+    resultQuery = await queryParams(
+        "stp_getall_vacantes_empresa(?)",
+        mysqlParam2
+    );
 
     let vacantes = new Vacante();
     vacantes = resultQuery[0];
