@@ -1,5 +1,6 @@
 const { queryParams } = require("../../../dal/data-access");
 const ExperienciaLaboral = require("../../models/experiencia_laboral");
+const moment = require("moment");
 
 const addExperienciaLaboral = async(req, res) => {
     const {
@@ -12,12 +13,17 @@ const addExperienciaLaboral = async(req, res) => {
         id_postulante,
     } = req.body;
 
+    let date = moment(fecha_entrada);
+    let date2 = moment(fecha_salida);
+    let f_entrada = date.format('MM/YYYY');
+    let f_salida = date2.format('MM/YYYY');
+
     const mysqlParams = [
         puesto,
         empresa,
         actividades,
-        fecha_entrada,
-        fecha_salida,
+        f_entrada,
+        f_salida,
         trabajando,
         id_postulante,
     ];
@@ -63,13 +69,18 @@ const updateExperienciaLaboral = async(req, res) => {
         id_postulante,
     } = req.body;
 
+    let date = moment(fecha_entrada);
+    let date2 = moment(fecha_salida);
+    let f_entrada = date.format('MM/YYYY');
+    let f_salida = date2.format('MM/YYYY');
+
     const mysqlParams = [
         (id_experiencia_laboral = id),
         puesto,
         empresa,
         actividades,
-        fecha_entrada,
-        fecha_salida,
+        f_entrada,
+        f_salida,
         trabajando,
         id_postulante,
     ];

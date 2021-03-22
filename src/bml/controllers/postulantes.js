@@ -47,7 +47,7 @@ const getPostulante = async(req, res) => {
     if (!resultQuery[0][0]) {
         return res.json({
             status: false,
-            message: "Ocurrio un error al realizar la consulta",
+            message: "Ocurrio un error al consultar el postulante",
             data: null,
         });
     }
