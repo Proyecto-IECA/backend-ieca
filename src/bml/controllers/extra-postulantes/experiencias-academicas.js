@@ -1,5 +1,6 @@
 const { queryParams } = require("../../../dal/data-access");
 const ExperienciaAcademica = require("../../models/experiencia_academica");
+const moment = require("moment");
 
 const addExperienciaAcademica = async(req, res) => {
     const {
@@ -12,12 +13,17 @@ const addExperienciaAcademica = async(req, res) => {
         id_postulante,
     } = req.body;
 
+    let anio = moment(anio_entrada);
+    let anio2 = moment(anio_salida);
+    let a_entrada = anio.format('YYYY');
+    let a_salida = anio2.format('YYYY');
+
     const mysqlParams = [
         nivel,
         institucion,
         carrera,
-        anio_entrada,
-        anio_salida,
+        a_entrada,
+        a_salida,
         estudiando,
         id_postulante,
     ];
@@ -63,13 +69,18 @@ const updateExperienciaAcademica = async(req, res) => {
         id_postulante,
     } = req.body;
 
+    let anio = moment(anio_entrada);
+    let anio2 = moment(anio_salida);
+    let a_entrada = anio.format('YYYY');
+    let a_salida = anio2.format('YYYY');
+
     const mysqlParams = [
         (id_experiencia_academica = id),
         nivel,
         institucion,
         carrera,
-        anio_entrada,
-        anio_salida,
+        a_entrada,
+        a_salida,
         estudiando,
         id_postulante,
     ];
