@@ -1,10 +1,12 @@
 const Router = require('express');
-const { getVacantesEmpresa, getVacante, addVacante, updateVacante, updateImagenVacante, deleteVacante, desactivarVacante, activarVacante } = require('../../bml/controllers/extra-empresas/vacantes');
+const { getVacantesEmpresa, getVacante, addVacante, updateVacante, updateImagenVacante, deleteVacante, desactivarVacante, activarVacante, getallVacante } = require('../../bml/controllers/extra-empresas/vacantes');
 const { check } = require('express-validator');
 const { validFields } = require('../../bml/middlewares/validar-campos');
 const { validJWT } = require('../../bml/middlewares/validar-jwt');
 
 const router = Router();
+
+router.get('/', validJWT, getallVacante)
 
 router.get('/vacantes-empresa/:id',
     validJWT,
@@ -56,5 +58,7 @@ router.put('/activar', [
     check('id_vacante', 'El id de la vacante es obligatorio').isNumeric(),
     validFields
 ], activarVacante);
+
+
 
 module.exports = router;

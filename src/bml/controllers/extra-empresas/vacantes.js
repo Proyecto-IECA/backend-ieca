@@ -1,4 +1,4 @@
-const { queryParams } = require("../../../dal/data-access");
+const { query, queryParams } = require("../../../dal/data-access");
 const Vacante = require("../../models/vacantes");
 const PerfilVacante = require("../../models/perfil_vacante");
 
@@ -286,6 +286,25 @@ const activarVacante = async(req, res) => {
     });
 };
 
+const getallVacante = async(req, res) => {
+    //Variable que sera igual a la respuesta de la ejecucion del procedimiento almacenado
+    let vacanteactivo = await query("stp_getall_vacante_activa()");
+    //Se verifica si la respuesta devolvio algo para retornas las empresas
+    if (vacanteactivo[0]) {
+        res.json({
+            status: true,
+            message: "Consulta Exitosa",
+            data: vacanteactivo[0],
+        });
+    } else {
+        res.json({
+            status: false,
+            message: "Ocurrio un error al realizar la consulta",
+            data: null,
+        });
+    }
+}
+
 module.exports = {
     getVacantesEmpresa,
     getVacante,
@@ -295,4 +314,5 @@ module.exports = {
     deleteVacante,
     desactivarVacante,
     activarVacante,
+    getallVacante
 };
