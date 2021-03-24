@@ -375,7 +375,41 @@ const deletePostulante = async(req, res) => {
     }
 };
 
-//Exportamos las funciones para utilizar en nuestros endpoints
+const notificaciones = async(req, res) => {
+        const {
+            email,
+            suscripcion_notificacion
+        } = req.body;
+
+        const mysqlParams = [
+            email,
+            suscripcion_notificacion
+        ];
+
+        let resultQuery = await queryParams(
+            "stp_update_notificacion(?, ?)",
+            mysqlParams
+        );
+
+        //Se verifica si la empresa no esta vacia
+        if (!resultQuery[0]) {
+            return res.json({
+                status: false,
+                message: "Ocurrio un error al actualizar la informacion",
+                data: null,
+            });
+        }
+
+        res.json({
+            status: true,
+            message: "Informacion actualizada de manera exitosa",
+            data: resultQuery[0],
+        });
+
+
+
+    }
+    //Exportamos las funciones para utilizar en nuestros endpoints
 module.exports = {
     getPostulantes,
     getPostulante,
@@ -383,4 +417,5 @@ module.exports = {
     deletePostulante,
     validPerfilCompletoPostulante,
     updateFotoPostulante,
+    notificaciones
 };
