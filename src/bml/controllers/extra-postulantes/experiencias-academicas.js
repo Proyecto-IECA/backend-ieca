@@ -14,9 +14,13 @@ const addExperienciaAcademica = async(req, res) => {
     } = req.body;
 
     let anio = moment(anio_entrada);
-    let anio2 = moment(anio_salida);
     let a_entrada = anio.format('YYYY');
-    let a_salida = anio2.format('YYYY');
+    let a_salida = '';
+    if (anio_salida) {
+        let anio2 = moment(anio_salida);
+        a_salida = anio2.format('YYYY');
+    }
+
 
     const mysqlParams = [
         nivel,
@@ -70,9 +74,12 @@ const updateExperienciaAcademica = async(req, res) => {
     } = req.body;
 
     let anio = moment(anio_entrada);
-    let anio2 = moment(anio_salida);
     let a_entrada = anio.format('YYYY');
-    let a_salida = anio2.format('YYYY');
+    let a_salida = '';
+    if (anio_salida) {
+        let anio2 = moment(anio_salida);
+        a_salida = anio2.format('YYYY');
+    }
 
     const mysqlParams = [
         (id_experiencia_academica = id),

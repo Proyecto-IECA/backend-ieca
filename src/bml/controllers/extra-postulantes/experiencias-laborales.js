@@ -14,9 +14,12 @@ const addExperienciaLaboral = async(req, res) => {
     } = req.body;
 
     let date = moment(fecha_entrada);
-    let date2 = moment(fecha_salida);
     let f_entrada = date.format('MM/YYYY');
-    let f_salida = date2.format('MM/YYYY');
+    let f_salida = '';
+    if (fecha_salida) {
+        let date2 = moment(fecha_salida);
+        f_salida = date2.format('MM/YYYY');
+    }
 
     const mysqlParams = [
         puesto,
@@ -70,9 +73,12 @@ const updateExperienciaLaboral = async(req, res) => {
     } = req.body;
 
     let date = moment(fecha_entrada);
-    let date2 = moment(fecha_salida);
     let f_entrada = date.format('MM/YYYY');
-    let f_salida = date2.format('MM/YYYY');
+    let f_salida = '';
+    if (fecha_salida) {
+        let date2 = moment(fecha_salida);
+        f_salida = date2.format('MM/YYYY');
+    }
 
     const mysqlParams = [
         (id_experiencia_laboral = id),
