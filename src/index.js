@@ -31,6 +31,7 @@ app.use('/api/cursos-certificaciones', require('./routes/extra-postulantes/curso
 app.use('/api/habilidades', require('./routes/extra-postulantes/habilidades'));
 app.use('/api/valores', require('./routes/extra-postulantes/valores'));
 app.use('/api/idiomas', require('./routes/extra-postulantes/idiomas'));
+app.use('/api/postulaciones', require('./routes/extra-postulantes/postulaciones'));
 
 //Rutas de Empresa
 app.use('/api/empresas', require('./routes/empresas'));
