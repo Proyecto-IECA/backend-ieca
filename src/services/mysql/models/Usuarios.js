@@ -1,5 +1,7 @@
 const { Model, DataTypes } = require("sequelize");
 const sequelize = require("../db");
+const CursoCert = require("./CursosCertificaciones");
+const ExpAcademica = require("./ExperienciasAcademicas");
 
 class Usuario extends Model {}
 Usuario.init({
@@ -106,6 +108,15 @@ Usuario.init({
         defaultValue: null,
     },
 
+    calificacion: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+        validate: {
+            notNull: "Favor de indicar la calificacion del usuario",
+        },
+    },
+
     apellido_paterno: {
         type: DataTypes.STRING,
         defaultValue: null,
@@ -114,7 +125,7 @@ Usuario.init({
                 args: [1, 50],
                 msg: "El nombre tiene que tener al menos un caracter y menos de 50",
             },
-        }
+        },
     },
 
     apellido_materno: {
@@ -125,7 +136,7 @@ Usuario.init({
                 args: [1, 50],
                 msg: "El nombre tiene que tener al menos un caracter y menos de 50",
             },
-        }
+        },
     },
 
     fecha_nacimiento: {
@@ -134,9 +145,9 @@ Usuario.init({
         validate: {
             isDate: {
                 args: true,
-                msg: "Ingresa una fecha valida"
-            }
-        }
+                msg: "Ingresa una fecha valida",
+            },
+        },
     },
 
     sexo: {
@@ -145,9 +156,9 @@ Usuario.init({
         validate: {
             len: {
                 args: [1, 1],
-                msg: "El sexo solo puede ser un caracter"
-            }
-        }
+                msg: "El sexo solo puede ser un caracter",
+            },
+        },
     },
 
     administrador: {
@@ -158,12 +169,12 @@ Usuario.init({
                 args: [1, 100],
                 msg: "El nombre tiene que tener al menos un caracter y menos de 50",
             },
-        }
+        },
     },
 
     ubicacion: {
         type: DataTypes.TEXT,
-        defaultValue: null
+        defaultValue: null,
     },
 
     giro: {
@@ -172,22 +183,107 @@ Usuario.init({
         validate: {
             isAlpha: {
                 args: true,
-                msg: "El nombre solo puede contener letras",
+                msg: "El giro solo puede contener letras",
             },
             len: {
                 args: [1, 50],
-                msg: "El nombre tiene que tener al menos un caracter y menos de 50",
+                msg: "El giro tiene que tener al menos un caracter y menos de 50",
             },
-        }
-    }
+        },
+    },
 
+    cv: {
+        type: DataTypes.TEXT,
+        defaultValue: null,
+    },
+
+    pais: {
+        type: DataTypes.STRING,
+        defaultValue: null,
+        validate: {
+            len: {
+                args: [1, 50],
+                msg: "El pais tiene que tener al menos un caracter y menos de 50",
+            },
+        },
+    },
+
+    codigo_postal: {
+        type: DataTypes.STRING,
+        defaultValue: null,
+        validate: {
+            isNumeric: {
+                args: true,
+                msg: "El codigo postal solo puede tener numeros",
+            },
+            len: {
+                args: [5, 5],
+                msg: "Ingrese un codigo postal valido",
+            },
+        },
+    },
+
+    ciudad: {
+        type: DataTypes.STRING,
+        defaultValue: null,
+        validate: {
+            len: {
+                args: [1, 50],
+                msg: "La ciudad tiene que tener al menos un caracter y menos de 50",
+            },
+        },
+    },
+
+    domicilio: {
+        type: DataTypes.STRING,
+        defaultValue: null,
+        validate: {
+            len: {
+                args: [1, 120],
+                msg: "La ciudad tiene que tener al menos un caracter y menos de 50",
+            },
+        },
+    },
+
+    telefono_casa: {
+        type: DataTypes.STRING,
+        defaultValue: null,
+        validate: {
+            isNumeric: {
+                args: true,
+                msg: "El telefono tiene que ser valido",
+            },
+            len: {
+                args: [10, 10],
+                msg: "El telefono tiene que tener 10 digitos",
+            },
+        },
+    },
+
+    pagina_web: {
+        type: DataTypes.STRING,
+        defaultValue: null,
+        validate: {
+            len: {
+                args: [1, 200],
+                msg: "La pagina web debe tener mas de 3 caracteres y menos de 120",
+            },
+        },
+    },
+
+    numero_sucursales: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+    },
 }, {
     sequelize,
     modelName: "Usuarios",
-
 });
 
+Usuario.hasMany(CursoCert, { foreignKey: "id_usuario_fk" });
+CursoCert.belongsTo(Usuario, { foreignKey: "id_usuario_fk" });
 
-
+Usuario.hasMany(ExpAcademica, { foreignKey: "id_usuario_fk" });
+ExpAcademica.belongsTo(Usuario, { foreignKey: "id_usuario_fk" });
 
 module.exports = Usuario;

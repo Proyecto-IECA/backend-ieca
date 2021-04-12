@@ -16,9 +16,24 @@ const validEmail = async(id) => {
     return usuarioDao.validEmail(id);
 };
 
+const updateUsuario = async(id, usuario) => {
+    return usuarioDao.updateUsuario(id, usuario);
+};
+
+const updateFotoUsuario = async(id, foto) => {
+    return usuarioDao.updateFotoUsuario(id, foto);
+};
+
+const getUsuario = async(id) => {
+    return usuarioDao.getUsuario(id);
+};
+
 module.exports = {
     createUsuario,
     loginUsuario,
     renewPassUsuario,
     validEmail,
+    updateUsuario,
+    updateFotoUsuario,
+    getUsuario,
 };
