@@ -1,14 +1,14 @@
-const ExpAcademica = require("../../services/mysql/models/ExperienciasAcademicas");
+const ExpLaboral = require("../../services/mysql/models/ExperienciasLaborales");
 
-const getExpAcademicas = async(id_usuario) => {
+const getExpLaborales = async(id_usuario) => {
     return new Promise((resolve, reject) =>
-        ExpAcademica.findAll({
+        ExpLaboral.findAll({
             where: {
                 id_usuario_fk: id_usuario,
             },
         })
-        .then((expAcademicas) => {
-            return resolve(expAcademicas);
+        .then((expLaborales) => {
+            return resolve(expLaborales);
         })
         .catch((err) => {
             return reject(err);
@@ -16,11 +16,11 @@ const getExpAcademicas = async(id_usuario) => {
     );
 };
 
-const addExpAcademica = async(expAcademica) => {
+const addExpLaboral = async(expLaboral) => {
     return new Promise((resolve, reject) =>
-        ExpAcademica.create(expAcademica)
-        .then((expAcademica) => {
-            return resolve(expAcademica);
+        ExpLaboral.create(expLaboral)
+        .then((expLaboral) => {
+            return resolve(expLaboral);
         })
         .catch((err) => {
             return reject(err);
@@ -28,11 +28,11 @@ const addExpAcademica = async(expAcademica) => {
     );
 };
 
-const updateExpAcademica = async(id, expAcademica) => {
+const updateExpLaboral = async(id, expLaboral) => {
     return new Promise((resolve, reject) =>
-        ExpAcademica.update(expAcademica, {
+        ExpLaboral.update(expLaboral, {
             where: {
-                id_experiencia_academica: id,
+                id_experiencia_laboral: id,
             },
         })
         .then((result) => {
@@ -44,11 +44,11 @@ const updateExpAcademica = async(id, expAcademica) => {
     );
 };
 
-const deleteExpAcademica = async(id) => {
+const deleteExpLaboral = async(id) => {
     return new Promise((resolve, reject) =>
-        ExpAcademica.destroy({
+        ExpLaboral.destroy({
             where: {
-                id_experiencia_academica: id,
+                id_experiencia_laboral: id,
             },
         })
         .then((result) => {
@@ -60,11 +60,11 @@ const deleteExpAcademica = async(id) => {
     );
 };
 
-const updateEstudiando = async(id_usuario) => {
+const updateTrabajando = async(id) => {
     return new Promise((resolve, reject) =>
-        ExpAcademica.update({ estudiando: 0 }, {
+        ExpLaboral.update({ trabajando: 0 }, {
             where: {
-                id_usuario_fk: id_usuario,
+                id_usuario_fk: id,
             },
         })
         .then((result) => {
@@ -77,9 +77,9 @@ const updateEstudiando = async(id_usuario) => {
 };
 
 module.exports = {
-    getExpAcademicas,
-    addExpAcademica,
-    updateExpAcademica,
-    deleteExpAcademica,
-    updateEstudiando,
+    getExpLaborales,
+    addExpLaboral,
+    updateExpLaboral,
+    deleteExpLaboral,
+    updateTrabajando,
 };

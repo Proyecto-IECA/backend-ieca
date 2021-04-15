@@ -6,7 +6,7 @@ const routes = require("./routes/app");
 
 const app = express();
 
-app.use(cors({ origin: true }));
+app.use(cors({ origin: false }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 

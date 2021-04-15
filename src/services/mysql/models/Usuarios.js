@@ -2,6 +2,12 @@ const { Model, DataTypes } = require("sequelize");
 const sequelize = require("../db");
 const CursoCert = require("./CursosCertificaciones");
 const ExpAcademica = require("./ExperienciasAcademicas");
+const ExpLaboral = require("./ExperienciasLaborales");
+const Sucursal = require("./Sucursales");
+const Habilidad = require("./Habilidades");
+const Valor = require("./Valores");
+const Idioma = require("./Idiomas");
+const Perfil = require("./Perfiles");
 
 class Usuario extends Model {}
 Usuario.init({
@@ -285,5 +291,55 @@ CursoCert.belongsTo(Usuario, { foreignKey: "id_usuario_fk" });
 
 Usuario.hasMany(ExpAcademica, { foreignKey: "id_usuario_fk" });
 ExpAcademica.belongsTo(Usuario, { foreignKey: "id_usuario_fk" });
+
+Usuario.hasMany(ExpLaboral, { foreignKey: "id_usuario_fk" });
+ExpLaboral.belongsTo(Usuario, { foreignKey: "id_usuario_fk" });
+
+Usuario.hasMany(Sucursal, { foreignKey: "id_usuario_fk" });
+Sucursal.belongsTo(Usuario, { foreignKey: "id_usuario_fk" });
+
+Usuario.belongsToMany(Habilidad, {
+    through: "Habilidades_Usuario",
+    timestamps: false,
+    foreignKey: "id_usuario_fk",
+});
+Habilidad.belongsToMany(Usuario, {
+    through: "Habilidades_Usuario",
+    timestamps: false,
+    foreignKey: "id_habilidad_fk",
+});
+
+Usuario.belongsToMany(Valor, {
+    through: "Valores_Usuario",
+    timestamps: false,
+    foreignKey: "id_usuario_fk",
+});
+Valor.belongsToMany(Usuario, {
+    through: "Valores_Usuario",
+    timestamps: false,
+    foreignKey: "id_valor_fk",
+});
+
+Usuario.belongsToMany(Idioma, {
+    through: "Idiomas_Usuario",
+    timestamps: false,
+    foreignKey: "id_usuario_fk",
+});
+Idioma.belongsToMany(Usuario, {
+    through: "Idiomas_Usuario",
+    timestamps: false,
+    foreignKey: "id_idioma_fk",
+});
+
+Usuario.belongsToMany(Perfil, {
+    through: "Perfiles_Usuario",
+    timestamps: false,
+    foreignKey: "id_usuario_fk",
+});
+Perfil.belongsToMany(Usuario, {
+    through: "Perfiles_Usuario",
+    timestamps: false,
+    foreignKey: "id_perfil_fk",
+});
 
 module.exports = Usuario;

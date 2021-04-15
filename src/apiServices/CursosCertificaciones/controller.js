@@ -57,7 +57,7 @@ const deleteCursoCert = async(req, res) => {
     await cursoCertModel
         .deleteCursoCert(req.params.id)
         .then((result) => {
-            if (result[0] === 0) {
+            if (result === 0) {
                 return res.json(
                     cursoCertDto.normally(false, "No se pudo eliminar el curso")
                 );

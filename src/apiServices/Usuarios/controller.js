@@ -158,6 +158,7 @@ const getUsuario = async(req, res) => {
         });
 };
 
+
 module.exports = {
     createUsuario,
     loginUsuario,

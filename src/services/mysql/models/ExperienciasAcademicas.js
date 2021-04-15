@@ -4,14 +4,14 @@ const sequelize = require("../db");
 class ExpAcademica extends Model {}
 ExpAcademica.init({
     id_experiencia_academica: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
         allowNull: false,
     },
 
     nivel: {
-        type: DataTypes,
+        type: DataTypes.STRING,
         allowNull: false,
         validate: {
             notNull: {

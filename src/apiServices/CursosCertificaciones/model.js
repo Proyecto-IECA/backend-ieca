@@ -1,7 +1,7 @@
 const cursoCertDao = require("./dao");
 
-const getCursosCert = async(id) => {
-    return cursoCertDao.getCursosCert(id);
+const getCursosCert = async(id_usuario) => {
+    return cursoCertDao.getCursosCert(id_usuario);
 };
 
 const addCursoCert = async(cursoCert) => {

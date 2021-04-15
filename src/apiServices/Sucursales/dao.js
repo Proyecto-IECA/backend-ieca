@@ -1,14 +1,14 @@
-const CursoCert = require("../../services/mysql/models/CursosCertificaciones");
+const Sucursal = require("../../services/mysql/models/Sucursales");
 
-const getCursosCert = async(id_usuario) => {
+const getSucursales = async(id_usuario) => {
     return new Promise((resolve, reject) =>
-        CursoCert.findAll({
+        Sucursal.findAll({
             where: {
                 id_usuario_fk: id_usuario,
             },
         })
-        .then((cursosCert) => {
-            return resolve(cursosCert);
+        .then((sucursales) => {
+            return resolve(sucursales);
         })
         .catch((err) => {
             return reject(err);
@@ -16,22 +16,23 @@ const getCursosCert = async(id_usuario) => {
     );
 };
 
-const addCursoCert = async(cursoCert) => {
+const addSucursal = async(sucursal) => {
     return new Promise((resolve, reject) =>
-        CursoCert.create(cursoCert)
-        .then((cursoCert) => {
-            return resolve(cursoCert);
+        Sucursal.create(sucursal)
+        .then((sucursal) => {
+            return resolve(sucursal);
         })
         .catch((err) => {
             return reject(err);
         })
     );
 };
-const updateCursoCert = async(id, cursoCert) => {
+
+const updateSucursal = async(id, sucursal) => {
     return new Promise((resolve, reject) =>
-        CursoCert.update(cursoCert, {
+        Sucursal.update(sucursal, {
             where: {
-                id_curso_certificacion: id,
+                id_sucursal: id,
             },
         })
         .then((result) => {
@@ -43,11 +44,11 @@ const updateCursoCert = async(id, cursoCert) => {
     );
 };
 
-const deleteCursoCert = async(id) => {
+const deleteSucursal = async(id) => {
     return new Promise((resolve, reject) =>
-        CursoCert.destroy({
+        Sucursal.destroy({
             where: {
-                id_curso_certificacion: id,
+                id_sucursal: id,
             },
         })
         .then((result) => {
@@ -60,8 +61,8 @@ const deleteCursoCert = async(id) => {
 };
 
 module.exports = {
-    getCursosCert,
-    addCursoCert,
-    updateCursoCert,
-    deleteCursoCert,
+    getSucursales,
+    addSucursal,
+    updateSucursal,
+    deleteSucursal,
 };
