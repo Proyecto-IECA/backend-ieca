@@ -44,7 +44,7 @@ const updateSucursal = async(req, res) => {
             }
 
             return res.json(
-                sucursalDto.normally(false, "Exito al actualizar la sucursal")
+                sucursalDto.normally(true, "Exito al actualizar la sucursal")
             );
         })
         .catch((err) => {
@@ -53,7 +53,7 @@ const updateSucursal = async(req, res) => {
 };
 
 const deleteSucursal = async(req, res) => {
-    await sucursal
+    await sucursalModel
         .deleteSucursal(req.params.id)
         .then((result) => {
             if (result === 0) {

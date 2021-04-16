@@ -1,19 +1,19 @@
-const sucursal = require("./dao");
+const sucursalDao = require("./dao");
 
 const getSucursales = async(id_usuario) => {
-    return sucursal.getSucursales(id_usuario);
+    return sucursalDao.getSucursales(id_usuario);
 };
 
 const addSucursal = async(sucursal) => {
-    return sucursal.addSucursal(sucursal);
+    return sucursalDao.addSucursal(sucursal);
 };
 
 const updateSucursal = async(id, sucursal) => {
-    return sucursal.updateSucursal(id, sucursal);
+    return sucursalDao.updateSucursal(id, sucursal);
 };
 
 const deleteSucursal = async(id) => {
-    return sucursal.deleteSucursal(id);
+    return sucursalDao.deleteSucursal(id);
 };
 
 module.exports = {
