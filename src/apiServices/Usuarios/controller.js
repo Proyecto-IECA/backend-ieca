@@ -1,6 +1,8 @@
-const usuarioModel = require("./model");
-const usuarioDto = require("../shared/dto");
 const bcryptjs = require("bcryptjs");
+const usuarioModel = require("./model");
+const authDto = require("./dto");
+const usuarioDto = require("../shared/dto");
+const { generateJWT } = require("../shared/helpers/jwt");
 
 const createUsuario = async(req, res) => {
     const salt = bcryptjs.genSaltSync();
@@ -47,7 +49,9 @@ const loginUsuario = async(req, res) => {
                 );
             }
 
-            return res.json(usuarioDto.normally(true, usuario));
+            const token = generateJWT(usuario.id_usuario, "12h");
+
+            return res.json(authDto.auth(true, usuario, token));
         })
         .catch((err) => {
             return res.json(usuarioDto.normally(false, err));
