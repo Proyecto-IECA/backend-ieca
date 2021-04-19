@@ -8,6 +8,7 @@ const habilidades = require("../apiServices/Habilidades/routes");
 const valores = require("../apiServices/Valores/routes");
 const idiomas = require("../apiServices/Idiomas/routes");
 const perfiles = require("../apiServices/Perfiles/routes");
+const vacantes = require("../apiServices/Vacantes/routes");
 
 const router = Router();
 router.use("/usuarios", usuarios);
@@ -19,5 +20,6 @@ router.use("/habilidades", habilidades);
 router.use("/valores", valores);
 router.use("/idiomas", idiomas);
 router.use("/perfiles", perfiles);
+router.use("/vacantes", vacantes);
 
 module.exports = router;
