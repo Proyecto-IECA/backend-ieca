@@ -19,6 +19,7 @@ const loginUsuario = async(email) => {
                 email: email,
                 activo: 1,
             },
+            attributes: ["id_usuario", "pass", "tipo_usuario", "email_validado"]
         })
         .then((usuario) => {
             return resolve(usuario);
