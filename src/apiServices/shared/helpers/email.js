@@ -31,6 +31,9 @@ const enviarEmail = async(tipo, url, email) => {
         <div>El <a style="color: #3ba1da; text-decoration: none;">IECA</a> Team</div>
         </div>
         </div>`;
+    } else {
+        asunto = "Recupera tu contraseña";
+        message = url;
     }
 
     sendEmail(email, asunto, message);
