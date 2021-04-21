@@ -3,11 +3,12 @@ const usuarioModel = require("./model");
 const authDto = require("./dto");
 const usuarioDto = require("../shared/dto");
 const { generateJWT } = require("../shared/helpers/jwt");
+const { enviarEmail } = require("../shared/helpers/email");
 
 const createUsuario = async(req, res) => {
     const salt = bcryptjs.genSaltSync();
 
-    await usuarioModel
+    const usuario = await usuarioModel
         .createUsuario({
             nombre: req.body.nombre,
             apellido_paterno: req.body.apellido_paterno,
@@ -22,11 +23,17 @@ const createUsuario = async(req, res) => {
             giro: req.body.giro,
         })
         .then((usuario) => {
-            return res.json(usuarioDto.normally(true, "Cuenta registrada de manera exitosa"));
+            return usuario;
         })
         .catch((err) => {
             return res.json(usuarioDto.normally(false, err));
         });
+
+    const token = await generateJWT(usuario.id_usuario, "12h");
+    const url = "http://localhost:4200/#/validarEmail/" + token;
+
+    res.json(usuarioDto.normally(true, "Cuenta registrada de manera exitosa"));
+    enviarEmail("Registro", url, usuario.email);
 };
 
 const loginUsuario = async(req, res) => {
