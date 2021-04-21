@@ -9,6 +9,7 @@ const valores = require("../apiServices/Valores/routes");
 const idiomas = require("../apiServices/Idiomas/routes");
 const perfiles = require("../apiServices/Perfiles/routes");
 const vacantes = require("../apiServices/Vacantes/routes");
+const { validJWT } = require("../apiServices/shared/middlewares/validar-jwt");
 
 const router = Router();
 router.use("/usuarios", usuarios);

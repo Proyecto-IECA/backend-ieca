@@ -29,15 +29,14 @@ const createUsuario = async(req, res) => {
             return res.json(usuarioDto.normally(false, err));
         });
 
-    const token = await generateJWT(usuario.id_usuario, "12h");
-    const url = "http://localhost:4200/#/validarEmail/" + token;
+    const token = await generateJWT(usuario.id_usuario, "10 minutes");
+    const url = "http://localhost:4200/#/validarEmail/" + usuario.id_usuario + "/" + token;
 
     res.json(usuarioDto.normally(true, "Cuenta registrada de manera exitosa"));
-    enviarEmail("Registro", url, usuario.email);
+    enviarEmail("validarEmail", url, usuario.email);
 };
 
 const loginUsuario = async(req, res) => {
-
     const usuario = await usuarioModel
         .loginUsuario(req.body.email)
         .then((usuario) => {
@@ -58,17 +57,20 @@ const loginUsuario = async(req, res) => {
 
     const validPassword = bcryptjs.compareSync(req.body.pass, usuario.pass);
     if (!validPassword) {
-        return res.json(
-            usuarioDto.normally(false, "Email o Password incorrecto")
-        );
+        return res.json(usuarioDto.normally(false, "Email o Password incorrecto"));
     }
 
     const token = await generateJWT(usuario.id_usuario, "12h");
-    return res.json(authDto.auth(true, {
-        id_usuario: usuario.id_usuario,
-        tipo_usuario: usuario.tipo_usuario,
-        email_validado: usuario.email_validado
-    }, token));
+    return res.json(
+        authDto.auth(
+            true, {
+                id_usuario: usuario.id_usuario,
+                tipo_usuario: usuario.tipo_usuario,
+                email_validado: usuario.email_validado,
+            },
+            token
+        )
+    );
 };
 
 const renewPassUsuario = async(req, res) => {
@@ -113,15 +115,20 @@ const validEmail = async(req, res) => {
             return usuario;
         })
         .catch((err) => {
-            return res.json(usuarioDto.normally(false, err))
+            return res.json(usuarioDto.normally(false, err));
         });
 
     const token = await generateJWT(usuario.id_usuario, "12h");
-    return res.json(authDto.auth(true, {
-        id_usuario: usuario.id_usuario,
-        tipo_usuario: usuario.tipo_usuario,
-        email_validado: usuario.email_validado
-    }, token));
+    return res.json(
+        authDto.auth(
+            true, {
+                id_usuario: usuario.id_usuario,
+                tipo_usuario: usuario.tipo_usuario,
+                email_validado: usuario.email_validado,
+            },
+            token
+        )
+    );
 };
 
 const updateUsuario = async(req, res) => {
@@ -179,48 +186,75 @@ const updateFotoUsuario = async(req, res) => {
 };
 
 const getUsuario = async(req, res) => {
-
     await usuarioModel
         .getUsuario(req.params.id)
         .then((usuario) => {
             if (usuario.tipo_usuario === "Postulante") {
-                return res.json(usuarioDto.normally(true, {
-                    id_usuario: usuario.id_usuario,
-                    nombre: usuario.nombre,
-                    apellido_paterno: usuario.apellido_paterno,
-                    apellido_materno: usuario.apellido_materno,
-                    fecha_nacimiento: usuario.fecha_nacimiento,
-                    sexo: usuario.sexo,
-                    telefono_casa: usuario.telefono_casa,
-                    telefono: usuario.telefono,
-                    pais: usuario.pais,
-                    codigo_postal: usuario.codigo_postal,
-                    ciudad: usuario.ciudad,
-                    domicilio: usuario.domicilio,
-                    foto_perfil: usuario.foto_perfil,
-                    cv: usuario.cv,
-                    email: usuario.email,
-                }));
+                return res.json(
+                    usuarioDto.normally(true, {
+                        id_usuario: usuario.id_usuario,
+                        nombre: usuario.nombre,
+                        apellido_paterno: usuario.apellido_paterno,
+                        apellido_materno: usuario.apellido_materno,
+                        fecha_nacimiento: usuario.fecha_nacimiento,
+                        sexo: usuario.sexo,
+                        telefono_casa: usuario.telefono_casa,
+                        telefono: usuario.telefono,
+                        pais: usuario.pais,
+                        codigo_postal: usuario.codigo_postal,
+                        ciudad: usuario.ciudad,
+                        domicilio: usuario.domicilio,
+                        foto_perfil: usuario.foto_perfil,
+                        cv: usuario.cv,
+                        email: usuario.email,
+                    })
+                );
             }
 
-            return res.json(usuarioDto.normally(true, {
-                id_usuario: usuario.id_usuario,
-                nombre: usuario.nombre,
-                administrador: usuario.administrador,
-                foto_perfil: usuario.foto_perfil,
-                pagina_web: usuario.pagina_web,
-                ubicacion: usuario.ubicacion,
-                telefono: usuario.telefono,
-                giro: usuario.giro,
-                numero_sucursales: usuario.numero_sucursales,
-                email: usuario.email,
-            }));
+            return res.json(
+                usuarioDto.normally(true, {
+                    id_usuario: usuario.id_usuario,
+                    nombre: usuario.nombre,
+                    administrador: usuario.administrador,
+                    foto_perfil: usuario.foto_perfil,
+                    pagina_web: usuario.pagina_web,
+                    ubicacion: usuario.ubicacion,
+                    telefono: usuario.telefono,
+                    giro: usuario.giro,
+                    numero_sucursales: usuario.numero_sucursales,
+                    email: usuario.email,
+                })
+            );
         })
         .catch((err) => {
             return res.json(usuarioDto.normally(false, err));
         });
 };
 
+const sendEmail = async(req, res) => {
+    const usuario = await usuarioModel
+        .loginUsuario(req.body.email)
+        .then((usuario) => {
+            return usuario;
+        })
+        .catch((err) => {
+            return res.json(usuarioDto.normally(false, err));
+        });
+    if (!usuario) {
+        return res.json(
+            usuarioDto.normally(
+                false,
+                "No existe una cuenta con este email o fue descativada"
+            )
+        );
+    }
+
+    const token = await generateJWT(usuario.id_usuario, "10 minutes");
+    const url = "http://localhost:4200/#/" + req.body.ruta + "/" + usuario.id_usuario + "/" + token;
+
+    res.json(usuarioDto.normally(true, "Envio correcto del email"))
+    enviarEmail(req.body.ruta, url, req.body.email);
+};
 
 module.exports = {
     createUsuario,
@@ -230,4 +264,5 @@ module.exports = {
     updateUsuario,
     updateFotoUsuario,
     getUsuario,
+    sendEmail,
 };
