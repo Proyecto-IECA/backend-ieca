@@ -17,7 +17,7 @@ const addSucursal = async(req, res) => {
         .addSucursal({
             ubicacion: req.body.ubicacion,
             nombre: req.body.nombre,
-            id_usuario_fk: req.body.id_usuario,
+            id_usuario_fk: req.body.id_usuario_fk,
         })
         .then((sucursal) => {
             return res.json(sucursalDto.normally(true, sucursal));

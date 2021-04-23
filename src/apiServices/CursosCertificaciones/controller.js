@@ -18,7 +18,7 @@ const addCursoCert = async(req, res) => {
             nombre: req.body.nombre,
             descripcion: req.body.descripcion,
             link: req.body.link,
-            id_usuario_fk: req.body.id_usuario
+            id_usuario_fk: req.body.id_usuario_fk
         })
         .then((cursoCert) => {
             return res.json(cursoCertDto.normally(true, cursoCert));

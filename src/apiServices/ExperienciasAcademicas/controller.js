@@ -25,7 +25,7 @@ const addExpAcademica = async(req, res) => {
             anio_entrada: req.body.anio_entrada,
             anio_salida: req.body.anio_salida,
             estudiando: req.body.estudiando,
-            id_usuario_fk: req.body.id_usuario,
+            id_usuario_fk: req.body.id_usuario_fk,
         })
         .then((expAcademica) => {
             return res.json(expAcademicaDto.normally(true, expAcademica));

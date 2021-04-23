@@ -31,7 +31,8 @@ const addVacante = async(req, res) => {
             descripcion: req.body.descripcion,
             modalidad: req.body.modalidad,
             nivel: req.body.nivel,
-            id_usuario_fk: req.body.id_usuario
+            id_usuario_fk: req.body.id_usuario_fk,
+            publicada: req.body.publicada,
         })
         .then((vacante) => {
             return res.json(vacanteDto.normally(true, vacante));
@@ -48,7 +49,8 @@ const updateVacante = async(req, res) => {
             sueldo: req.body.sueldo,
             descripcion: req.body.descripcion,
             modalidad: req.body.modalidad,
-            nivel: req.body.nivel
+            nivel: req.body.nivel,
+            publicada: req.body.publicada,
         })
         .then((result) => {
             if (result[0] === 0) {

@@ -1,5 +1,6 @@
 const { Model, DataTypes } = require("sequelize");
 const sequelize = require("../db");
+const Perfil = require("./Perfiles");
 
 class Vacante extends Model {}
 Vacante.init({
@@ -114,6 +115,18 @@ Vacante.init({
     sequelize,
     modelName: "Vacantes",
     timestamps: false,
+});
+
+Vacante.belongsToMany(Perfil, {
+    through: "Perfiles_Vacante",
+    timestamps: false,
+    foreignKey: "id_vacante_fk"
+});
+
+Perfil.belongsToMany(Vacante, {
+    through: "Perfiles_Vacante",
+    timestamps: false,
+    foreignKey: "id_perfil_fk",
 });
 
 module.exports = Vacante;

@@ -1,5 +1,6 @@
 const Perfil = require("../../services/mysql/models/Perfiles");
 const Usuario = require("../../services/mysql/models/Usuarios");
+const Vacante = require("../../services/mysql/models/Vacantes");
 
 const getPerfiles = async() => {
     return new Promise((resolve, reject) =>
@@ -81,9 +82,80 @@ const deletePerfiles = async(id_usuario, perfiles) => {
     );
 };
 
+const getPerfilesVacante = async(id_vacante) => {
+    return new Promise((resolve, reject) =>
+        Vacante.findByPk(id_vacante)
+        .then((vacante) => {
+            vacante
+                .getPerfiles()
+                .then((perfiles) => {
+                    return resolve(perfiles);
+                })
+                .catch((err) => {
+                    return reject(err);
+                });
+        })
+        .catch((err) => {
+            return reject(err);
+        })
+    );
+};
+
+const addPerfilVacante = (descripcion, id_vacante) => {
+    return new Promise((resolve, reject) =>
+        Perfil.findOne({
+            where: {
+                descripcion: descripcion,
+            },
+        })
+        .then((perfil) => {
+            if (perfil) {
+                perfil.addVacante(id_vacante);
+                return resolve(perfil);
+            }
+
+            Perfil.create({
+                    descripcion: descripcion,
+                })
+                .then((perfil) => {
+                    perfil.addVacante(id_vacante);
+                    return resolve(perfil);
+                })
+                .catch((err) => {
+                    return reject(err);
+                });
+        })
+        .catch((err) => {
+            return reject(err);
+        })
+    );
+};
+
+const deletePerfilesVacante = async(id_vacante, perfiles) => {
+    return new Promise((resolve, reject) =>
+        Vacante.findByPk(id_vacante)
+        .then((vacante) => {
+            vacante
+                .removePerfiles(perfiles)
+                .then((result) => {
+                    return resolve(result);
+                })
+                .catch((err) => {
+                    return reject(err);
+                });
+        })
+        .catch((err) => {
+            return reject(err);
+        })
+    );
+};
+
 module.exports = {
     getPerfiles,
     getPerfilesUsuario,
     addPerfil,
     deletePerfiles,
+    getPerfilesVacante,
+    addPerfilVacante,
+    deletePerfilesVacante,
 };

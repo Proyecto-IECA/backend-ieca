@@ -25,7 +25,7 @@ const addExpLaboral = async(req, res) => {
             fecha_entrada: req.body.fecha_entrada,
             fecha_salida: req.body.fecha_salida,
             trabajando: req.body.trabajando,
-            id_usuario_fk: req.body.id_usuario,
+            id_usuario_fk: req.body.id_usuario_fk,
         })
         .then((expLaboral) => {
             return res.json(expLaboralDto.normally(true, expLaboral));
