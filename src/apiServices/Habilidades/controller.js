@@ -51,9 +51,7 @@ const addHabilidad = async(req, res) => {
             });
     });
 
-    return res.json(
-        habilidadDto.normally(true, "Exito al cargar las habilidades")
-    );
+    return res.json(habilidadDto.normally(true, habilidadesNew));
 };
 
 module.exports = {

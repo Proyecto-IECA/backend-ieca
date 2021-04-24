@@ -147,7 +147,7 @@ Usuario.init({
     },
 
     fecha_nacimiento: {
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
         defaultValue: null,
         validate: {
             isDate: {

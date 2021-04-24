@@ -51,7 +51,7 @@ const addIdioma = async(req, res) => {
             });
     });
 
-    return res.json(idiomaDto.normally(true, "Exito al cargar los idiomas"));
+    return res.json(idiomaDto.normally(true, idiomasNew));
 };
 
 module.exports = {

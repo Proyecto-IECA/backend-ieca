@@ -51,7 +51,7 @@ const addValor = async(req, res) => {
             });
     });
 
-    return res.json(valorDto.normally(true, "Exito al cargar los valores"));
+    return res.json(valorDto.normally(true, valoresNew));
 };
 
 module.exports = {

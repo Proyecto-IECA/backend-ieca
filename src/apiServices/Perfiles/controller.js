@@ -93,7 +93,6 @@ const addPerfilVacante = async(req, res) => {
             });
     });
 
-
     return res.json(perfilDto.normally(true, perfilesNew));
 };
 
