@@ -44,28 +44,18 @@ ExpLaboral.init({
     },
 
     fecha_entrada: {
-        type: DataTypes.STRING,
+        type: DataTypes.DATEONLY,
         allowNull: false,
         validate: {
             notNull: {
                 msg: "La fecha de entrada es necesario",
             },
-            len: {
-                args: [7, 7],
-                msg: "La fecha de entrada se compone de 7 caracteres",
-            },
         },
     },
 
     fecha_salida: {
-        type: DataTypes.STRING,
+        type: DataTypes.DATEONLY,
         defaultValue: null,
-        validate: {
-            len: {
-                args: [7, 7],
-                msg: "La fecha de salida se compone de 7 caracteres",
-            },
-        },
     },
 
     trabajando: {
