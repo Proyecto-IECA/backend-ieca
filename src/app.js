@@ -16,7 +16,7 @@ app.listen(process.env.PORT || 3000, () => {
     console.log("Server listening on port 3000");
 
     sequelize
-        .sync({ alter: true })
+        .sync({ alter: false })
         .then(() => {
             console.log("We connect to the database");
         })

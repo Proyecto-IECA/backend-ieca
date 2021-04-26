@@ -59,22 +59,12 @@ ExpAcademica.init({
             notNull: {
                 msg: "El año de entrada es necesario",
             },
-            len: {
-                args: [4, 4],
-                msg: "El año de entrada se compone de 4 numeros",
-            },
         },
     },
 
     anio_salida: {
         type: DataTypes.STRING,
         defaultValue: null,
-        validate: {
-            len: {
-                args: [4, 4],
-                msg: "El año de salida se compone de 4 numeros",
-            },
-        },
     },
 
     estudiando: {
