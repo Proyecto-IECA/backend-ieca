@@ -26,7 +26,7 @@ Vacante.init({
     },
 
     fecha_publicacion: {
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
         allowNull: false,
         defaultValue: new Date(Date.now()),
     },

@@ -17,13 +17,18 @@ const addExpAcademica = async(req, res) => {
         await updateEstudiando(req.body.id_usuario);
     }
 
+    let anio_salida = null;
+    if (req.body.anio_salida) {
+        anio_salida = req.body.anio_salida.slice(0, 4);
+    }
+
     await expAcademicaModel
         .addExpAcademica({
             nivel: req.body.nivel,
             institucion: req.body.institucion,
             carrera: req.body.carrera,
-            anio_entrada: req.body.anio_entrada,
-            anio_salida: req.body.anio_salida,
+            anio_entrada: req.body.anio_entrada.slice(0, 4),
+            anio_salida: anio_salida,
             estudiando: req.body.estudiando,
             id_usuario_fk: req.body.id_usuario_fk,
         })
@@ -40,13 +45,18 @@ const updateExpAcademica = async(req, res) => {
         await updateEstudiando(req.body.id_usuario);
     }
 
+    let anio_salida = null;
+    if (req.body.anio_salida) {
+        anio_salida = req.body.anio_salida.slice(0, 4);
+    }
+
     await expAcademicaModel
         .updateExpAcademica(req.params.id, {
             nivel: req.body.nivel,
             institucion: req.body.institucion,
             carrera: req.body.carrera,
-            anio_entrada: req.body.anio_entrada,
-            anio_salida: req.body.anio_salida,
+            anio_entrada: req.body.anio_entrada.slice(0, 4),
+            anio_salida: anio_salida,
             estudiando: req.body.estudiando,
         })
         .then((result) => {

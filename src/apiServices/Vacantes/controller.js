@@ -32,6 +32,7 @@ const addVacante = async(req, res) => {
             modalidad: req.body.modalidad,
             nivel: req.body.nivel,
             id_usuario_fk: req.body.id_usuario_fk,
+            id_sucursal_fk: req.id_sucursal_fk,
             publicada: req.body.publicada,
         })
         .then((vacante) => {

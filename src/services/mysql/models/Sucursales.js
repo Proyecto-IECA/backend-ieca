@@ -1,5 +1,6 @@
 const { Model, DataTypes } = require("sequelize");
 const sequelize = require("../db");
+const Vacante = require("./Vacantes");
 
 class Sucursal extends Model {}
 Sucursal.init({
@@ -38,5 +39,9 @@ Sucursal.init({
     modelName: "Sucursales",
     timestamps: false,
 });
+
+Sucursal.hasMany(Vacante, { foreignKey: "id_sucursal_fk" });
+Vacante.belongsTo(Sucursal, { foreignKey: "id_sucursal_fk" });
+
 
 module.exports = Sucursal;

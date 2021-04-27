@@ -44,7 +44,7 @@ ExpLaboral.init({
     },
 
     fecha_entrada: {
-        type: DataTypes.DATEONLY,
+        type: DataTypes.STRING,
         allowNull: false,
         validate: {
             notNull: {
@@ -54,7 +54,7 @@ ExpLaboral.init({
     },
 
     fecha_salida: {
-        type: DataTypes.DATEONLY,
+        type: DataTypes.STRING,
         defaultValue: null,
     },
 

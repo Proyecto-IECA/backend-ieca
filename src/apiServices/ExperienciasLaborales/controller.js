@@ -17,13 +17,18 @@ const addExpLaboral = async(req, res) => {
         await updateTrabajando(req.body.id_usuario);
     }
 
+    let fecha_salida = null;
+    if (req.body.fecha_salida) {
+        fecha_salida = req.body.fecha_salida.slice(0, 7)
+    }
+
     await expLaboralModel
         .addExpLaboral({
             puesto: req.body.puesto,
             empresa: req.body.empresa,
             actividades: req.body.actividades,
-            fecha_entrada: req.body.fecha_entrada,
-            fecha_salida: req.body.fecha_salida,
+            fecha_entrada: req.body.fecha_entrada.slice(0, 7),
+            fecha_salida: fecha_salida,
             trabajando: req.body.trabajando,
             id_usuario_fk: req.body.id_usuario_fk,
         })
@@ -40,13 +45,18 @@ const updateExpLaboral = async(req, res) => {
         await updateTrabajando(req.body.id_usuario);
     }
 
+    let fecha_salida = null;
+    if (req.body.fecha_salida) {
+        fecha_salida = req.body.fecha_salida.slice(0, 7)
+    }
+
     await expLaboralModel
         .updateExpLaboral(req.params.id, {
             puesto: req.body.puesto,
             empresa: req.body.empresa,
             actividades: req.body.actividades,
-            fecha_entrada: req.body.fecha_entrada,
-            fecha_salida: req.body.fecha_salida,
+            fecha_entrada: req.body.fecha_entrada.slice(0, 7),
+            fecha_salida: fecha_salida,
             trabajando: req.body.trabajando,
         })
         .then((result) => {
