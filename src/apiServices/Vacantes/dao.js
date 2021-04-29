@@ -96,10 +96,10 @@ const getPostulantes = async(id) => {
             attributes: ["id_vacante"],
             include: [{
                 model: Postulacion,
-                attributes: ["id_postulacion"],
+                attributes: ["id_postulacion", "fecha_postulacion"],
                 include: [{
                     model: Usuario,
-                    attributes: ["id_usuario", "email", "telefono", "calificacion", "ciudad"],
+                    attributes: ["id_usuario", "nombre", "email", "telefono", "calificacion", "ciudad"],
                 }, ],
             }, ],
         })

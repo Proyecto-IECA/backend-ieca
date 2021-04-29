@@ -12,8 +12,18 @@ const cancelPostulacion = async(id) => {
     return postulacionDao.cancelPostulacion(id);
 };
 
+const aceptarPostulacion = async(id) => {
+    return postulacionDao.aceptarPostulacion(id);
+};
+
+const rechazarPostulacion = async(id) => {
+    return postulacionDao.rechazarPostulacion(id);
+};
+
 module.exports = {
     addPostulacion,
     deletePostulacion,
     cancelPostulacion,
+    aceptarPostulacion,
+    rechazarPostulacion,
 };

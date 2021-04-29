@@ -64,8 +64,54 @@ const cancelPostulacion = async(req, res) => {
         });
 };
 
+const aceptarPostulacion = async(req, res) => {
+    await postulacionModel
+        .aceptarPostulacion(req.params.id)
+        .then((result) => {
+            if (result[0] === 0) {
+                return res.json(
+                    postulacionDto.normally(
+                        false,
+                        "Ocurrio un error al aceptar la postulacion"
+                    )
+                );
+            }
+
+            return res.json(
+                postulacionDto.normally(true, "Exito al aceptar la postulacion")
+            );
+        })
+        .catch((err) => {
+            return res.json(postulacionDto.normally(false, err));
+        });
+};
+
+const rechazarPostulacion = async(req, res) => {
+    await postulacionModel
+        .rechazarPostulacion(req.params.id)
+        .then((result) => {
+            if (result[0] === 0) {
+                return res.json(
+                    postulacionDto.normally(
+                        false,
+                        "Ocurrio un error al rechazar la postulacion"
+                    )
+                );
+            }
+
+            return res.json(
+                postulacionDto.normally(true, "Exito al rechazar la postulacion")
+            );
+        })
+        .catch((err) => {
+            return res.json(postulacionDto.normally(false, err));
+        });
+};
+
 module.exports = {
     addPostulacion,
     deletePostulacion,
     cancelPostulacion,
+    aceptarPostulacion,
+    rechazarPostulacion,
 };
