@@ -1,5 +1,6 @@
 const { Model, DataTypes } = require("sequelize");
 const sequelize = require("../db");
+const Postulacion = require("./Postulaciones");
 const Perfil = require("./Perfiles");
 
 class Vacante extends Model {}
@@ -27,8 +28,7 @@ Vacante.init({
 
     fecha_publicacion: {
         type: DataTypes.DATEONLY,
-        allowNull: false,
-        defaultValue: new Date(Date.now()),
+        defaultValue: null,
     },
 
     imagen: {
@@ -116,6 +116,9 @@ Vacante.init({
     modelName: "Vacantes",
     timestamps: false,
 });
+
+Vacante.hasMany(Postulacion, { foreignKey: "id_vacante_fk" });
+Postulacion.belongsTo(Vacante, { foreignKey: "id_vacante_fk" });
 
 Vacante.belongsToMany(Perfil, {
     through: "Perfiles_Vacante",

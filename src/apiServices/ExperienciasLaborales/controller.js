@@ -13,8 +13,8 @@ const getExpLaborales = async(req, res) => {
 };
 
 const addExpLaboral = async(req, res) => {
-    if (req.body.trabajando === 1) {
-        await updateTrabajando(req.body.id_usuario);
+    if (req.body.trabajando == 1) {
+        await updateTrabajando(req.body.id_usuario_fk);
     }
 
     let fecha_salida = null;
@@ -42,7 +42,7 @@ const addExpLaboral = async(req, res) => {
 
 const updateExpLaboral = async(req, res) => {
     if (req.body.trabajando === 1) {
-        await updateTrabajando(req.body.id_usuario);
+        await updateTrabajando(req.body.id_usuario_fk);
     }
 
     let fecha_salida = null;

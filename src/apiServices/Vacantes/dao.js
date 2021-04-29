@@ -1,4 +1,6 @@
 const Vacante = require("../../services/mysql/models/Vacantes");
+const Usuario = require("../../services/mysql/models/Usuarios");
+const Postulacion = require("../../services/mysql/models/Postulaciones");
 
 const getVacantes = async() => {
     return new Promise((resolve, reject) =>
@@ -9,6 +11,18 @@ const getVacantes = async() => {
         })
         .then((vacantes) => {
             return resolve(vacantes);
+        })
+        .catch((err) => {
+            return reject(err);
+        })
+    );
+};
+
+const getVacante = async(id_vacante) => {
+    return new Promise((resolve, reject) =>
+        Vacante.findByPk(id_vacante)
+        .then((vacante) => {
+            return resolve(vacante);
         })
         .catch((err) => {
             return reject(err);
@@ -64,8 +78,8 @@ const deleteVacante = async(id) => {
     return new Promise((resolve, reject) =>
         Vacante.destroy({
             where: {
-                id_vacante: id
-            }
+                id_vacante: id,
+            },
         })
         .then((result) => {
             return resolve(result);
@@ -76,11 +90,35 @@ const deleteVacante = async(id) => {
     );
 };
 
+const getPostulantes = async(id) => {
+    return new Promise((resolve, reject) =>
+        Vacante.findByPk(id, {
+            attributes: ["id_vacante"],
+            include: [{
+                model: Postulacion,
+                attributes: ["id_postulacion"],
+                include: [{
+                    model: Usuario,
+                    attributes: ["id_usuario", "email", "telefono", "calificacion", "ciudad"],
+                }, ],
+            }, ],
+        })
+        .then((postulantes) => {
+            return resolve(postulantes);
+        })
+        .catch((err) => {
+            return reject(err);
+        })
+    );
+};
+
 module.exports = {
     getVacantes,
+    getVacante,
     getVacantesEmpresa,
     addVacante,
     deleteVacante,
     updateVacante,
     deleteVacante,
+    getPostulantes,
 };

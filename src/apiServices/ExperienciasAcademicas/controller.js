@@ -14,7 +14,7 @@ const getExpAcademicas = async(req, res) => {
 
 const addExpAcademica = async(req, res) => {
     if (req.body.estudiando === 1) {
-        await updateEstudiando(req.body.id_usuario);
+        await updateEstudiando(req.body.id_usuario_fk);
     }
 
     let anio_salida = null;
@@ -42,7 +42,7 @@ const addExpAcademica = async(req, res) => {
 
 const updateExpAcademica = async(req, res) => {
     if (req.body.estudiando === 1) {
-        await updateEstudiando(req.body.id_usuario);
+        await updateEstudiando(req.body.id_usuario_fk);
     }
 
     let anio_salida = null;

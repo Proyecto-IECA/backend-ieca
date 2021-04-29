@@ -12,6 +12,17 @@ const getVacantes = async(req, res) => {
         });
 };
 
+const getVacante = async(req, res) => {
+    await vacanteModel
+        .getVacante(req.params.id)
+        .then((vacante) => {
+            return res.json(vacanteDto.normally(true, vacante));
+        })
+        .catch((err) => {
+            return res.json(vacanteDto.normally(false, err));
+        });
+};
+
 const getVacantesEmpresa = async(req, res) => {
     await vacanteModel
         .getVacantesEmpresa(req.params.id)
@@ -32,8 +43,9 @@ const addVacante = async(req, res) => {
             modalidad: req.body.modalidad,
             nivel: req.body.nivel,
             id_usuario_fk: req.body.id_usuario_fk,
-            id_sucursal_fk: req.id_sucursal_fk,
+            id_sucursal_fk: req.body.id_sucursal_fk,
             publicada: req.body.publicada,
+            fecha_publicacion: req.body.fecha_publicacion,
         })
         .then((vacante) => {
             return res.json(vacanteDto.normally(true, vacante));
@@ -51,6 +63,7 @@ const updateVacante = async(req, res) => {
             descripcion: req.body.descripcion,
             modalidad: req.body.modalidad,
             nivel: req.body.nivel,
+            id_sucursal_fk: req.body.id_sucursal_fk,
             publicada: req.body.publicada,
         })
         .then((result) => {
@@ -91,10 +104,23 @@ const deleteVacante = async(req, res) => {
         });
 };
 
+getPostulantes = async(req, res) => {
+    await vacanteModel
+        .getPostulantes(req.params.id)
+        .then((postulantes) => {
+            return res.json(vacanteDto.normally(true, postulantes));
+        })
+        .catch((err) => {
+            return res.json(vacanteDto.normally(false, err));
+        });
+};
+
 module.exports = {
     getVacantes,
+    getVacante,
     getVacantesEmpresa,
     addVacante,
     updateVacante,
     deleteVacante,
+    getPostulantes,
 };

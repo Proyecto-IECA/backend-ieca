@@ -9,6 +9,7 @@ const valores = require("../apiServices/Valores/routes");
 const idiomas = require("../apiServices/Idiomas/routes");
 const perfiles = require("../apiServices/Perfiles/routes");
 const vacantes = require("../apiServices/Vacantes/routes");
+const postulaciones = require("../apiServices/Postulaciones/routes");
 const { validJWT } = require("../apiServices/shared/middlewares/validar-jwt");
 
 const router = Router();
@@ -22,5 +23,6 @@ router.use("/valores", valores);
 router.use("/idiomas", idiomas);
 router.use("/perfiles", perfiles);
 router.use("/vacantes", vacantes);
+router.use("/postulaciones", postulaciones);
 
 module.exports = router;
