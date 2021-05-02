@@ -1,13 +1,18 @@
 const Vacante = require("../../services/mysql/models/Vacantes");
 const Usuario = require("../../services/mysql/models/Usuarios");
 const Postulacion = require("../../services/mysql/models/Postulaciones");
+const VacanteFav = require("../../services/mysql/models/VacantesFavoritas");
 
 const getVacantes = async() => {
     return new Promise((resolve, reject) =>
         Vacante.findAll({
             where: {
                 activo: 1,
+
             },
+            include: [{
+                model: VacanteFav,
+            }]
         })
         .then((vacantes) => {
             return resolve(vacantes);

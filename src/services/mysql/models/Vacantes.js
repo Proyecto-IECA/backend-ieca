@@ -2,6 +2,7 @@ const { Model, DataTypes } = require("sequelize");
 const sequelize = require("../db");
 const Postulacion = require("./Postulaciones");
 const Perfil = require("./Perfiles");
+const VacanteFav = require("./VacantesFavoritas");
 
 class Vacante extends Model {}
 Vacante.init({
@@ -119,6 +120,9 @@ Vacante.init({
 
 Vacante.hasMany(Postulacion, { foreignKey: "id_vacante_fk" });
 Postulacion.belongsTo(Vacante, { foreignKey: "id_vacante_fk" });
+
+Vacante.hasMany(VacanteFav, { foreignKey: "id_vacante_fk" });
+VacanteFav.belongsTo(Vacante, { foreignKey: "id_vacante_fk" });
 
 Vacante.belongsToMany(Perfil, {
     through: "Perfiles_Vacante",

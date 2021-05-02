@@ -5,6 +5,7 @@ const ExpAcademica = require("./ExperienciasAcademicas");
 const ExpLaboral = require("./ExperienciasLaborales");
 const Sucursal = require("./Sucursales");
 const Vacante = require("./Vacantes");
+const VacanteFav = require("./VacantesFavoritas");
 const Postulacion = require("./Postulaciones");
 const Habilidad = require("./Habilidades");
 const Valor = require("./Valores");
@@ -302,6 +303,9 @@ Sucursal.belongsTo(Usuario, { foreignKey: "id_usuario_fk" });
 
 Usuario.hasMany(Vacante, { foreignKey: "id_usuario_fk" });
 Vacante.belongsTo(Usuario, { foreignKey: "id_usuario_fk" });
+
+Usuario.hasMany(VacanteFav, { foreignKey: "id_usuario_fk" });
+VacanteFav.belongsTo(Usuario, { foreignKey: "id_usuario_fk" });
 
 Usuario.hasMany(Postulacion, { foreignKey: "id_usuario_fk" });
 Postulacion.belongsTo(Usuario, { foreignKey: "id_usuario_fk" });
