@@ -3,7 +3,7 @@ const Usuario = require("../../services/mysql/models/Usuarios");
 const Postulacion = require("../../services/mysql/models/Postulaciones");
 const VacanteFav = require("../../services/mysql/models/VacantesFavoritas");
 
-const getVacantes = async() => {
+const getVacantes = async(id_usuario) => {
     return new Promise((resolve, reject) =>
         Vacante.findAll({
             where: {
@@ -12,6 +12,13 @@ const getVacantes = async() => {
             },
             include: [{
                 model: VacanteFav,
+                include: [{
+                    model: Usuario,
+                    attributes: [],
+                    where: {
+                        id_usuario: id_usuario
+                    }
+                }]
             }]
         })
         .then((vacantes) => {

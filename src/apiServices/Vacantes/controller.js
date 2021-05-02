@@ -3,7 +3,7 @@ const vacanteDto = require("../shared/dto");
 
 const getVacantes = async(req, res) => {
     await vacanteModel
-        .getVacantes()
+        .getVacantes(req.params.id)
         .then((vacantes) => {
             return res.json(vacanteDto.normally(true, vacantes));
         })

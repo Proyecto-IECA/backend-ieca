@@ -3,7 +3,7 @@ const controller = require("./controller");
 
 const router = express.Router();
 
-router.getAsync("/", controller.getVacantes);
+router.getAsync("/:id", controller.getVacantes);
 router.postAsync("/", controller.addVacante);
 router.getAsync("/:id", controller.getVacante);
 router.getAsync("/empresa/:id", controller.getVacantesEmpresa);

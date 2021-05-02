@@ -1,7 +1,7 @@
 const vacanteDao = require("./dao");
 
-const getVacantes = async() => {
-    return vacanteDao.getVacantes();
+const getVacantes = async(id_usuario) => {
+    return vacanteDao.getVacantes(id_usuario);
 };
 
 const getVacante = async(id_vacante) => {
