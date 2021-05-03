@@ -108,10 +108,22 @@ const rechazarPostulacion = async(req, res) => {
         });
 };
 
+const getPostulante = async(req, res) => {
+    await postulacionModel
+        .getPostulante(req.params.id)
+        .then((postulante) => {
+            return res.json(postulacionDto.normally(true, postulante));
+        })
+        .catch((err) => {
+            return res.json(postulacionDto.normally(false, err));
+        });
+};
+
 module.exports = {
     addPostulacion,
     deletePostulacion,
     cancelPostulacion,
     aceptarPostulacion,
     rechazarPostulacion,
+    getPostulante,
 };
