@@ -32,7 +32,12 @@ const getVacantes = async(id_usuario) => {
 
 const getVacante = async(id_vacante) => {
     return new Promise((resolve, reject) =>
-        Vacante.findByPk(id_vacante)
+        Vacante.findByPk(id_vacante, {
+            include: [{
+                model: Usuario,
+                attributes: ["id_usuario", "nombre", "pagina_web", "calificacion"],
+            }]
+        })
         .then((vacante) => {
             return resolve(vacante);
         })
