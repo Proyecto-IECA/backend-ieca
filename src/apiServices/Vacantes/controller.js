@@ -24,14 +24,66 @@ const getVacante = async(req, res) => {
 };
 
 const getVacantesEmpresa = async(req, res) => {
+    let vacantesP;
+    let vacantesB;
+    let vacantesD;
+    let vacantesC;
+
     await vacanteModel
-        .getVacantesEmpresa(req.params.id)
+        .getVacantesEmpresa({
+            id_usuario_fk: req.params.id,
+            publicada: 1,
+        })
         .then((vacantes) => {
-            return res.json(vacanteDto.normally(true, vacantes));
+            vacantesP = vacantes;
         })
         .catch((err) => {
             return res.json(vacanteDto.normally(false, err));
         });
+
+    await vacanteModel
+        .getVacantesEmpresa({
+            id_usuario_fk: req.params.id,
+            publicada: 0,
+        })
+        .then((vacantes) => {
+            vacantesB = vacantes;
+        })
+        .catch((err) => {
+            return res.json(vacanteDto.normally(false, err));
+        });
+
+    await vacanteModel
+        .getVacantesEmpresa({
+            id_usuario_fk: req.params.id,
+            disponible: 1,
+        })
+        .then((vacantes) => {
+            vacantesD = vacantes;
+        })
+        .catch((err) => {
+            return res.json(vacanteDto.normally(false, err));
+        });
+
+    await vacanteModel
+        .getVacantesEmpresa({
+            id_usuario_fk: req.params.id,
+            disponible: 0,
+        })
+        .then((vacantes) => {
+            vacantesC = vacantes;
+        })
+        .catch((err) => {
+            return res.json(vacanteDto.normally(false, err));
+        });
+
+    let vacantes = {
+        VacantesPublicadas: vacantesP,
+        VacantesBorradores: vacantesB,
+        VacantesDisponibles: vacantesD,
+        VacantesCerradas: vacantesC,
+    };
+    return res.json(vacanteDto.normally(true, vacantes));
 };
 
 const addVacante = async(req, res) => {

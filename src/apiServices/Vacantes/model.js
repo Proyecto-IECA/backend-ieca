@@ -8,8 +8,8 @@ const getVacante = async(id_vacante) => {
     return vacanteDao.getVacante(id_vacante);
 };
 
-const getVacantesEmpresa = async(id_usuario) => {
-    return vacanteDao.getVacantesEmpresa(id_usuario);
+const getVacantesEmpresa = async(condicion) => {
+    return vacanteDao.getVacantesEmpresa(condicion);
 };
 
 const addVacante = async(vacante) => {

@@ -47,12 +47,10 @@ const getVacante = async(id_vacante) => {
     );
 };
 
-const getVacantesEmpresa = async(id_usuario) => {
+const getVacantesEmpresa = async(condicion) => {
     return new Promise((resolve, reject) =>
         Vacante.findAll({
-            where: {
-                id_usuario_fk: id_usuario,
-            },
+            where: condicion,
         })
         .then((vacantes) => {
             return resolve(vacantes);
