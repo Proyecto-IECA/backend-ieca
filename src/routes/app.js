@@ -11,6 +11,7 @@ const perfiles = require("../apiServices/Perfiles/routes");
 const vacantes = require("../apiServices/Vacantes/routes");
 const vacantesFav = require("../apiServices/VacantesFavoritas/routes");
 const postulaciones = require("../apiServices/Postulaciones/routes");
+const comentarios = require("../apiServices/Comentarios/routes");
 const { validJWT } = require("../apiServices/shared/middlewares/validar-jwt");
 
 const router = Router();
@@ -26,5 +27,6 @@ router.use("/perfiles", perfiles);
 router.use("/vacantes", vacantes);
 router.use("/vacantes-favoritas", vacantesFav);
 router.use("/postulaciones", postulaciones);
+router.use("/comentarios", comentarios);
 
 module.exports = router;
