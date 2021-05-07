@@ -8,7 +8,6 @@ const getVacantes = async(id_usuario) => {
         Vacante.findAll({
             where: {
                 activo: 1,
-
             },
             include: [{
                 model: VacanteFav,
@@ -16,10 +15,10 @@ const getVacantes = async(id_usuario) => {
                     model: Usuario,
                     attributes: [],
                     where: {
-                        id_usuario: id_usuario
-                    }
-                }]
-            }]
+                        id_usuario: id_usuario,
+                    },
+                }, ],
+            }, ],
         })
         .then((vacantes) => {
             return resolve(vacantes);
@@ -36,7 +35,7 @@ const getVacante = async(id_vacante) => {
             include: [{
                 model: Usuario,
                 attributes: ["id_usuario", "nombre", "pagina_web", "calificacion"],
-            }]
+            }, ],
         })
         .then((vacante) => {
             return resolve(vacante);
@@ -105,6 +104,78 @@ const deleteVacante = async(id) => {
     );
 };
 
+const publicarVacante = async(id) => {
+    return new Promise((resolve, reject) =>
+        Vacante.update({
+            publicada: 1,
+        }, {
+            where: {
+                id_vacante: id
+            }
+        })
+        .then((result) => {
+            return resolve(result);
+        })
+        .catch((err) => {
+            return reject(err);
+        })
+    );
+};
+
+const noPublicarVacante = async(id) => {
+    return new Promise((resolve, reject) =>
+        Vacante.update({
+            publicada: 0,
+        }, {
+            where: {
+                id_vacante: id
+            }
+        })
+        .then((result) => {
+            return resolve(result);
+        })
+        .catch((err) => {
+            return reject(err);
+        })
+    );
+};
+
+const cerrarVacante = async(id) => {
+    return new Promise((resolve, reject) =>
+        Vacante.update({
+            disponible: 0,
+        }, {
+            where: {
+                id_vacante: id
+            }
+        })
+        .then((result) => {
+            return resolve(result);
+        })
+        .catch((err) => {
+            return reject(err);
+        })
+    );
+};
+
+const abrirVacante = async(id) => {
+    return new Promise((resolve, reject) =>
+        Vacante.update({
+            disponible: 1,
+        }, {
+            where: {
+                id_vacante: id
+            }
+        })
+        .then((result) => {
+            return resolve(result);
+        })
+        .catch((err) => {
+            return reject(err);
+        })
+    );
+};
+
 const getPostulantes = async(id) => {
     return new Promise((resolve, reject) =>
         Vacante.findByPk(id, {
@@ -114,7 +185,14 @@ const getPostulantes = async(id) => {
                 attributes: ["id_postulacion", "fecha_postulacion"],
                 include: [{
                     model: Usuario,
-                    attributes: ["id_usuario", "nombre", "email", "telefono", "calificacion", "ciudad"],
+                    attributes: [
+                        "id_usuario",
+                        "nombre",
+                        "email",
+                        "telefono",
+                        "calificacion",
+                        "ciudad",
+                    ],
                 }, ],
             }, ],
         })
@@ -135,5 +213,9 @@ module.exports = {
     deleteVacante,
     updateVacante,
     deleteVacante,
+    publicarVacante,
+    noPublicarVacante,
+    cerrarVacante,
+    abrirVacante,
     getPostulantes,
 };

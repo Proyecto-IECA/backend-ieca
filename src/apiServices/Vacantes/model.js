@@ -24,6 +24,22 @@ const deleteVacante = async(id) => {
     return vacanteDao.deleteVacante(id);
 };
 
+const publicarVacante = async(id) => {
+    return vacanteDao.publicarVacante(id);
+};
+
+const noPublicarVacante = async(id) => {
+    return vacanteDao.noPublicarVacante(id);
+};
+
+const cerrarVacante = async(id) => {
+    return vacanteDao.cerrarVacante(id);
+};
+
+const abrirVacante = async(id) => {
+    return vacanteDao.abrirVacante(id);
+};
+
 const getPostulantes = async(id) => {
     return vacanteDao.getPostulantes(id);
 };
@@ -35,5 +51,9 @@ module.exports = {
     addVacante,
     updateVacante,
     deleteVacante,
+    publicarVacante,
+    noPublicarVacante,
+    cerrarVacante,
+    abrirVacante,
     getPostulantes,
 };

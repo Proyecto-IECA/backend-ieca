@@ -156,6 +156,76 @@ const deleteVacante = async(req, res) => {
         });
 };
 
+const publicarVacante = async(req, res) => {
+    await vacanteModel
+        .publicarVacante(req.params.id)
+        .then((result) => {
+            if (result[0] === 0) {
+                return res.json(
+                    vacanteDto.normally(false, "No se pudo públicar la vacante")
+                );
+            }
+
+            return res.json(
+                vacanteDto.normally(true, "Exito al publicar la vacante")
+            );
+        })
+        .catch((err) => {
+            return res.json(vacanteDto.normally(false, err));
+        });
+};
+
+const noPublicarVacante = async(req, res) => {
+    await vacanteModel
+        .noPublicarVacante(req.params.id)
+        .then((result) => {
+            if (result[0] === 0) {
+                return res.json(
+                    vacanteDto.normally(false, "No se pudo quitar la vacante")
+                );
+            }
+
+            return res.json(vacanteDto.normally(true, "Exito al quitar la vacante"));
+        })
+        .catch((err) => {
+            return res.json(vacanteDto.normally(false, err));
+        });
+};
+
+const cerrarVacante = async(req, res) => {
+    await vacanteModel
+        .cerrarVacante(req.params.id)
+        .then((result) => {
+            if (result[0] === 0) {
+                return res.json(
+                    vacanteDto.normally(false, "No se pudo cerrar la vacante")
+                );
+            }
+
+            return res.json(vacanteDto.normally(true, "Exito al cerrar la vacante"));
+        })
+        .catch((err) => {
+            return res.json(vacanteDto.normally(false, err));
+        });
+};
+
+const abrirVacante = async(req, res) => {
+    await vacanteModel
+        .abrirVacante(req.params.id)
+        .then((result) => {
+            if (result[0] === 0) {
+                return res.json(
+                    vacanteDto.normally(false, "No se pudo abrir la vacante")
+                );
+            }
+
+            return res.json(vacanteDto.normally(true, "Exito al abrir la vacante"));
+        })
+        .catch((err) => {
+            return res.json(vacanteDto.normally(false, err));
+        });
+};
+
 getPostulantes = async(req, res) => {
     await vacanteModel
         .getPostulantes(req.params.id)
@@ -174,5 +244,9 @@ module.exports = {
     addVacante,
     updateVacante,
     deleteVacante,
+    publicarVacante,
+    noPublicarVacante,
+    cerrarVacante,
+    abrirVacante,
     getPostulantes,
 };
