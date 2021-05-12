@@ -12,6 +12,7 @@ const Valor = require("./Valores");
 const Idioma = require("./Idiomas");
 const Perfil = require("./Perfiles");
 const Comentario = require("./Comentarios");
+const Calificacion = require("./Calificaciones");
 
 class Usuario extends Model {}
 Usuario.init({
@@ -119,12 +120,29 @@ Usuario.init({
     },
 
     calificacion: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.FLOAT,
         allowNull: false,
         defaultValue: 0,
         validate: {
             notNull: "Favor de indicar la calificacion del usuario",
+            max: {
+                args: [5],
+                msg: "Ingrese un número entre 0 y 5"
+            },
+            min: {
+                args: [0],
+                msg: "Ingrese un número entre 0 y 5"
+            }
         },
+    },
+
+    numero_calificaciones: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+        validate: {
+            notNull: "Favor de indicar la cantidad de calificaciones del usuario",
+        }
     },
 
     apellido_paterno: {
@@ -316,6 +334,12 @@ Comentario.belongsTo(Usuario, { foreignKey: "id_emisor" });
 
 Usuario.hasMany(Comentario, { foreignKey: "id_receptor" });
 Comentario.belongsTo(Usuario, { foreignKey: "id_receptor" });
+
+Usuario.hasMany(Calificacion, { foreignKey: "id_emisor" });
+Calificacion.belongsTo(Usuario, { foreignKey: "id_emisor" });
+
+Usuario.hasMany(Calificacion, { foreignKey: "id_receptor" });
+Calificacion.belongsTo(Usuario, { foreignKey: "id_receptor" });
 
 Usuario.belongsToMany(Habilidad, {
     through: "Habilidades_Usuario",
