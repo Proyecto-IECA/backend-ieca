@@ -28,6 +28,11 @@ Postulacion.init({
         defaultValue: 0
     },
 
+    fecha_post_aceptada: {
+        type: DataTypes.DATEONLY,
+        defaultValue: null
+    },
+
     activo: {
         type: DataTypes.TINYINT,
         allowNull: false,

@@ -8,6 +8,7 @@ const getVacantes = async(id_usuario) => {
         Vacante.findAll({
             where: {
                 activo: 1,
+                publicada: 1
             },
             include: [{
                 model: VacanteFav,

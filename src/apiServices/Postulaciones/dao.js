@@ -46,11 +46,12 @@ const cancelPostulacion = async(id) => {
     );
 };
 
-const aceptarPostulacion = async(id) => {
+const aceptarPostulacion = async(id, fecha) => {
     return new Promise((resolve, reject) =>
         Postulacion.update({
             aceptada: 1,
             rechazada: 0,
+            fecha_post_aceptada: fecha
         }, {
             where: {
                 id_postulacion: id,
@@ -70,6 +71,7 @@ const rechazarPostulacion = async(id) => {
         Postulacion.update({
             aceptada: 0,
             rechazada: 1,
+            fecha_post_aceptada: null
         }, {
             where: {
                 id_postulacion: id,

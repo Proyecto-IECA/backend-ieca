@@ -1,5 +1,6 @@
 const postulacionModel = require("./model");
 const postulacionDto = require("../shared/dto");
+const moment = require("moment");
 
 const addPostulacion = async(req, res) => {
     await postulacionModel
@@ -65,8 +66,11 @@ const cancelPostulacion = async(req, res) => {
 };
 
 const aceptarPostulacion = async(req, res) => {
+    let fecha = moment().add(10, 'days').format('YYYY-MM-DD');
+
+
     await postulacionModel
-        .aceptarPostulacion(req.params.id)
+        .aceptarPostulacion(req.params.id, fecha)
         .then((result) => {
             if (result[0] === 0) {
                 return res.json(
