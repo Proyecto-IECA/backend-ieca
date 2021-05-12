@@ -7,12 +7,6 @@ const sequelize = new Sequelize(
     database.password, {
         host: database.host,
         dialect: "mysql",
-        ssl: true,
-        dialectOptions: {
-            ssl: {
-                require: true,
-            },
-        },
     }
 );
 
