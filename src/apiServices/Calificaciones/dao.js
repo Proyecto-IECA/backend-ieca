@@ -2,6 +2,7 @@ const Calificacion = require("../../services/mysql/models/Calificaciones");
 const Usuario = require("../../services/mysql/models/Usuarios");
 const Postulacion = require("../../services/mysql/models/Postulaciones");
 const Vacante = require("../../services/mysql/models/Vacantes");
+const Comentario = require("../../services/mysql/models/Comentarios");
 const { Op } = require("sequelize");
 
 const getUsuariosEvaluar = async(id_usuario) => {
@@ -35,7 +36,10 @@ const getPostulantesEvaluar = async(id_usuario) => {
                 },
                 include: {
                     model: Usuario,
-                    attributes: ["id_usuario", "nombre"],
+                    attributes: ["id_usuario", "nombre", "foto_perfil"],
+                    include: {
+                        model: Comentario
+                    }
                 },
             },
         })
@@ -63,7 +67,10 @@ const getEmpresasEvaluar = async(id_usuario) => {
                 attributes: ["id_vacante"],
                 include: {
                     model: Usuario,
-                    attributes: ["id_usuario", "nombre"],
+                    attributes: ["id_usuario", "nombre", "foto_perfil"],
+                    include: {
+                        model: Comentario
+                    }
                 },
             },
         })
@@ -75,6 +82,8 @@ const getEmpresasEvaluar = async(id_usuario) => {
         })
     );
 };
+
+
 
 const calificar = async(id_emisor, id_receptor, calif) => {
     return new Promise((resolve, reject) =>

@@ -15,7 +15,21 @@ const getUsuariosEvaluar = async(req, res) => {
             .getEmpresasEvaluar(usuario.id_usuario)
             .then((empresasEvaluar) => {
                 empresasEvaluar.forEach((postulacion) => {
-                    pendientes.push(postulacion.Vacante.Usuario);
+                    let comentarios = [];
+
+                    postulacion.Vacante.Usuario.Comentarios.forEach(comentario => {
+                        if (comentario.id_emisor == req.params.id) {
+                            comentarios.push(comentario);
+                        }
+                    });
+
+                    let usuario = {
+                        id_usuario: postulacion.Vacante.Usuario.id_usuario,
+                        nombre: postulacion.Vacante.Usuario.nombre,
+                        foto_perfil: postulacion.Vacante.Usuario.foto_perfil,
+                        Comentarios: comentarios
+                    };
+                    pendientes.push(usuario);
                 });
                 return res.json(califDto.normally(true, pendientes));
             })
@@ -29,7 +43,20 @@ const getUsuariosEvaluar = async(req, res) => {
         .then((postulantesEvaluar) => {
             postulantesEvaluar.forEach((vacantes) => {
                 vacantes.Postulaciones.forEach((postulacion) => {
-                    pendientes.push(postulacion.Usuario);
+                    let comentarios = [];
+
+                    postulacion.Usuario.Comentarios.forEach(comentario => {
+                        if (comentario.id_emisor == req.params.id) {
+                            comentarios.push(comentario);
+                        }
+                    });
+                    let usuario = {
+                        id_usuario: postulacion.Usuario.id_usuario,
+                        nombre: postulacion.Usuario.nombre,
+                        foto_perfil: postulacion.Usuario.foto_perfil,
+                        Comentarios: comentarios
+                    };
+                    pendientes.push(usuario);
                 });
             });
             return res.json(califDto.normally(true, pendientes));

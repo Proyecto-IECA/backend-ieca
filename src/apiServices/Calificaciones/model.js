@@ -28,6 +28,7 @@ const actualizarCalifUsuario = async(data, id_usuario) => {
     return califDao.actualizarCalifUsuario(data, id_usuario);
 };
 
+
 module.exports = {
     getUsuariosEvaluar,
     getPostulantesEvaluar,
