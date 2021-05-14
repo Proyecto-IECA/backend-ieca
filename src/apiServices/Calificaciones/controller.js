@@ -16,10 +16,20 @@ const getUsuariosEvaluar = async(req, res) => {
             .then((empresasEvaluar) => {
                 empresasEvaluar.forEach((postulacion) => {
                     let comentarios = [];
+                    let calif = 0;
 
-                    postulacion.Vacante.Usuario.Comentarios.forEach(comentario => {
+                    postulacion.Vacante.Usuario.Comentarios.forEach((comentario) => {
                         if (comentario.id_emisor == req.params.id) {
                             comentarios.push(comentario);
+                        }
+                    });
+
+                    postulacion.Vacante.Usuario.Calificaciones.forEach((calificacion) => {
+                        if (
+                            calificacion.id_emisor == req.params.id &&
+                            calificacion.id_receptor == postulacion.Vacante.Usuario.id_usuario
+                        ) {
+                            calif = calificacion;
                         }
                     });
 
@@ -27,7 +37,8 @@ const getUsuariosEvaluar = async(req, res) => {
                         id_usuario: postulacion.Vacante.Usuario.id_usuario,
                         nombre: postulacion.Vacante.Usuario.nombre,
                         foto_perfil: postulacion.Vacante.Usuario.foto_perfil,
-                        Comentarios: comentarios
+                        calificacion: calif.calificacion,
+                        Comentarios: comentarios,
                     };
                     pendientes.push(usuario);
                 });
@@ -44,17 +55,29 @@ const getUsuariosEvaluar = async(req, res) => {
             postulantesEvaluar.forEach((vacantes) => {
                 vacantes.Postulaciones.forEach((postulacion) => {
                     let comentarios = [];
+                    let calif = 0;
 
-                    postulacion.Usuario.Comentarios.forEach(comentario => {
+                    postulacion.Usuario.Comentarios.forEach((comentario) => {
                         if (comentario.id_emisor == req.params.id) {
                             comentarios.push(comentario);
                         }
                     });
+
+                    postulacion.Usuario.Calificaciones.forEach((calificacion) => {
+                        if (
+                            calificacion.id_emisor == req.params.id &&
+                            calificacion.id_receptor == postulacion.Usuario.id_usuario
+                        ) {
+                            calif = calificacion;
+                        }
+                    });
+
                     let usuario = {
                         id_usuario: postulacion.Usuario.id_usuario,
                         nombre: postulacion.Usuario.nombre,
                         foto_perfil: postulacion.Usuario.foto_perfil,
-                        Comentarios: comentarios
+                        calificacion: calif.calificacion,
+                        Comentarios: comentarios,
                     };
                     pendientes.push(usuario);
                 });
@@ -67,7 +90,6 @@ const getUsuariosEvaluar = async(req, res) => {
 };
 
 const calificar = async(req, res) => {
-
     await califModel
         .calificar(req.body.id_emisor, req.body.id_receptor, req.body.calificacion)
         .catch((err) => {
@@ -90,9 +112,11 @@ const calificar = async(req, res) => {
 
     await califModel
         .actualizarCalifUsuario({
-            calificacion: promedioCalif,
-            numero_calificaciones: numCalificaciones
-        }, req.body.id_receptor)
+                calificacion: promedioCalif,
+                numero_calificaciones: numCalificaciones,
+            },
+            req.body.id_receptor
+        )
         .then((result) => {
             if (result[0] === 0) {
                 return res.json(

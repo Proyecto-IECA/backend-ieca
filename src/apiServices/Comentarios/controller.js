@@ -30,8 +30,6 @@ const addComentario = async(req, res) => {
 const updateComentario = async(req, res) => {
     await comentarioModel
         .updateComentario(req.params.id, {
-            id_emisor: req.body.id_emisor,
-            id_receptor: req.body.id_receptor,
             comentario: req.body.comentario,
             fecha_publicacion: new Date(Date.now()),
         })

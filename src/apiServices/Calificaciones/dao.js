@@ -37,9 +37,13 @@ const getPostulantesEvaluar = async(id_usuario) => {
                 include: {
                     model: Usuario,
                     attributes: ["id_usuario", "nombre", "foto_perfil"],
-                    include: {
-                        model: Comentario
-                    }
+                    include: [{
+                            model: Comentario,
+                        },
+                        {
+                            model: Calificacion,
+                        },
+                    ],
                 },
             },
         })
@@ -68,9 +72,13 @@ const getEmpresasEvaluar = async(id_usuario) => {
                 include: {
                     model: Usuario,
                     attributes: ["id_usuario", "nombre", "foto_perfil"],
-                    include: {
-                        model: Comentario
-                    }
+                    include: [{
+                            model: Comentario,
+                        },
+                        {
+                            model: Calificacion,
+                        },
+                    ],
                 },
             },
         })
@@ -82,8 +90,6 @@ const getEmpresasEvaluar = async(id_usuario) => {
         })
     );
 };
-
-
 
 const calificar = async(id_emisor, id_receptor, calif) => {
     return new Promise((resolve, reject) =>
