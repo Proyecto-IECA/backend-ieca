@@ -1,16 +1,16 @@
 const { Model, DataTypes } = require("sequelize");
 const sequelize = require("../db");
 
-class Calificacion extends Model {}
-Calificacion.init({
-    id_calificacion: {
+class Resenia extends Model {}
+Resenia.init({
+    id_resenia: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
         allowNull: false,
     },
 
-    fecha_calificacion: {
+    fecha_resenia: {
         type: DataTypes.DATEONLY,
         defaultValue: new Date(Date.now()),
     },
@@ -32,10 +32,15 @@ Calificacion.init({
             }
         },
     },
+
+    comentario: {
+        type: DataTypes.TEXT,
+        defaultValue: null
+    },
 }, {
     sequelize,
-    modelName: "Calificaciones",
+    modelName: "Resenias",
     timestamps: false,
 });
 
-module.exports = Calificacion;
+module.exports = Resenia;

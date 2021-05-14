@@ -11,8 +11,7 @@ const Habilidad = require("./Habilidades");
 const Valor = require("./Valores");
 const Idioma = require("./Idiomas");
 const Perfil = require("./Perfiles");
-const Comentario = require("./Comentarios");
-const Calificacion = require("./Calificaciones");
+const Resenia = require("./Resenias");
 
 class Usuario extends Model {}
 Usuario.init({
@@ -329,17 +328,11 @@ VacanteFav.belongsTo(Usuario, { foreignKey: "id_usuario_fk" });
 Usuario.hasMany(Postulacion, { foreignKey: "id_usuario_fk" });
 Postulacion.belongsTo(Usuario, { foreignKey: "id_usuario_fk" });
 
-Usuario.hasMany(Comentario, { foreignKey: "id_emisor" });
-Comentario.belongsTo(Usuario, { foreignKey: "id_emisor" });
+Usuario.hasMany(Resenia, { foreignKey: "id_emisor" });
+Resenia.belongsTo(Usuario, { foreignKey: "id_emisor" });
 
-Usuario.hasMany(Comentario, { foreignKey: "id_receptor" });
-Comentario.belongsTo(Usuario, { foreignKey: "id_receptor" });
-
-Usuario.hasMany(Calificacion, { foreignKey: "id_emisor" });
-Calificacion.belongsTo(Usuario, { foreignKey: "id_emisor" });
-
-Usuario.hasMany(Calificacion, { foreignKey: "id_receptor" });
-Calificacion.belongsTo(Usuario, { foreignKey: "id_receptor" });
+Usuario.hasMany(Resenia, { foreignKey: "id_receptor" });
+Resenia.belongsTo(Usuario, { foreignKey: "id_receptor" });
 
 Usuario.belongsToMany(Habilidad, {
     through: "Habilidades_Usuario",

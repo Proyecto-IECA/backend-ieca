@@ -1,9 +1,30 @@
-const Calificacion = require("../../services/mysql/models/Calificaciones");
+const Resenia = require("../../services/mysql/models/Resenias");
 const Usuario = require("../../services/mysql/models/Usuarios");
 const Postulacion = require("../../services/mysql/models/Postulaciones");
 const Vacante = require("../../services/mysql/models/Vacantes");
-const Comentario = require("../../services/mysql/models/Comentarios");
 const { Op } = require("sequelize");
+
+const getReseniasUsuario = async(id_usuario) => {
+    return new Promise((resolve, reject) =>
+        Usuario.findByPk(id_usuario, {
+            attributes: [
+                "nombre",
+                "pagina_web",
+                "calificacion",
+                "numero_calificaciones",
+            ],
+            include: {
+                model: Resenia,
+            },
+        })
+        .then((resenias) => {
+            return resolve(resenias);
+        })
+        .catch((err) => {
+            return reject(err);
+        })
+    );
+};
 
 const getUsuariosEvaluar = async(id_usuario) => {
     return new Promise((resolve, reject) =>
@@ -37,13 +58,9 @@ const getPostulantesEvaluar = async(id_usuario) => {
                 include: {
                     model: Usuario,
                     attributes: ["id_usuario", "nombre", "foto_perfil"],
-                    include: [{
-                            model: Comentario,
-                        },
-                        {
-                            model: Calificacion,
-                        },
-                    ],
+                    include: {
+                        model: Resenia,
+                    },
                 },
             },
         })
@@ -72,13 +89,9 @@ const getEmpresasEvaluar = async(id_usuario) => {
                 include: {
                     model: Usuario,
                     attributes: ["id_usuario", "nombre", "foto_perfil"],
-                    include: [{
-                            model: Comentario,
-                        },
-                        {
-                            model: Calificacion,
-                        },
-                    ],
+                    include: {
+                        model: Resenia,
+                    },
                 },
             },
         })
@@ -91,38 +104,40 @@ const getEmpresasEvaluar = async(id_usuario) => {
     );
 };
 
-const calificar = async(id_emisor, id_receptor, calif) => {
+const calificar = async(id_emisor, id_receptor, calif, coment) => {
     return new Promise((resolve, reject) =>
-        Calificacion.findOne({
+        Resenia.findOne({
             where: {
                 id_emisor: id_emisor,
                 id_receptor: id_receptor,
             },
         })
-        .then((calificacion) => {
-            if (calificacion) {
-                Calificacion.update({
-                        fecha_calificacion: new Date(Date.now()),
+        .then((resenia) => {
+            if (resenia) {
+                Resenia.update({
+                        fecha_resenia: new Date(Date.now()),
                         calificacion: calif,
+                        comentario: coment
                     }, {
                         where: {
-                            id_calificacion: calificacion.id_calificacion,
+                            id_resenia: resenia.id_resenia,
                         },
                     })
                     .then((result) => {
-                        return resolve(calificacion);
+                        return resolve(resenia);
                     })
                     .catch((err) => {
                         return reject(err);
                     });
             } else {
-                Calificacion.create({
+                Resenia.create({
                         id_emisor: id_emisor,
                         id_receptor: id_receptor,
                         calificacion: calif,
+                        comentario: coment
                     })
-                    .then((calificacion) => {
-                        return resolve(calificacion);
+                    .then((resenia) => {
+                        return resolve(resenia);
                     })
                     .catch((err) => {
                         return reject(err);
@@ -137,13 +152,13 @@ const calificar = async(id_emisor, id_receptor, calif) => {
 
 const obtenerCalificacion = async(id_receptor) => {
     return new Promise((resolve, reject) =>
-        Calificacion.sum("calificacion", {
+        Resenia.sum("calificacion", {
             where: {
                 id_receptor: id_receptor,
             },
         })
-        .then((calificacion) => {
-            return resolve(calificacion);
+        .then((resenia) => {
+            return resolve(resenia);
         })
         .catch((err) => {
             return reject(err);
@@ -151,15 +166,15 @@ const obtenerCalificacion = async(id_receptor) => {
     );
 };
 
-const obtenerNumCalificaciones = async(id_receptor) => {
+const obtenerNumResenias = async(id_receptor) => {
     return new Promise((resolve, reject) =>
-        Calificacion.count({
+        Resenia.count({
             where: {
                 id_receptor: id_receptor,
             },
         })
-        .then((numCalificaciones) => {
-            return resolve(numCalificaciones);
+        .then((numResenias) => {
+            return resolve(numResenias);
         })
         .catch((err) => {
             return reject(err);
@@ -190,6 +205,7 @@ module.exports = {
     getEmpresasEvaluar,
     calificar,
     obtenerCalificacion,
-    obtenerNumCalificaciones,
+    obtenerNumResenias,
     actualizarCalifUsuario,
+    getReseniasUsuario
 };
