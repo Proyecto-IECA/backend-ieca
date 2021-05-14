@@ -29,7 +29,7 @@ const getUsuariosEvaluar = async(req, res) => {
                             calificacion.id_emisor == req.params.id &&
                             calificacion.id_receptor == postulacion.Vacante.Usuario.id_usuario
                         ) {
-                            calif = calificacion;
+                            calif = calificacion.calificacion;
                         }
                     });
 
@@ -37,7 +37,7 @@ const getUsuariosEvaluar = async(req, res) => {
                         id_usuario: postulacion.Vacante.Usuario.id_usuario,
                         nombre: postulacion.Vacante.Usuario.nombre,
                         foto_perfil: postulacion.Vacante.Usuario.foto_perfil,
-                        calificacion: calif.calificacion,
+                        calificacion: calif,
                         Comentarios: comentarios,
                     };
                     pendientes.push(usuario);
@@ -68,7 +68,7 @@ const getUsuariosEvaluar = async(req, res) => {
                             calificacion.id_emisor == req.params.id &&
                             calificacion.id_receptor == postulacion.Usuario.id_usuario
                         ) {
-                            calif = calificacion;
+                            calif = calificacion.calificacion;
                         }
                     });
 
@@ -76,7 +76,7 @@ const getUsuariosEvaluar = async(req, res) => {
                         id_usuario: postulacion.Usuario.id_usuario,
                         nombre: postulacion.Usuario.nombre,
                         foto_perfil: postulacion.Usuario.foto_perfil,
-                        calificacion: calif.calificacion,
+                        calificacion: calif,
                         Comentarios: comentarios,
                     };
                     pendientes.push(usuario);
