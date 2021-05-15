@@ -61,7 +61,7 @@ const getUsuariosEvaluar = async(req, res) => {
             .getEmpresasEvaluar(usuario.id_usuario)
             .then((empresasEvaluar) => {
                 empresasEvaluar.forEach((postulacion) => {
-                    let rese;
+                    let rese = [];
 
                     postulacion.Vacante.Usuario.Resenias.forEach((resenia) => {
                         if (
@@ -76,7 +76,7 @@ const getUsuariosEvaluar = async(req, res) => {
                         id_usuario: postulacion.Vacante.Usuario.id_usuario,
                         nombre: postulacion.Vacante.Usuario.nombre,
                         foto_perfil: postulacion.Vacante.Usuario.foto_perfil,
-                        resenia: rese,
+                        Resenia: rese,
                     };
                     pendientes.push(usuario);
                 });
