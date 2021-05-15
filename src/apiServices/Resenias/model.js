@@ -1,8 +1,12 @@
 const reseniaDao = require("./dao");
 
+const getUsuarios = async(ids) => {
+    return reseniaDao.getUsuarios(ids);
+};
+
 const getReseniasUsuario = async(id_usuario) => {
     return reseniaDao.getReseniasUsuario(id_usuario);
-}
+};
 
 const getUsuariosEvaluar = async(id_usuario) => {
     return reseniaDao.getUsuariosEvaluar(id_usuario);
@@ -32,7 +36,6 @@ const actualizarCalifUsuario = async(data, id_usuario) => {
     return reseniaDao.actualizarCalifUsuario(data, id_usuario);
 };
 
-
 module.exports = {
     getUsuariosEvaluar,
     getPostulantesEvaluar,
@@ -41,5 +44,6 @@ module.exports = {
     obtenerCalificacion,
     obtenerNumResenias,
     actualizarCalifUsuario,
-    getReseniasUsuario
+    getReseniasUsuario,
+    getUsuarios,
 };

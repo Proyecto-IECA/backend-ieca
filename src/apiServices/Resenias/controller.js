@@ -2,14 +2,49 @@ const reseniaModel = require("./model");
 const reseniaDto = require("../shared/dto");
 
 const getReseniasUsuario = async(req, res) => {
-    await reseniaModel
+    let resenias = await reseniaModel
         .getReseniasUsuario(req.params.id)
-        .then((resenias) => {
-            return res.json(reseniaDto.normally(true, resenias));
-        })
         .catch((err) => {
             return res.json(reseniaDto.normally(false, err));
         });
+
+    let ids = [];
+    let reseniasUser = [];
+
+    if (resenias.Resenias.length > 0) {
+        resenias.Resenias.forEach((resenia) => {
+            ids.push(resenia.id_emisor);
+        });
+
+        let usuarios = await reseniaModel.getUsuarios(ids).catch((err) => {
+            return res.json(reseniaDto.normally(false, err));
+        });
+
+
+        for (let i = 0; i < usuarios.length; i++) {
+            let resenia = {
+                id_resenia: resenias.Resenias[i].id_resenia,
+                fecha_resenia: resenias.Resenias[i].fecha_resenia,
+                calificacion: resenias.Resenias[i].calificacion,
+                comentario: resenias.Resenias[i].comentario,
+                id_emisor: resenias.Resenias[i].id_emisor,
+                id_receptor: resenias.Resenias[i].id_receptor,
+                nombre: usuarios[i].nombre,
+                foto_perfil: usuarios[i].foto_perfil,
+            };
+            reseniasUser.push(resenia);
+        }
+    }
+
+    let data = {
+        nombre: resenias.nombre,
+        pagina_web: resenias.pagina_web,
+        calificacion: resenias.calificacion,
+        numero_calificaciones: resenias.numero_calificaciones,
+        Resenias: reseniasUser,
+    };
+
+    res.json(reseniaDto.normally(true, data));
 };
 
 const getUsuariosEvaluar = async(req, res) => {
@@ -57,7 +92,6 @@ const getUsuariosEvaluar = async(req, res) => {
         .then((postulantesEvaluar) => {
             postulantesEvaluar.forEach((vacantes) => {
                 vacantes.Postulaciones.forEach((postulacion) => {
-
                     let rese;
 
                     postulacion.Usuario.Resenias.forEach((resenia) => {
@@ -87,7 +121,12 @@ const getUsuariosEvaluar = async(req, res) => {
 
 const calificar = async(req, res) => {
     await reseniaModel
-        .calificar(req.body.id_emisor, req.body.id_receptor, req.body.calificacion, req.body.comentario)
+        .calificar(
+            req.body.id_emisor,
+            req.body.id_receptor,
+            req.body.calificacion,
+            req.body.comentario
+        )
         .catch((err) => {
             return res.json(reseniaDto.normally(false, err));
         });
@@ -132,5 +171,5 @@ const calificar = async(req, res) => {
 module.exports = {
     getUsuariosEvaluar,
     calificar,
-    getReseniasUsuario
+    getReseniasUsuario,
 };

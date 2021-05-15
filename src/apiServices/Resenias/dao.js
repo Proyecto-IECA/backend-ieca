@@ -4,6 +4,25 @@ const Postulacion = require("../../services/mysql/models/Postulaciones");
 const Vacante = require("../../services/mysql/models/Vacantes");
 const { Op } = require("sequelize");
 
+const getUsuarios = async(ids) => {
+    return new Promise((resolve, reject) =>
+        Usuario.findAll({
+            attributes: ["nombre", "foto_perfil"],
+            where: {
+                id_usuario: {
+                    [Op.or]: ids,
+                },
+            },
+        })
+        .then((usuarios) => {
+            return resolve(usuarios);
+        })
+        .catch((err) => {
+            return reject(err);
+        })
+    );
+};
+
 const getReseniasUsuario = async(id_usuario) => {
     return new Promise((resolve, reject) =>
         Usuario.findByPk(id_usuario, {
@@ -117,7 +136,7 @@ const calificar = async(id_emisor, id_receptor, calif, coment) => {
                 Resenia.update({
                         fecha_resenia: new Date(Date.now()),
                         calificacion: calif,
-                        comentario: coment
+                        comentario: coment,
                     }, {
                         where: {
                             id_resenia: resenia.id_resenia,
@@ -134,7 +153,7 @@ const calificar = async(id_emisor, id_receptor, calif, coment) => {
                         id_emisor: id_emisor,
                         id_receptor: id_receptor,
                         calificacion: calif,
-                        comentario: coment
+                        comentario: coment,
                     })
                     .then((resenia) => {
                         return resolve(resenia);
@@ -207,5 +226,6 @@ module.exports = {
     obtenerCalificacion,
     obtenerNumResenias,
     actualizarCalifUsuario,
-    getReseniasUsuario
+    getReseniasUsuario,
+    getUsuarios,
 };
