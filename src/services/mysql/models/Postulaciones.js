@@ -1,6 +1,6 @@
 const { Model, DataTypes } = require("sequelize");
 const sequelize = require("../db");
-
+const Notificacion = require("./Notificaciones");
 
 class Postulacion extends Model {}
 Postulacion.init({
@@ -44,5 +44,9 @@ Postulacion.init({
     modelName: "Postulaciones",
     timestamps: false
 });
+
+Postulacion.hasMany(Notificacion, { foreignKey: "id_postulacion_fk" });
+Notificacion.belongsTo(Postulacion, { foreignKey: "id_postulacion_fk" });
+
 
 module.exports = Postulacion;

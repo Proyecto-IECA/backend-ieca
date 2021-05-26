@@ -1,3 +1,7 @@
+const ExpAcademica = require("../../services/mysql/models/ExperienciasAcademicas");
+const ExpLaboral = require("../../services/mysql/models/ExperienciasLaborales");
+const Habilidad = require("../../services/mysql/models/Habilidades");
+const Perfil = require("../../services/mysql/models/Perfiles");
 const Usuario = require("../../services/mysql/models/Usuarios");
 
 const createUsuario = async(usuario) => {
@@ -114,6 +118,32 @@ const getUsuario = async(id) => {
     );
 };
 
+const getUsuarioPerfil = async(id) => {
+    return new Promise((resolve, reject) =>
+        Usuario.findByPk(id, {
+            where: {
+                activo: 1,
+            },
+            include: [{
+                model: ExpLaboral,
+                limit: 1
+            }, {
+                model: ExpAcademica,
+                limit: 1
+            }, {
+                model: Perfil,
+            }, {
+                model: Habilidad
+            }]
+        })
+        .then((usuario) => {
+            return resolve(usuario);
+        })
+        .catch((err) => {
+            return reject(err);
+        })
+    )
+}
 
 module.exports = {
     createUsuario,
@@ -123,4 +153,5 @@ module.exports = {
     updateUsuario,
     updateFotoUsuario,
     getUsuario,
+    getUsuarioPerfil
 };

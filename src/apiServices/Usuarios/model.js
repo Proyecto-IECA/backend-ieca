@@ -28,6 +28,10 @@ const getUsuario = async(id) => {
     return usuarioDao.getUsuario(id);
 };
 
+const getUsuarioPerfil = async(id) => {
+    return usuarioDao.getUsuarioPerfil(id);
+};
+
 module.exports = {
     createUsuario,
     loginUsuario,
@@ -36,4 +40,5 @@ module.exports = {
     updateUsuario,
     updateFotoUsuario,
     getUsuario,
+    getUsuarioPerfil
 };
