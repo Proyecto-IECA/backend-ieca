@@ -133,7 +133,7 @@ const getUsuarioPerfil = async(id) => {
             }, {
                 model: Perfil,
             }, {
-                model: Habilidad
+                model: Habilidad,
             }]
         })
         .then((usuario) => {

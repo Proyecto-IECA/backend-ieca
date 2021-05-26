@@ -1,15 +1,62 @@
 const vacanteModel = require("./model");
 const vacanteDto = require("../shared/dto");
 
-const getVacantes = async(req, res) => {
+const getVacantesRecientes = async(req, res) => {
     await vacanteModel
-        .getVacantes(req.params.id)
+        .getVacantesRecientes(req.params.id)
         .then((vacantes) => {
             return res.json(vacanteDto.normally(true, vacantes));
         })
         .catch((err) => {
             return res.json(vacanteDto.normally(false, err));
         });
+};
+
+const getVacantesRecomendadas = async(req, res) => {
+    const perfiles = await vacanteModel
+        .getPerfilesUsuario(req.params.id)
+        .catch((err) => {
+            return res.json(vacanteDto.normally(false, err));
+        });
+
+    let newPerfiles = [];
+    perfiles.forEach((perfil) => {
+        newPerfiles.push(perfil.descripcion);
+    });
+
+    await vacanteModel
+        .getVacantesRecomendadas(req.params.id, newPerfiles)
+        .then((vacantes) => {
+            return res.json(vacanteDto.normally(true, vacantes));
+        })
+        .catch((err) => {
+            return res.json(vacanteDto.normally(false, err));
+        });
+
+    return res.json(vacanteDto.normally(true, newPerfiles));
+};
+
+const getVacantesGeneral = async(req, res) => {
+
+    if (req.body.filter_perfiles == true) {
+        await vacanteModel
+            .getVacantesGeneralFilter(req.params.id, req.body.fecha, req.body.limites, req.body.perfiles)
+            .then((vacantes) => {
+                return res.json(vacanteDto.normally(true, vacantes));
+            })
+            .catch((err) => {
+                return res.json(vacanteDto.normally(false, err));
+            });
+    } else {
+        await vacanteModel
+            .getVacantesGeneral(req.params.id, req.body.fecha, req.body.limites)
+            .then((vacantes) => {
+                return res.json(vacanteDto.normally(true, vacantes));
+            })
+            .catch((err) => {
+                return res.json(vacanteDto.normally(false, err));
+            });
+    }
 };
 
 const getVacante = async(req, res) => {
@@ -238,7 +285,9 @@ getPostulantes = async(req, res) => {
 };
 
 module.exports = {
-    getVacantes,
+    getVacantesRecientes,
+    getVacantesRecomendadas,
+    getVacantesGeneral,
     getVacante,
     getVacantesEmpresa,
     addVacante,

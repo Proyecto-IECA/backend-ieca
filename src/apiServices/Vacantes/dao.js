@@ -2,14 +2,20 @@ const Vacante = require("../../services/mysql/models/Vacantes");
 const Usuario = require("../../services/mysql/models/Usuarios");
 const Postulacion = require("../../services/mysql/models/Postulaciones");
 const VacanteFav = require("../../services/mysql/models/VacantesFavoritas");
+const Perfil = require("../../services/mysql/models/Perfiles");
 
-const getVacantes = async(id_usuario) => {
+const getVacantesRecientes = async(id_usuario) => {
     return new Promise((resolve, reject) =>
         Vacante.findAll({
+            order: [
+                ["fecha_publicacion", "DESC"]
+            ],
             where: {
                 activo: 1,
-                publicada: 1
+                publicada: 1,
             },
+            limit: 4,
+            subQuery: false,
             include: [{
                 model: VacanteFav,
                 include: [{
@@ -20,6 +26,123 @@ const getVacantes = async(id_usuario) => {
                     },
                 }, ],
             }, ],
+        })
+        .then((vacantes) => {
+            return resolve(vacantes);
+        })
+        .catch((err) => {
+            return reject(err);
+        })
+    );
+};
+
+const getVacantesRecomendadas = async(id_usuario, perfiles) => {
+    return new Promise((resolve, reject) =>
+        Vacante.findAll({
+            order: [
+                ["fecha_publicacion", "DESC"]
+            ],
+            where: {
+                activo: 1,
+                publicada: 1,
+            },
+            limit: 4,
+            subQuery: false,
+            include: [{
+                    model: Perfil,
+                    attributes: [],
+                    where: {
+                        descripcion: perfiles,
+                    },
+                },
+                {
+                    model: VacanteFav,
+                    include: [{
+                        model: Usuario,
+                        attributes: [],
+                        where: {
+                            id_usuario: id_usuario,
+                        },
+                    }, ],
+                },
+            ],
+        })
+        .then((vacantes) => {
+            return resolve(vacantes);
+        })
+        .catch((err) => {
+            return reject(err);
+        })
+    );
+};
+
+const getVacantesGeneral = async(id_usuario, fecha, limites) => {
+    return new Promise((resolve, reject) =>
+        Vacante.findAll({
+            order: [
+                ["fecha_publicacion", fecha]
+            ],
+            where: {
+                activo: 1,
+                publicada: 1,
+            },
+            limit: limites,
+            subQuery: false,
+            include: [{
+                    model: Perfil,
+                    attributes: [],
+                },
+                {
+                    model: VacanteFav,
+                    include: [{
+                        model: Usuario,
+                        attributes: [],
+                        where: {
+                            id_usuario: id_usuario,
+                        },
+                    }, ],
+                },
+            ],
+        })
+        .then((vacantes) => {
+            return resolve(vacantes);
+        })
+        .catch((err) => {
+            return reject(err);
+        })
+    );
+};
+
+const getVacantesGeneralFilter = async(id_usuario, fecha, limites, perfiles) => {
+    return new Promise((resolve, reject) =>
+        Vacante.findAll({
+            order: [
+                ["fecha_publicacion", fecha]
+            ],
+            where: {
+                activo: 1,
+                publicada: 1,
+            },
+            limit: limites,
+            subQuery: false,
+            include: [{
+                    model: Perfil,
+                    attributes: [],
+                    where: {
+                        descripcion: perfiles
+                    }
+                },
+                {
+                    model: VacanteFav,
+                    include: [{
+                        model: Usuario,
+                        attributes: [],
+                        where: {
+                            id_usuario: id_usuario,
+                        },
+                    }, ],
+                },
+            ],
         })
         .then((vacantes) => {
             return resolve(vacantes);
@@ -109,10 +232,11 @@ const publicarVacante = async(id) => {
     return new Promise((resolve, reject) =>
         Vacante.update({
             publicada: 1,
+            fecha_publicacion: new Date(Date.now()),
         }, {
             where: {
-                id_vacante: id
-            }
+                id_vacante: id,
+            },
         })
         .then((result) => {
             return resolve(result);
@@ -129,8 +253,8 @@ const noPublicarVacante = async(id) => {
             publicada: 0,
         }, {
             where: {
-                id_vacante: id
-            }
+                id_vacante: id,
+            },
         })
         .then((result) => {
             return resolve(result);
@@ -147,8 +271,8 @@ const cerrarVacante = async(id) => {
             disponible: 0,
         }, {
             where: {
-                id_vacante: id
-            }
+                id_vacante: id,
+            },
         })
         .then((result) => {
             return resolve(result);
@@ -165,8 +289,8 @@ const abrirVacante = async(id) => {
             disponible: 1,
         }, {
             where: {
-                id_vacante: id
-            }
+                id_vacante: id,
+            },
         })
         .then((result) => {
             return resolve(result);
@@ -206,8 +330,28 @@ const getPostulantes = async(id) => {
     );
 };
 
+const getPerfilesUsuario = async(id_usuario) => {
+    return new Promise((resolve, reject) =>
+        Usuario.findByPk(id_usuario, {
+            attributes: ["id_usuario"],
+            include: {
+                model: Perfil,
+            },
+        })
+        .then((usuario) => {
+            return resolve(usuario.Perfiles);
+        })
+        .catch((err) => {
+            return reject(err);
+        })
+    );
+};
+
 module.exports = {
-    getVacantes,
+    getVacantesRecientes,
+    getVacantesRecomendadas,
+    getVacantesGeneral,
+    getVacantesGeneralFilter,
     getVacante,
     getVacantesEmpresa,
     addVacante,
@@ -219,4 +363,5 @@ module.exports = {
     cerrarVacante,
     abrirVacante,
     getPostulantes,
+    getPerfilesUsuario,
 };
