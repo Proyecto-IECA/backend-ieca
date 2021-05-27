@@ -40,7 +40,7 @@ const getVacantesGeneral = async(req, res) => {
 
     if (req.body.filter_perfiles == true) {
         await vacanteModel
-            .getVacantesGeneralFilter(req.params.id, req.body.fecha, req.body.limites, req.body.perfiles)
+            .getVacantesGeneralFilter(req.params.id, req.body.fecha, req.body.perfiles)
             .then((vacantes) => {
                 return res.json(vacanteDto.normally(true, vacantes));
             })

@@ -8,12 +8,7 @@ const addVacanteFav = async(req, res) => {
             id_vacante_fk: req.body.id_vacante_fk,
         })
         .then((vacanteFav) => {
-            return res.json(
-                vacanteFavDto.normally(
-                    true,
-                    "Exito al guardar la vacante como favorita"
-                )
-            );
+            return res.json(vacanteFavDto.normally(true, vacanteFav));
         })
         .catch((err) => {
             return res.json(vacanteFavDto.normally(true, err));

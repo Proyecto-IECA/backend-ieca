@@ -8,12 +8,12 @@ const getVacantesRecomendadas = async(id_usuario, perfiles) => {
     return vacanteDao.getVacantesRecomendadas(id_usuario, perfiles);
 };
 
-const getVacantesGeneral = async(id_usuario, fecha, limites) => {
-    return vacanteDao.getVacantesGeneral(id_usuario, fecha, limites);
+const getVacantesGeneral = async(id_usuario, fecha) => {
+    return vacanteDao.getVacantesGeneral(id_usuario, fecha);
 };
 
-const getVacantesGeneralFilter = async(id_usuario, fecha, limites, perfiles) => {
-    return vacanteDao.getVacantesGeneralFilter(id_usuario, fecha, limites, perfiles);
+const getVacantesGeneralFilter = async(id_usuario, fecha, perfiles) => {
+    return vacanteDao.getVacantesGeneralFilter(id_usuario, fecha, perfiles);
 };
 
 const getVacante = async(id_vacante) => {

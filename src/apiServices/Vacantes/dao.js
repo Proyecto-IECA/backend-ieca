@@ -14,7 +14,7 @@ const getVacantesRecientes = async(id_usuario) => {
                 activo: 1,
                 publicada: 1,
             },
-            limit: 4,
+            limit: 2,
             subQuery: false,
             include: [{
                 model: VacanteFav,
@@ -46,7 +46,7 @@ const getVacantesRecomendadas = async(id_usuario, perfiles) => {
                 activo: 1,
                 publicada: 1,
             },
-            limit: 4,
+            limit: 2,
             subQuery: false,
             include: [{
                     model: Perfil,
@@ -76,7 +76,7 @@ const getVacantesRecomendadas = async(id_usuario, perfiles) => {
     );
 };
 
-const getVacantesGeneral = async(id_usuario, fecha, limites) => {
+const getVacantesGeneral = async(id_usuario, fecha) => {
     return new Promise((resolve, reject) =>
         Vacante.findAll({
             order: [
@@ -86,8 +86,6 @@ const getVacantesGeneral = async(id_usuario, fecha, limites) => {
                 activo: 1,
                 publicada: 1,
             },
-            limit: limites,
-            subQuery: false,
             include: [{
                     model: Perfil,
                     attributes: [],
@@ -113,7 +111,7 @@ const getVacantesGeneral = async(id_usuario, fecha, limites) => {
     );
 };
 
-const getVacantesGeneralFilter = async(id_usuario, fecha, limites, perfiles) => {
+const getVacantesGeneralFilter = async(id_usuario, fecha, perfiles) => {
     return new Promise((resolve, reject) =>
         Vacante.findAll({
             order: [
@@ -123,8 +121,6 @@ const getVacantesGeneralFilter = async(id_usuario, fecha, limites, perfiles) => 
                 activo: 1,
                 publicada: 1,
             },
-            limit: limites,
-            subQuery: false,
             include: [{
                     model: Perfil,
                     attributes: [],
