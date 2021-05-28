@@ -21,6 +21,14 @@ const generateJWT = (id, duracion) => {
     });
 };
 
+const getId = (token) => {
+    const payload = jwt.verify(token, process.env.JWT_SECRET);
+    const id = payload.id;
+
+    return id;
+};
+
 module.exports = {
     generateJWT,
+    getId
 };

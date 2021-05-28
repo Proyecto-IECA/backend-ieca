@@ -1,5 +1,7 @@
 const usuarioModel = require("../model");
 const usuarioDto = require("../../shared/dto");
+const authDto = require("../dto");
+const { generateJWT, getId } = require("../../shared/helpers/jwt");
 
 const validarEmail = async(req, res) => {
     await usuarioModel
@@ -61,7 +63,40 @@ const validarPerfil = async(req, res) => {
         });
 }
 
+const validarToken = async(req, res) => {
+    const token = req.header("x-token");
+    const idToken = getId(token);
+    const id = req.params.id;
+
+    if (idToken == id) {
+        const usuario = await usuarioModel
+            .getUsuario(id)
+            .then((usuario) => {
+                return usuario;
+            })
+            .catch((err) => {
+                return res.json(usuarioDto.normally(false, err));
+            });
+
+        const token = await generateJWT(usuario.id_usuario, "12h");
+        return res.json(
+            authDto.auth(
+                true, {
+                    id_usuario: usuario.id_usuario,
+                    tipo_usuario: usuario.tipo_usuario,
+                    email_validado: usuario.email_validado
+                },
+                token
+            )
+        );
+    } else {
+        return res.json(usuarioDto.normally(false, 'Token invalido'));
+    }
+
+}
+
 module.exports = {
     validarEmail,
-    validarPerfil
+    validarPerfil,
+    validarToken
 };
