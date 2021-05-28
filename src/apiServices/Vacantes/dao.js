@@ -17,15 +17,20 @@ const getVacantesRecientes = async(id_usuario) => {
             limit: 2,
             subQuery: false,
             include: [{
-                model: VacanteFav,
-                include: [{
                     model: Usuario,
-                    attributes: [],
-                    where: {
-                        id_usuario: id_usuario,
-                    },
-                }, ],
-            }, ],
+                    attributes: ["nombre", "foto_perfil"],
+                },
+                {
+                    model: VacanteFav,
+                    include: [{
+                        model: Usuario,
+                        attributes: [],
+                        where: {
+                            id_usuario: id_usuario,
+                        },
+                    }, ],
+                },
+            ],
         })
         .then((vacantes) => {
             return resolve(vacantes);
@@ -49,6 +54,10 @@ const getVacantesRecomendadas = async(id_usuario, perfiles) => {
             limit: 2,
             subQuery: false,
             include: [{
+                    model: Usuario,
+                    attributes: ["nombre", "foto_perfil"],
+                },
+                {
                     model: Perfil,
                     attributes: [],
                     where: {
@@ -87,6 +96,9 @@ const getVacantesGeneral = async(id_usuario, fecha) => {
                 publicada: 1,
             },
             include: [{
+                    model: Usuario,
+                    attributes: ["nombre", "foto_perfil"],
+                }, {
                     model: Perfil,
                     attributes: [],
                 },
@@ -122,11 +134,14 @@ const getVacantesGeneralFilter = async(id_usuario, fecha, perfiles) => {
                 publicada: 1,
             },
             include: [{
+                    model: Usuario,
+                    attributes: ["nombre", "foto_perfil"],
+                }, {
                     model: Perfil,
                     attributes: [],
                     where: {
-                        descripcion: perfiles
-                    }
+                        descripcion: perfiles,
+                    },
                 },
                 {
                     model: VacanteFav,
