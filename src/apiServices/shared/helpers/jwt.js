@@ -22,10 +22,14 @@ const generateJWT = (id, duracion) => {
 };
 
 const getId = (token) => {
-    const payload = jwt.verify(token, process.env.JWT_SECRET);
-    const id = payload.id;
+    try {
+        const payload = jwt.verify(token, process.env.JWT_SECRET);
+        const id = payload.id;
 
-    return id;
+        return id;
+    } catch (error) {
+        return false;
+    }
 };
 
 module.exports = {
