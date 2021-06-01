@@ -30,7 +30,7 @@ const createUsuario = async(req, res) => {
         });
 
     const token = await generateJWT(usuario.id_usuario, "10 minutes");
-    const url = "http://localhost:4200/#/validarEmail/" + usuario.id_usuario + "/" + token;
+    const url = "https://ieca.netlify.app/#/validarEmail/" + usuario.id_usuario + "/" + token;
 
     res.json(usuarioDto.normally(true, "Cuenta registrada de manera exitosa"));
     enviarEmail("validarEmail", url, usuario.email);
@@ -250,7 +250,7 @@ const sendEmail = async(req, res) => {
     }
 
     const token = await generateJWT(usuario.id_usuario, "10 minutes");
-    const url = "http://localhost:4200/#/" + req.body.ruta + "/" + usuario.id_usuario + "/" + token;
+    const url = "https://ieca.netlify.app/#/" + req.body.ruta + "/" + usuario.id_usuario + "/" + token;
 
     res.json(usuarioDto.normally(true, "Envio correcto del email"))
     enviarEmail(req.body.ruta, url, req.body.email);
