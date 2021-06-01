@@ -14,6 +14,7 @@ const postulaciones = require("../apiServices/Postulaciones/routes");
 const resenias = require("../apiServices/Resenias/routes");
 const notificaciones = require("../apiServices/Notificaciones/routes");
 const validaciones = require("../apiServices/Usuarios/middlewares/routes");
+const vistasVacante = require("../apiServices/VistasVacante/routes");
 const { validJWT } = require("../apiServices/shared/middlewares/validar-jwt");
 
 const router = Router();
@@ -28,6 +29,7 @@ router.use("/idiomas", idiomas);
 router.use("/perfiles", perfiles);
 router.use("/vacantes", vacantes);
 router.use("/vacantes-favoritas", vacantesFav);
+router.use("/vistas-vacantes", vistasVacante);
 router.use("/postulaciones", postulaciones);
 router.use("/resenias", resenias);
 router.use("/notificaciones", notificaciones);

@@ -13,6 +13,7 @@ const Idioma = require("./Idiomas");
 const Perfil = require("./Perfiles");
 const Resenia = require("./Resenias");
 const Notificacion = require("./Notificaciones");
+const VistaVacante = require("./VistasVacante");
 
 class Usuario extends Model {}
 Usuario.init({
@@ -338,6 +339,8 @@ Resenia.belongsTo(Usuario, { foreignKey: "id_receptor" });
 Usuario.hasMany(Notificacion, { foreignKey: "id_receptor" });
 Notificacion.belongsTo(Usuario, { foreignKey: "id_receptor" });
 
+Usuario.hasMany(VistaVacante, { foreignKey: "id_usuario_fk" });
+VistaVacante.belongsTo(Usuario, { foreignKey: "id_usuario_fk" });
 
 Usuario.belongsToMany(Habilidad, {
     through: "Habilidades_Usuario",

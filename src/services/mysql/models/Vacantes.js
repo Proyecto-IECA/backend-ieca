@@ -4,6 +4,7 @@ const Postulacion = require("./Postulaciones");
 const Perfil = require("./Perfiles");
 const VacanteFav = require("./VacantesFavoritas");
 const Notificacion = require("./Notificaciones");
+const VistaVacante = require("./VistasVacante");
 
 class Vacante extends Model {}
 Vacante.init({
@@ -127,6 +128,9 @@ VacanteFav.belongsTo(Vacante, { foreignKey: "id_vacante_fk" });
 
 Vacante.hasMany(Notificacion, { foreignKey: "id_vacante_fk" });
 Notificacion.belongsTo(Vacante, { foreignKey: "id_vacante_fk" });
+
+Vacante.hasMany(VistaVacante, { foreignKey: "id_vacante_fk" });
+VistaVacante.belongsTo(Vacante, { foreignKey: "id_vacante_fk" });
 
 Vacante.belongsToMany(Perfil, {
     through: "Perfiles_Vacante",
