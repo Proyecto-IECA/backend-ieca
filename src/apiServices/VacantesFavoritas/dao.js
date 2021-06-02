@@ -39,6 +39,10 @@ const getVacantesFav = async(id_usuario) => {
                 attributes: ["id_vacante_favorita"],
                 include: [{
                     model: Vacante,
+                    include: {
+                        model: Usuario,
+                        attributes: ["nombre", "foto_perfil"]
+                    }
                 }, ],
             }, ],
         })
