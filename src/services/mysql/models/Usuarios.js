@@ -210,10 +210,6 @@ Usuario.init({
         type: DataTypes.STRING,
         defaultValue: null,
         validate: {
-            isAlpha: {
-                args: true,
-                msg: "El giro solo puede contener letras",
-            },
             len: {
                 args: [1, 50],
                 msg: "El giro tiene que tener al menos un caracter y menos de 50",

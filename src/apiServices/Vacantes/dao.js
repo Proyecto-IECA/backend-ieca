@@ -4,88 +4,7 @@ const Postulacion = require("../../services/mysql/models/Postulaciones");
 const VacanteFav = require("../../services/mysql/models/VacantesFavoritas");
 const Perfil = require("../../services/mysql/models/Perfiles");
 
-const getVacantesRecientes = async(id_usuario) => {
-    return new Promise((resolve, reject) =>
-        Vacante.findAll({
-            order: [
-                ["fecha_publicacion", "DESC"]
-            ],
-            where: {
-                activo: 1,
-                publicada: 1,
-            },
-            limit: 2,
-            subQuery: false,
-            include: [{
-                    model: Usuario,
-                    attributes: ["nombre", "foto_perfil"],
-                },
-                {
-                    model: VacanteFav,
-                    include: [{
-                        model: Usuario,
-                        attributes: [],
-                        where: {
-                            id_usuario: id_usuario,
-                        },
-                    }, ],
-                },
-            ],
-        })
-        .then((vacantes) => {
-            return resolve(vacantes);
-        })
-        .catch((err) => {
-            return reject(err);
-        })
-    );
-};
-
-const getVacantesRecomendadas = async(id_usuario, perfiles) => {
-    return new Promise((resolve, reject) =>
-        Vacante.findAll({
-            order: [
-                ["fecha_publicacion", "DESC"]
-            ],
-            where: {
-                activo: 1,
-                publicada: 1,
-            },
-            limit: 2,
-            subQuery: false,
-            include: [{
-                    model: Usuario,
-                    attributes: ["nombre", "foto_perfil"],
-                },
-                {
-                    model: Perfil,
-                    attributes: [],
-                    where: {
-                        descripcion: perfiles,
-                    },
-                },
-                {
-                    model: VacanteFav,
-                    include: [{
-                        model: Usuario,
-                        attributes: [],
-                        where: {
-                            id_usuario: id_usuario,
-                        },
-                    }, ],
-                },
-            ],
-        })
-        .then((vacantes) => {
-            return resolve(vacantes);
-        })
-        .catch((err) => {
-            return reject(err);
-        })
-    );
-};
-
-const getVacantesGeneral = async(id_usuario, fecha) => {
+const getVacantes = async(id_usuario, fecha) => {
     return new Promise((resolve, reject) =>
         Vacante.findAll({
             order: [
@@ -123,7 +42,7 @@ const getVacantesGeneral = async(id_usuario, fecha) => {
     );
 };
 
-const getVacantesGeneralFilter = async(id_usuario, fecha, perfiles) => {
+const getVacantesFilter = async(id_usuario, fecha, perfiles) => {
     return new Promise((resolve, reject) =>
         Vacante.findAll({
             order: [
@@ -359,10 +278,8 @@ const getPerfilesUsuario = async(id_usuario) => {
 };
 
 module.exports = {
-    getVacantesRecientes,
-    getVacantesRecomendadas,
-    getVacantesGeneral,
-    getVacantesGeneralFilter,
+    getVacantes,
+    getVacantesFilter,
     getVacante,
     getVacantesEmpresa,
     addVacante,

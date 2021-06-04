@@ -250,7 +250,7 @@ const sendEmail = async(req, res) => {
     }
 
     const token = await generateJWT(usuario.id_usuario, "10 minutes");
-    const url = "https://ieca.netlify.app/#/" + req.body.ruta + "/" + usuario.id_usuario + "/" + token;
+    const url = "http://localhost:4200/#/" + req.body.ruta + "/" + usuario.id_usuario + "/" + token;
 
     res.json(usuarioDto.normally(true, "Envio correcto del email"))
     enviarEmail(req.body.ruta, url, req.body.email);

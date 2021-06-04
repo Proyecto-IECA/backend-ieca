@@ -1,19 +1,11 @@
 const vacanteDao = require("./dao");
 
-const getVacantesRecientes = async(id_usuario) => {
-    return vacanteDao.getVacantesRecientes(id_usuario);
+const getVacantes = async(id_usuario, fecha) => {
+    return vacanteDao.getVacantes(id_usuario, fecha);
 };
 
-const getVacantesRecomendadas = async(id_usuario, perfiles) => {
-    return vacanteDao.getVacantesRecomendadas(id_usuario, perfiles);
-};
-
-const getVacantesGeneral = async(id_usuario, fecha) => {
-    return vacanteDao.getVacantesGeneral(id_usuario, fecha);
-};
-
-const getVacantesGeneralFilter = async(id_usuario, fecha, perfiles) => {
-    return vacanteDao.getVacantesGeneralFilter(id_usuario, fecha, perfiles);
+const getVacantesFilter = async(id_usuario, fecha, perfiles) => {
+    return vacanteDao.getVacantesFilter(id_usuario, fecha, perfiles);
 };
 
 const getVacante = async(id_vacante) => {
@@ -61,10 +53,8 @@ const getPerfilesUsuario = async(id) => {
 };
 
 module.exports = {
-    getVacantesRecientes,
-    getVacantesRecomendadas,
-    getVacantesGeneral,
-    getVacantesGeneralFilter,
+    getVacantes,
+    getVacantesFilter,
     getVacante,
     getVacantesEmpresa,
     addVacante,

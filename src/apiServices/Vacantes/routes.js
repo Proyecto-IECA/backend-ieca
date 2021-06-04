@@ -4,9 +4,7 @@ const controller = require("./controller");
 const router = express.Router();
 
 router.postAsync("/", controller.addVacante);
-router.getAsync("/recientes/:id", controller.getVacantesRecientes);
-router.getAsync("/recomendadas/:id", controller.getVacantesRecomendadas);
-router.putAsync("/generales/:id", controller.getVacantesGeneral);
+router.putAsync("/generales/:id", controller.getVacantes);
 router.getAsync("/vacante/:id", controller.getVacante);
 router.getAsync("/empresa/:id", controller.getVacantesEmpresa);
 router.putAsync("/:id", controller.updateVacante);
