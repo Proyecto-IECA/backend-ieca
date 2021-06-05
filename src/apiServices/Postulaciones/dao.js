@@ -159,7 +159,8 @@ const getPostulacion = async(id_usuario, id_vacante) => {
         Postulacion.findOne({
             where: {
                 id_usuario_fk: id_usuario,
-                id_vacante_fk: id_vacante
+                id_vacante_fk: id_vacante,
+                activo: 1
             }
         })
         .then((postulacion) => {
