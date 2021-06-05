@@ -2,9 +2,9 @@
     "name": "backend-ieca-v2",
     "version": "1.0.0",
     "description": "",
-    "main": "index.js",
+    "main": "src/app.js",
     "scripts": {
-        "star:dev": "nodemon src/app.js",
+        "start:dev": "nodemon src/app.js",
         "start": "node src/app.js"
     },
     "keywords": [],
