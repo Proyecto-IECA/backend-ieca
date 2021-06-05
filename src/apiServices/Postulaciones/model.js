@@ -28,6 +28,10 @@ const getPostulaciones = async(id_usuario) => {
     return postulacionDao.getPostulaciones(id_usuario);
 };
 
+const getPostulacion = async(id_usuario, id_vacante) => {
+    return postulacionDao.getPostulacion(id_usuario, id_vacante);
+};
+
 module.exports = {
     addPostulacion,
     deletePostulacion,
@@ -36,4 +40,5 @@ module.exports = {
     rechazarPostulacion,
     getPostulante,
     getPostulaciones,
+    getPostulacion
 };

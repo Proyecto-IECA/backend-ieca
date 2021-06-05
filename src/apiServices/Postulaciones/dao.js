@@ -154,6 +154,23 @@ const getPostulaciones = async(id_usuario) => {
     );
 };
 
+const getPostulacion = async(id_usuario, id_vacante) => {
+    return new Promise((resolve, reject) =>
+        Postulacion.findOne({
+            where: {
+                id_usuario_fk: id_usuario,
+                id_vacante_fk: id_vacante
+            }
+        })
+        .then((postulacion) => {
+            return resolve(postulacion);
+        })
+        .catch((err) => {
+            return reject(err);
+        })
+    )
+}
+
 module.exports = {
     addPostulacion,
     deletePostulacion,
@@ -162,4 +179,5 @@ module.exports = {
     rechazarPostulacion,
     getPostulante,
     getPostulaciones,
+    getPostulacion
 };

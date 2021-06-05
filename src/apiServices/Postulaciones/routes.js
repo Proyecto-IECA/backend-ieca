@@ -6,6 +6,7 @@ const router = express.Router();
 router.postAsync("/", controller.addPostulacion);
 router.getAsync("/:id", controller.getPostulante);
 router.getAsync("/realizadas/:id", controller.getPostulaciones);
+router.getAsync("/validar/:id/:idv", controller.getPostulacion);
 router.getAsync("/cancelar/:id", controller.cancelPostulacion);
 router.getAsync("/aceptar/:id", controller.aceptarPostulacion);
 router.getAsync("/rechazar/:id", controller.rechazarPostulacion);
