@@ -128,6 +128,7 @@ const getPostulaciones = async(id_usuario) => {
         Postulacion.findAll({
             where: {
                 id_usuario_fk: id_usuario,
+                activo: 1
             },
             attributes: [
                 "id_postulacion",
