@@ -237,7 +237,10 @@ const getPostulantes = async(id) => {
             attributes: ["id_vacante"],
             include: [{
                 model: Postulacion,
-                attributes: ["id_postulacion", "fecha_postulacion"],
+                attributes: ["id_postulacion", "fecha_postulacion", "aceptada", "rechazada"],
+                where: {
+                    activo: 1
+                },
                 include: [{
                     model: Usuario,
                     attributes: [

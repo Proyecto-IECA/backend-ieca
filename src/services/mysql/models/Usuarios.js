@@ -290,7 +290,7 @@ Usuario.init({
         defaultValue: null,
         validate: {
             len: {
-                args: [1, 200],
+                args: [3, 200],
                 msg: "La pagina web debe tener mas de 3 caracteres y menos de 120",
             },
         },
