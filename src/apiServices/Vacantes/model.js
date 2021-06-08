@@ -48,6 +48,10 @@ const getPostulantes = async(id) => {
     return vacanteDao.getPostulantes(id);
 };
 
+const getPostulaciones = async(id) => {
+    return vacanteDao.getPostulaciones(id);
+};
+
 const getPerfilesUsuario = async(id) => {
     return vacanteDao.getPerfilesUsuario(id);
 };
@@ -65,5 +69,6 @@ module.exports = {
     cerrarVacante,
     abrirVacante,
     getPostulantes,
+    getPostulaciones,
     getPerfilesUsuario,
 };

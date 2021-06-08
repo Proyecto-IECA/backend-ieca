@@ -17,7 +17,8 @@ const getVacantes = async(id_usuario, fecha) => {
             include: [{
                     model: Usuario,
                     attributes: ["nombre", "foto_perfil"],
-                }, {
+                },
+                {
                     model: Perfil,
                     attributes: [],
                 },
@@ -55,7 +56,8 @@ const getVacantesFilter = async(id_usuario, fecha, perfiles) => {
             include: [{
                     model: Usuario,
                     attributes: ["nombre", "foto_perfil"],
-                }, {
+                },
+                {
                     model: Perfil,
                     attributes: [],
                     where: {
@@ -237,9 +239,14 @@ const getPostulantes = async(id) => {
             attributes: ["id_vacante"],
             include: [{
                 model: Postulacion,
-                attributes: ["id_postulacion", "fecha_postulacion", "aceptada", "rechazada"],
+                attributes: [
+                    "id_postulacion",
+                    "fecha_postulacion",
+                    "aceptada",
+                    "rechazada",
+                ],
                 where: {
-                    activo: 1
+                    activo: 1,
                 },
                 include: [{
                     model: Usuario,
@@ -256,6 +263,23 @@ const getPostulantes = async(id) => {
         })
         .then((postulantes) => {
             return resolve(postulantes);
+        })
+        .catch((err) => {
+            return reject(err);
+        })
+    );
+};
+
+const getPostulaciones = async(id) => {
+    return new Promise((resolve, reject) =>
+        Postulacion.count({
+            where: {
+                id_vacante_fk: id,
+                activo: 1
+            },
+        })
+        .then((numPostulaciones) => {
+            return resolve(numPostulaciones);
         })
         .catch((err) => {
             return reject(err);
@@ -294,5 +318,6 @@ module.exports = {
     cerrarVacante,
     abrirVacante,
     getPostulantes,
+    getPostulaciones,
     getPerfilesUsuario,
 };

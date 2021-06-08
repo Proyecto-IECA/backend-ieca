@@ -14,5 +14,6 @@ router.getAsync("/publicar/:id", controller.publicarVacante);
 router.getAsync("/no-publicar/:id", controller.noPublicarVacante);
 router.getAsync("/cerrar/:id", controller.cerrarVacante);
 router.getAsync("/abrir/:id", controller.abrirVacante);
+router.getAsync("/numero-postulaciones/:id", controller.getPostulaciones);
 
 module.exports = router;

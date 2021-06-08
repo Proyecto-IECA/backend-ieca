@@ -2,7 +2,6 @@ const vacanteModel = require("./model");
 const vacanteDto = require("../shared/dto");
 
 const getVacantes = async(req, res) => {
-
     if (req.body.filter_perfiles == true) {
         await vacanteModel
             .getVacantesFilter(req.params.id, req.body.fecha, req.body.perfiles)
@@ -249,6 +248,17 @@ getPostulantes = async(req, res) => {
         });
 };
 
+getPostulaciones = async(req, res) => {
+    await vacanteModel
+        .getPostulaciones(req.params.id)
+        .then((numPostulaciones) => {
+            return res.json(vacanteDto.normally(true, numPostulaciones));
+        })
+        .catch((err) => {
+            return res.json(vacanteDto.normally(false, err));
+        });
+};
+
 module.exports = {
     getVacantes,
     getVacante,
@@ -261,4 +271,5 @@ module.exports = {
     cerrarVacante,
     abrirVacante,
     getPostulantes,
+    getPostulaciones,
 };
