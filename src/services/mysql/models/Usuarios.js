@@ -291,7 +291,7 @@ Usuario.init({
         validate: {
             len: {
                 args: [3, 200],
-                msg: "La pagina web debe tener mas de 3 caracteres y menos de 120",
+                msg: "La pagina web debe tener mas de 3 caracteres y menos de 200",
             },
         },
     },
@@ -300,6 +300,17 @@ Usuario.init({
         type: DataTypes.INTEGER,
         defaultValue: 0,
     },
+
+    curp: {
+        type: DataTypes.STRING,
+        defaultValue: null,
+        validate: {
+            len: {
+                args: [18, 18],
+                msg: "La CURP debe tener 18 caracteres"
+            }
+        }
+    }
 }, {
     sequelize,
     modelName: "Usuarios",

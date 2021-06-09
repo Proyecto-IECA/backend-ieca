@@ -14,13 +14,13 @@ const createUsuario = async(req, res) => {
             apellido_paterno: req.body.apellido_paterno,
             apellido_materno: req.body.apellido_materno,
             fecha_nacimiento: req.body.fecha_nacimiento,
-            sexo: req.body.sexo,
             email: req.body.email,
             pass: bcryptjs.hashSync(req.body.pass, salt),
             tipo_usuario: req.body.tipo_usuario,
             administrador: req.body.administrador,
             ubicacion: req.body.ubicacion,
             giro: req.body.giro,
+            curp: req.body.curp
         })
         .then((usuario) => {
             return usuario;
@@ -149,6 +149,7 @@ const updateUsuario = async(req, res) => {
             pagina_web: req.body.pagina_web,
             ubicacion: req.body.ubicacion,
             giro: req.body.giro,
+            curp: req.body.curp,
         })
         .then((result) => {
             if (result[0] === 0) {
@@ -207,6 +208,7 @@ const getUsuario = async(req, res) => {
                         foto_perfil: usuario.foto_perfil,
                         cv: usuario.cv,
                         email: usuario.email,
+                        curp: usuario.curp
                     })
                 );
             }
