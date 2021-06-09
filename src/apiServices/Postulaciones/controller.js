@@ -12,7 +12,7 @@ const addPostulacion = async(req, res) => {
             return res.json(
                 postulacionDto.normally(
                     true,
-                    "Se postulo de manera correcta a la vacante"
+                    postulacion
                 )
             );
         })

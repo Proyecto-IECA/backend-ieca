@@ -13,6 +13,7 @@ const getVacantes = async(id_usuario, fecha) => {
             where: {
                 activo: 1,
                 publicada: 1,
+                disponible: 1
             },
             include: [{
                     model: Usuario,
@@ -52,6 +53,7 @@ const getVacantesFilter = async(id_usuario, fecha, perfiles) => {
             where: {
                 activo: 1,
                 publicada: 1,
+                disponible: 1
             },
             include: [{
                     model: Usuario,
