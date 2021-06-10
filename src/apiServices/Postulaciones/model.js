@@ -16,8 +16,8 @@ const aceptarPostulacion = async(id, fecha) => {
     return postulacionDao.aceptarPostulacion(id, fecha);
 };
 
-const rechazarPostulacion = async(id) => {
-    return postulacionDao.rechazarPostulacion(id);
+const rechazarPostulacion = async(id, comentario) => {
+    return postulacionDao.rechazarPostulacion(id, comentario);
 };
 
 const getPostulante = async(id) => {

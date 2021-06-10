@@ -37,6 +37,11 @@ Postulacion.init({
         type: DataTypes.TINYINT,
         allowNull: false,
         defaultValue: 1
+    },
+
+    comentario: {
+        type: DataTypes.TEXT,
+        defaultValue: null,
     }
 
 }, {

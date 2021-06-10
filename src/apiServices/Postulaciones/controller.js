@@ -92,7 +92,7 @@ const aceptarPostulacion = async(req, res) => {
 
 const rechazarPostulacion = async(req, res) => {
     await postulacionModel
-        .rechazarPostulacion(req.params.id)
+        .rechazarPostulacion(req.params.id, req.body.comentario)
         .then((result) => {
             if (result[0] === 0) {
                 return res.json(

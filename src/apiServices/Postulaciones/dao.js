@@ -46,12 +46,13 @@ const cancelPostulacion = async(id) => {
     );
 };
 
-const aceptarPostulacion = async(id, fecha) => {
+const aceptarPostulacion = async(id, fecha, comentario) => {
     return new Promise((resolve, reject) =>
         Postulacion.update({
             aceptada: 1,
             rechazada: 0,
-            fecha_post_aceptada: fecha
+            fecha_post_aceptada: fecha,
+            comentario: "Felicidades la empresa ha aceptado tu postulación, revisa tu correo que se te contactara por ese medio"
         }, {
             where: {
                 id_postulacion: id,
@@ -66,12 +67,13 @@ const aceptarPostulacion = async(id, fecha) => {
     );
 };
 
-const rechazarPostulacion = async(id) => {
+const rechazarPostulacion = async(id, comentario) => {
     return new Promise((resolve, reject) =>
         Postulacion.update({
             aceptada: 0,
             rechazada: 1,
-            fecha_post_aceptada: null
+            fecha_post_aceptada: null,
+            comentario: comentario
         }, {
             where: {
                 id_postulacion: id,
@@ -135,7 +137,8 @@ const getPostulaciones = async(id_usuario) => {
                 "fecha_postulacion",
                 "aceptada",
                 "rechazada",
-                "id_vacante_fk"
+                "id_vacante_fk",
+                "comentario"
             ],
             include: [{
                 model: Vacante,

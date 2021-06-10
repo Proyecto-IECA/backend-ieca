@@ -9,7 +9,7 @@ router.getAsync("/realizadas/:id", controller.getPostulaciones);
 router.getAsync("/validar/:id/:idv", controller.getPostulacion);
 router.getAsync("/cancelar/:id", controller.cancelPostulacion);
 router.getAsync("/aceptar/:id", controller.aceptarPostulacion);
-router.getAsync("/rechazar/:id", controller.rechazarPostulacion);
+router.putAsync("/rechazar/:id", controller.rechazarPostulacion);
 router.deleteAsync("/:id", controller.deletePostulacion);
 
 module.exports = router;
