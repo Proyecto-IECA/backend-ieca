@@ -148,7 +148,9 @@ const updateVacante = async(id, vacante) => {
 
 const deleteVacante = async(id) => {
     return new Promise((resolve, reject) =>
-        Vacante.destroy({
+        Vacante.update({
+            activo: 0
+        }, {
             where: {
                 id_vacante: id,
             },
@@ -259,6 +261,7 @@ const getPostulantes = async(id) => {
                         "telefono",
                         "calificacion",
                         "ciudad",
+                        "foto_perfil"
                     ],
                 }, ],
             }, ],

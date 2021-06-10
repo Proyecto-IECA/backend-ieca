@@ -42,6 +42,7 @@ const getVacantesEmpresa = async(req, res) => {
 
     await vacanteModel
         .getVacantesEmpresa({
+            activo: 1,
             id_usuario_fk: req.params.id,
             publicada: 1,
         })
@@ -54,6 +55,7 @@ const getVacantesEmpresa = async(req, res) => {
 
     await vacanteModel
         .getVacantesEmpresa({
+            activo: 1,
             id_usuario_fk: req.params.id,
             publicada: 0,
         })
@@ -66,6 +68,7 @@ const getVacantesEmpresa = async(req, res) => {
 
     await vacanteModel
         .getVacantesEmpresa({
+            activo: 1,
             id_usuario_fk: req.params.id,
             disponible: 1,
         })
@@ -78,6 +81,7 @@ const getVacantesEmpresa = async(req, res) => {
 
     await vacanteModel
         .getVacantesEmpresa({
+            activo: 1,
             id_usuario_fk: req.params.id,
             disponible: 0,
         })
@@ -152,7 +156,7 @@ const deleteVacante = async(req, res) => {
     await vacanteModel
         .deleteVacante(req.params.id)
         .then((result) => {
-            if (result === 0) {
+            if (result[0] === 0) {
                 return res.json(
                     vacanteDto.normally(false, "Ocurrio un error al eliminar la vacante")
                 );
