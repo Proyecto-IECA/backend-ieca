@@ -92,7 +92,7 @@ const getVacante = async(id_vacante) => {
         Vacante.findByPk(id_vacante, {
             include: [{
                 model: Usuario,
-                attributes: ["id_usuario", "nombre", "pagina_web", "calificacion"],
+                attributes: ["id_usuario", "nombre", "pagina_web", "foto_perfil", "ubicacion"],
             }, ],
         })
         .then((vacante) => {
