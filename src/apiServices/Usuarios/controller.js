@@ -32,8 +32,14 @@ const createUsuario = async(req, res) => {
     const token = await generateJWT(usuario.id_usuario, "10 minutes");
     const url = "https://ieca.netlify.app/#/validarEmail/" + usuario.id_usuario + "/" + token;
 
-    res.json(usuarioDto.normally(true, "Cuenta registrada de manera exitosa"));
-    enviarEmail("validarEmail", url, usuario.email);
+    ;
+    enviarEmail("validarEmail", url, usuario.email)
+        .then((result) => {
+            res.json(usuarioDto.normally(true, "Cuenta registrada de manera exitosa"));
+        })
+        .catch((err) => {
+            console.log(err);
+        });
 };
 
 const loginUsuario = async(req, res) => {
