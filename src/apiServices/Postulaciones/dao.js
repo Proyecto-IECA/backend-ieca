@@ -100,6 +100,13 @@ const getPostulante = async(id) => {
                 "rechazada",
             ],
             include: [{
+                model: Vacante,
+                attributes: ["id_vacante", "puesto"],
+                include: {
+                    model: Usuario,
+                    attributes: ["nombre"]
+                }
+            }, {
                 model: Usuario,
                 attributes: [
                     "id_usuario",
@@ -168,7 +175,18 @@ const getPostulacion = async(id_usuario, id_vacante) => {
                 id_usuario_fk: id_usuario,
                 id_vacante_fk: id_vacante,
                 activo: 1
-            }
+            },
+            include: [{
+                model: Usuario,
+                attributes: ["nombre", "apellido_paterno", "apellido_materno"]
+            }, {
+                model: Vacante,
+                attributes: ["puesto"],
+                include: {
+                    model: Usuario,
+                    attributes: ["id_usuario"]
+                }
+            }]
         })
         .then((postulacion) => {
             return resolve(postulacion);

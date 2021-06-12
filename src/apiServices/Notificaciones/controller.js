@@ -35,18 +35,8 @@ const verNotificacion = async(req, res) => {
     await notificacionModel
         .verNotificacion(req.params.id)
         .then((result) => {
-            if (result[0] === 0) {
-                return res.json(
-                    notificacionDto.normally(
-                        false,
-                        "Ocurrio un error al ver la notificacion "
-                    )
-                );
-            }
-
             return res.json(
-                notificacionDto.normally(true, "Exito al ver la notificacion ")
-            );
+                notificacionDto.normally(true, result));
         })
         .catch((err) => {
             return res.json(notificacionDto.normally(false, err));

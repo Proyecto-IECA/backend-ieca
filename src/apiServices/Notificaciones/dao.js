@@ -18,6 +18,9 @@ const addNotificacion = async(notificacion) => {
 const obtenerNotificaciones = async(id_usuario) => {
     return new Promise((resolve, reject) =>
         Notificacion.findAll({
+            order: [
+                ["id_notificacion", "DESC"]
+            ],
             attributes: ["id_notificacion", "url", "titulo", "mensaje", "visto", "fecha_creacion"],
             where: {
                 id_receptor: id_usuario
