@@ -39,6 +39,11 @@ Postulacion.init({
         defaultValue: 1
     },
 
+    titulo: {
+        type: DataTypes.STRING,
+        defaultValue: null
+    },
+
     comentario: {
         type: DataTypes.TEXT,
         defaultValue: null,

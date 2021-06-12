@@ -18,9 +18,8 @@ const addNotificacion = async(notificacion) => {
 const obtenerNotificaciones = async(id_usuario) => {
     return new Promise((resolve, reject) =>
         Notificacion.findAll({
-            attributes: ["id_notificacion", "url", "titulo", "mensaje"],
+            attributes: ["id_notificacion", "url", "titulo", "mensaje", "visto", "fecha_creacion"],
             where: {
-                visto: 0,
                 id_receptor: id_usuario
             },
             include: [{
@@ -28,14 +27,14 @@ const obtenerNotificaciones = async(id_usuario) => {
                 attributes: ["id_postulacion", "fecha_postulacion"],
                 include: {
                     model: Usuario,
-                    attributes: ["id_usuario", "nombre", "foto_perfil"]
+                    attributes: ["foto_perfil"]
                 }
             }, {
                 model: Vacante,
                 attributes: ["id_vacante", "fecha_publicacion"],
                 include: {
                     model: Usuario,
-                    attributes: ["id_usuario", "nombre", "foto_perfil"]
+                    attributes: ["foto_perfil"]
                 }
             }]
         })

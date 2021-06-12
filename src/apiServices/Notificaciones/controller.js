@@ -9,7 +9,8 @@ const addNotificacion = async(req, res) => {
             mensaje: req.body.mensaje,
             id_postulacion_fk: req.body.id_postulacion_fk,
             id_vacante_fk: req.body.id_vacante_fk,
-            id_receptor: req.body.id_receptor
+            id_receptor: req.body.id_receptor,
+            fecha_creacion: new Date(Date.now())
         })
         .then((notificacion) => {
             return res.json(notificacionDto.normally(true, notificacion));

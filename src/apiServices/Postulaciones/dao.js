@@ -46,13 +46,14 @@ const cancelPostulacion = async(id) => {
     );
 };
 
-const aceptarPostulacion = async(id, fecha, comentario) => {
+const aceptarPostulacion = async(id, fecha) => {
     return new Promise((resolve, reject) =>
         Postulacion.update({
             aceptada: 1,
             rechazada: 0,
             fecha_post_aceptada: fecha,
-            comentario: "Felicidades la empresa ha aceptado tu postulación, revisa tu correo que se te contactara por ese medio"
+            titulo: "Felicidades la empresa acepto tu postulación",
+            comentario: "Revisa tu correo que se te contactara por ese medio"
         }, {
             where: {
                 id_postulacion: id,
@@ -73,6 +74,7 @@ const rechazarPostulacion = async(id, comentario) => {
             aceptada: 0,
             rechazada: 1,
             fecha_post_aceptada: null,
+            titulo: 'Lo sentimos, tu postulación fue rechazada',
             comentario: comentario
         }, {
             where: {
@@ -138,7 +140,8 @@ const getPostulaciones = async(id_usuario) => {
                 "aceptada",
                 "rechazada",
                 "id_vacante_fk",
-                "comentario"
+                "comentario",
+                "titulo"
             ],
             include: [{
                 model: Vacante,

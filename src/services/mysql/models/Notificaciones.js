@@ -46,6 +46,11 @@ Notificacion.init({
         allowNull: false,
         defaultValue: 1,
     },
+
+    fecha_creacion: {
+        type: DataTypes.DATEONLY,
+        defaultValue: null
+    }
 }, {
     sequelize,
     modelName: "Notificaciones",

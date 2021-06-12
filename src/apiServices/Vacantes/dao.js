@@ -240,8 +240,11 @@ const abrirVacante = async(id) => {
 const getPostulantes = async(id) => {
     return new Promise((resolve, reject) =>
         Vacante.findByPk(id, {
-            attributes: ["id_vacante"],
+            attributes: ["id_vacante", "puesto"],
             include: [{
+                model: Usuario,
+                attributes: ["nombre"]
+            }, {
                 model: Postulacion,
                 attributes: [
                     "id_postulacion",
