@@ -24,31 +24,31 @@ const validarPerfil = async(req, res) => {
         .then((usuario) => {
             errores = [];
             if (!usuario.telefono) {
-                errores.push('Falta el telefono');
+                errores.push('- Un teléfono');
             }
             if (!usuario.foto_perfil) {
-                errores.push('Falta la foto de perfil');
+                errores.push('- La foto de perfil');
             }
 
             if (usuario.tipo_usuario === "Postulante") {
                 if (!usuario.domicilio) {
-                    errores.push('Falta el domicilio');
+                    errores.push('- El domicilio');
                 }
                 if (usuario.Experiencias_Laborales.length < 1) {
-                    errores.push('Falta registrar al menos una experiencia laboral');
+                    errores.push('- Al menos una experiencia laboral');
                 }
                 if (usuario.Experiencias_Academicas.length < 1) {
-                    errores.push('Falta registrar al menos una experiencia academica');
+                    errores.push('- Al menos una experiencia académica');
                 }
                 if (usuario.Perfiles.length < 1) {
-                    errores.push('Falta registrar al menos un perfil');
+                    errores.push('- Al menos un perfil');
                 }
                 if (usuario.Habilidades.length < 1) {
-                    errores.push('Falta registrar al menos una habilidad');
+                    errores.push('- Al menos una habilidad');
                 }
             } else {
                 if (!usuario.ubicacion) {
-                    errores.push('Falta la ubicacion de la empresa');
+                    errores.push('- La ubicacion de la empresa');
                 }
             }
 

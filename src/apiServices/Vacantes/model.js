@@ -8,8 +8,8 @@ const getVacantesFilter = async(id_usuario, fecha, perfiles) => {
     return vacanteDao.getVacantesFilter(id_usuario, fecha, perfiles);
 };
 
-const getVacante = async(id_vacante) => {
-    return vacanteDao.getVacante(id_vacante);
+const getVacante = async(id_vacante, id_usuario) => {
+    return vacanteDao.getVacante(id_vacante, id_usuario);
 };
 
 const getVacantesEmpresa = async(condicion) => {

@@ -87,13 +87,23 @@ const getVacantesFilter = async(id_usuario, fecha, perfiles) => {
     );
 };
 
-const getVacante = async(id_vacante) => {
+const getVacante = async(id_vacante, id_usuario) => {
     return new Promise((resolve, reject) =>
         Vacante.findByPk(id_vacante, {
             include: [{
                 model: Usuario,
                 attributes: ["id_usuario", "nombre", "pagina_web", "foto_perfil", "ubicacion"],
-            }, ],
+            }, {
+                model: VacanteFav,
+                attributes: ["id_vacante_favorita"],
+                include: [{
+                    model: Usuario,
+                    attributes: [],
+                    where: {
+                        id_usuario: id_usuario,
+                    },
+                }, ],
+            }],
         })
         .then((vacante) => {
             return resolve(vacante);

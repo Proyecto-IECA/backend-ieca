@@ -25,7 +25,7 @@ const getVacantes = async(req, res) => {
 
 const getVacante = async(req, res) => {
     await vacanteModel
-        .getVacante(req.params.id)
+        .getVacante(req.params.id, req.params.idU)
         .then((vacante) => {
             return res.json(vacanteDto.normally(true, vacante));
         })
