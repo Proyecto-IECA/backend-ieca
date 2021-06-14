@@ -16,7 +16,7 @@ const validJWT = async(req, res, next) => {
                 return res.json(jwtDto.normally(false, "Token invalido"));
             });
     } catch (error) {
-        return res.json(jwtDto.normally(false, "Token invalido"));
+        return res.json(jwtDto.normally(false, "Token inválido"));
     }
 };
 

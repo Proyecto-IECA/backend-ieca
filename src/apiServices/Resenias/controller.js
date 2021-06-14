@@ -155,12 +155,12 @@ const calificar = async(req, res) => {
         .then((result) => {
             if (result[0] === 0) {
                 return res.json(
-                    reseniaDto.normally(false, "No se pudo guardar la calificacion")
+                    reseniaDto.normally(false, "No se pudo guardar la calificación")
                 );
             }
 
             return res.json(
-                reseniaDto.normally(true, "Exito al guardar la calificacion")
+                reseniaDto.normally(true, "Éxito al guardar la calificación")
             );
         })
         .catch((err) => {

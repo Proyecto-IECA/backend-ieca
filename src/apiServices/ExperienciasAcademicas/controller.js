@@ -64,7 +64,7 @@ const updateExpAcademica = async(req, res) => {
                 return res.json(
                     expAcademicaDto.normally(
                         false,
-                        "Ocurrio un error al actualizar la experiencia Academica"
+                        "Ocurrió un error al actualizar la experiencia académica"
                     )
                 );
             }
@@ -72,7 +72,7 @@ const updateExpAcademica = async(req, res) => {
             return res.json(
                 expAcademicaDto.normally(
                     true,
-                    "Exito al actualizar la experiencia academica"
+                    "Éxito al actualizar la experiencia académica"
                 )
             );
         })
@@ -89,7 +89,7 @@ const deleteExpAcademica = async(req, res) => {
                 return res.json(
                     expAcademicaDto.normally(
                         false,
-                        "Ocurrio un error al eliminar la experiencia Academica"
+                        "Ocurrió un error al eliminar la experiencia académica"
                     )
                 );
             }
@@ -97,7 +97,7 @@ const deleteExpAcademica = async(req, res) => {
             return res.json(
                 expAcademicaDto.normally(
                     true,
-                    "Exito al eliminar la experiencia academica"
+                    "Éxito al eliminar la experiencia académica"
                 )
             );
         })

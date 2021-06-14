@@ -29,13 +29,13 @@ const deletePostulacion = async(req, res) => {
                 return res.json(
                     postulacionDto.normally(
                         false,
-                        "Ocurrio un error al eliminar la postulacion"
+                        "Ocurrió un error al eliminar la postulación"
                     )
                 );
             }
 
             return res.json(
-                postulacionDto.normally(true, "Exito al eliminar la postulacion")
+                postulacionDto.normally(true, "Éxito al eliminar la postulación")
             );
         })
         .catch((err) => {
@@ -51,13 +51,13 @@ const cancelPostulacion = async(req, res) => {
                 return res.json(
                     postulacionDto.normally(
                         false,
-                        "Ocurrio un error al cancelar la postulacion"
+                        "Ocurrió un error al cancelar la postulación"
                     )
                 );
             }
 
             return res.json(
-                postulacionDto.normally(true, "Exito al cancelar la postulacion")
+                postulacionDto.normally(true, "Éxito al cancelar la postulación")
             );
         })
         .catch((err) => {
@@ -76,13 +76,13 @@ const aceptarPostulacion = async(req, res) => {
                 return res.json(
                     postulacionDto.normally(
                         false,
-                        "Ocurrio un error al aceptar la postulacion"
+                        "Ocurrió un error al aceptar la postulación"
                     )
                 );
             }
 
             return res.json(
-                postulacionDto.normally(true, "Exito al aceptar la postulacion")
+                postulacionDto.normally(true, "Éxito al aceptar la postulación")
             );
         })
         .catch((err) => {
@@ -98,13 +98,13 @@ const rechazarPostulacion = async(req, res) => {
                 return res.json(
                     postulacionDto.normally(
                         false,
-                        "Ocurrio un error al rechazar la postulacion"
+                        "Ocurrió un error al rechazar la postulación"
                     )
                 );
             }
 
             return res.json(
-                postulacionDto.normally(true, "Exito al rechazar la postulacion")
+                postulacionDto.normally(true, "Éxito al rechazar la postulación")
             );
         })
         .catch((err) => {

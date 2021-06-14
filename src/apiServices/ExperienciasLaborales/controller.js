@@ -64,7 +64,7 @@ const updateExpLaboral = async(req, res) => {
                 return res.json(
                     expLaboralDto.normally(
                         false,
-                        "Ocurrio un error al actualizar la experiencia Laboral"
+                        "Ocurrió un error al actualizar la experiencia laboral"
                     )
                 );
             }
@@ -72,7 +72,7 @@ const updateExpLaboral = async(req, res) => {
             return res.json(
                 expLaboralDto.normally(
                     true,
-                    "Exito al actualizar la experiencia Laboral"
+                    "Éxito al actualizar la experiencia laboral"
                 )
             );
         })
@@ -89,13 +89,13 @@ const deleteExpLaboral = async(req, res) => {
                 return res.json(
                     expLaboralDto.normally(
                         false,
-                        "Ocurrio un error al eliminar la experiencia Laboral"
+                        "Ocurrió un error al eliminar la experiencia laboral"
                     )
                 );
             }
 
             return res.json(
-                expLaboralDto.normally(true, "Exito al eliminar la experiencia Laboral")
+                expLaboralDto.normally(true, "Éxito al eliminar la experiencia laboral")
             );
         })
         .catch((err) => {

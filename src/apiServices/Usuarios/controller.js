@@ -35,7 +35,7 @@ const createUsuario = async(req, res) => {
     ;
     enviarEmail("validarEmail", url, usuario.email)
         .then((result) => {
-            res.json(usuarioDto.normally(true, "Cuenta registrada de manera exitosa"));
+            res.json(usuarioDto.normally(true, "Cuenta registrada con éxito"));
         })
         .catch((err) => {
             console.log(err);
@@ -56,14 +56,14 @@ const loginUsuario = async(req, res) => {
         return res.json(
             usuarioDto.normally(
                 false,
-                "No existe una cuenta con este email o fue descativada"
+                "No existe una cuenta con este correo electrónico o fue desactivada"
             )
         );
     }
 
     const validPassword = bcryptjs.compareSync(req.body.pass, usuario.pass);
     if (!validPassword) {
-        return res.json(usuarioDto.normally(false, "Email o Password incorrecto"));
+        return res.json(usuarioDto.normally(false, "Correo electrónico y/o contraseña incorrecta"));
     }
 
     const token = await generateJWT(usuario.id_usuario, "12h");
@@ -89,11 +89,11 @@ const renewPassUsuario = async(req, res) => {
         .then((result) => {
             if (result[0] === 0) {
                 return res.json(
-                    usuarioDto.normally(false, "No se pudo actualizar el password")
+                    usuarioDto.normally(false, "No se pudo actualizar la contraseña")
                 );
             }
             return res.json(
-                usuarioDto.normally(true, "Contraseña actualizada correctamente")
+                usuarioDto.normally(true, "Contraseña actualizada con éxito")
             );
         })
         .catch((err) => {
@@ -107,7 +107,7 @@ const validEmail = async(req, res) => {
         .then((result) => {
             if (result[0] === 0) {
                 return res.json(
-                    usuarioDto.normally(false, "No se pudo validar el email")
+                    usuarioDto.normally(false, "No se pudo validar el correo electrónico")
                 );
             }
         })
@@ -160,12 +160,12 @@ const updateUsuario = async(req, res) => {
         .then((result) => {
             if (result[0] === 0) {
                 return res.json(
-                    usuarioDto.normally(false, "No se pudo actualizar la informacion")
+                    usuarioDto.normally(false, "No se pudo actualizar la información")
                 );
             }
 
             return res.json(
-                usuarioDto.normally(true, "Exito al actualizar la informacion")
+                usuarioDto.normally(true, "Éxito al actualizar la información")
             );
         })
         .catch((err) => {
@@ -185,7 +185,7 @@ const updateFotoUsuario = async(req, res) => {
                 );
             }
 
-            return res.json(usuarioDto.normally(true, "Exito al actualizar la foto"));
+            return res.json(usuarioDto.normally(true, "Éxito al actualizar la foto"));
         })
         .catch((err) => {
             return res.json(usuarioDto.normally(false, err));
@@ -252,7 +252,7 @@ const sendEmail = async(req, res) => {
         return res.json(
             usuarioDto.normally(
                 false,
-                "No existe una cuenta con este email o fue descativada"
+                "No existe una cuenta con este correo electrónico o fue desactivada."
             )
         );
     }
@@ -260,7 +260,7 @@ const sendEmail = async(req, res) => {
     const token = await generateJWT(usuario.id_usuario, "10 minutes");
     const url = "http://localhost:4200/#/" + req.body.ruta + "/" + usuario.id_usuario + "/" + token;
 
-    res.json(usuarioDto.normally(true, "Envio correcto del email"))
+    res.json(usuarioDto.normally(true, "Se ha enviado un correo a su bandeja de entrada."))
     enviarEmail(req.body.ruta, url, req.body.email);
 };
 

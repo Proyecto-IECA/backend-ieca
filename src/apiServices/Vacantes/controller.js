@@ -138,13 +138,13 @@ const updateVacante = async(req, res) => {
                 return res.json(
                     vacanteDto.normally(
                         false,
-                        "Ocurrio un error al actualizar la vacante"
+                        "Ocurrió un error al actualizar la vacante"
                     )
                 );
             }
 
             return res.json(
-                vacanteDto.normally(true, "Exito al actualizar la vacante")
+                vacanteDto.normally(true, "Éxito al actualizar la vacante")
             );
         })
         .catch((err) => {
@@ -158,12 +158,12 @@ const deleteVacante = async(req, res) => {
         .then((result) => {
             if (result[0] === 0) {
                 return res.json(
-                    vacanteDto.normally(false, "Ocurrio un error al eliminar la vacante")
+                    vacanteDto.normally(false, "Ocurrió un error al eliminar la vacante")
                 );
             }
 
             return res.json(
-                vacanteDto.normally(true, "Exito al eliminar la vacante")
+                vacanteDto.normally(true, "Éxito al eliminar la vacante")
             );
         })
         .catch((err) => {
@@ -177,12 +177,12 @@ const publicarVacante = async(req, res) => {
         .then((result) => {
             if (result[0] === 0) {
                 return res.json(
-                    vacanteDto.normally(false, "No se pudo públicar la vacante")
+                    vacanteDto.normally(false, "No se pudo publicar la vacante")
                 );
             }
 
             return res.json(
-                vacanteDto.normally(true, "Exito al publicar la vacante")
+                vacanteDto.normally(true, "Éxito al publicar la vacante")
             );
         })
         .catch((err) => {
@@ -200,7 +200,7 @@ const noPublicarVacante = async(req, res) => {
                 );
             }
 
-            return res.json(vacanteDto.normally(true, "Exito al quitar la vacante"));
+            return res.json(vacanteDto.normally(true, "Éxito al quitar la vacante"));
         })
         .catch((err) => {
             return res.json(vacanteDto.normally(false, err));
@@ -217,7 +217,7 @@ const cerrarVacante = async(req, res) => {
                 );
             }
 
-            return res.json(vacanteDto.normally(true, "Exito al cerrar la vacante"));
+            return res.json(vacanteDto.normally(true, "Éxito al cerrar la vacante"));
         })
         .catch((err) => {
             return res.json(vacanteDto.normally(false, err));
@@ -234,7 +234,7 @@ const abrirVacante = async(req, res) => {
                 );
             }
 
-            return res.json(vacanteDto.normally(true, "Exito al abrir la vacante"));
+            return res.json(vacanteDto.normally(true, "Éxito al abrir la vacante"));
         })
         .catch((err) => {
             return res.json(vacanteDto.normally(false, err));

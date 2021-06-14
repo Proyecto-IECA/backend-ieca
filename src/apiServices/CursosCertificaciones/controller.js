@@ -40,12 +40,12 @@ const updateCursoCert = async(req, res) => {
                 return res.json(
                     cursoCertDto.normally(
                         false,
-                        "Ocurrio un error al actualizar el curso"
+                        "Ocurrió un error al actualizar el curso"
                     )
                 );
             }
             return res.json(
-                cursoCertDto.normally(true, "Exito al actualizar el curso")
+                cursoCertDto.normally(true, "Éxito al actualizar el curso")
             );
         })
         .catch((err) => {
@@ -63,7 +63,7 @@ const deleteCursoCert = async(req, res) => {
                 );
             }
 
-            return res.json(cursoCertDto.normally(true, "Exito al elimiar el curso"));
+            return res.json(cursoCertDto.normally(true, "Éxito al elimiar el curso"));
         })
         .catch((err) => {
             return res.json(cursoCertDto.normally(false, err));

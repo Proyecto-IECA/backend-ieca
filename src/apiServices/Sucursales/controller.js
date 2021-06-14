@@ -38,13 +38,13 @@ const updateSucursal = async(req, res) => {
                 return res.json(
                     sucursalDto.normally(
                         false,
-                        "Ocurrio un error al actualizar la sucursal"
+                        "Ocurrió un error al actualizar la sucursal"
                     )
                 );
             }
 
             return res.json(
-                sucursalDto.normally(true, "Exito al actualizar la sucursal")
+                sucursalDto.normally(true, "Éxito al actualizar la sucursal")
             );
         })
         .catch((err) => {
@@ -58,12 +58,12 @@ const deleteSucursal = async(req, res) => {
         .then((result) => {
             if (result === 0) {
                 return res.json(
-                    sucursalDto.normally(false, "No de pudo eliminar una sucursal")
+                    sucursalDto.normally(false, "No se pudo eliminar una sucursal")
                 );
             }
 
             return res.json(
-                sucursalDto.normally(true, "Exito al eliminar la sucursal")
+                sucursalDto.normally(true, "Éxito al eliminar la sucursal")
             );
         })
         .catch((err) => {

@@ -23,7 +23,7 @@ const deleteVacanteFav = async(req, res) => {
                 return res.json(
                     vacanteFavDto.normally(
                         false,
-                        "Ocurrio un error al eliminar la vacante como favorita"
+                        "Ocurrió un error al eliminar la vacante como favorita"
                     )
                 );
             }
@@ -31,7 +31,7 @@ const deleteVacanteFav = async(req, res) => {
             return res.json(
                 vacanteFavDto.normally(
                     true,
-                    "Exito al eliminar la vacante como favorita"
+                    "Éxito al eliminar la vacante como favorita"
                 )
             );
         })
