@@ -15,12 +15,12 @@ app.use("/api", routes);
 app.listen(process.env.PORT || 3000, () => {
     console.log("Server listening on port 3000");
 
-    sequelize
-        .sync({ alter: false })
-        .then(() => {
-            console.log("We connect to the database");
-        })
-        .catch((error) => {
-            console.log("An error has occurred", error);
-        });
+    // sequelize
+    //     .sync({ alter: false })
+    //     .then(() => {
+    //         console.log("We connect to the database");
+    //     })
+    //     .catch((error) => {
+    //         console.log("An error has occurred", error);
+    //     });
 });

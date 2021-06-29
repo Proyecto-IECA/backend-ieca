@@ -15,6 +15,7 @@ const resenias = require("../apiServices/Resenias/routes");
 const notificaciones = require("../apiServices/Notificaciones/routes");
 const validaciones = require("../apiServices/Usuarios/middlewares/routes");
 const vistasVacante = require("../apiServices/VistasVacante/routes");
+const vinculacion = require("../apiServices/Vinculacion/routes");
 const { validJWT } = require("../apiServices/shared/middlewares/validar-jwt");
 
 const router = Router();
@@ -34,5 +35,6 @@ router.use("/postulaciones", postulaciones);
 router.use("/resenias", resenias);
 router.use("/notificaciones", notificaciones);
 router.use("/validar", validaciones);
+router.use("/vincular-cuenta", vinculacion);
 
 module.exports = router;
