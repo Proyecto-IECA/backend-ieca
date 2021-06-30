@@ -1,6 +1,7 @@
 const { Model, DataTypes } = require("sequelize");
 const sequelize = require("../db");
 const Notificacion = require("./Notificaciones");
+const moment = require("moment");
 
 class Postulacion extends Model {}
 Postulacion.init({
@@ -13,7 +14,7 @@ Postulacion.init({
 
     fecha_postulacion: {
         type: DataTypes.DATEONLY,
-        defaultValue: new Date(Date.now())
+        defaultValue: moment().format()
     },
 
     aceptada: {

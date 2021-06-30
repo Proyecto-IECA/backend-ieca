@@ -4,6 +4,7 @@ const cors = require("cors");
 const sequelize = require("./services/mysql/db");
 const routes = require("./routes/app");
 
+
 const app = express();
 
 app.use(cors({ origin: true }));
@@ -14,7 +15,6 @@ app.use("/api", routes);
 
 app.listen(process.env.PORT || 3000, () => {
     console.log("Server listening on port 3000");
-
     // sequelize
     //     .sync({ alter: false })
     //     .then(() => {

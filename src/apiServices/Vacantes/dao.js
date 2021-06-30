@@ -3,6 +3,7 @@ const Usuario = require("../../services/mysql/models/Usuarios");
 const Postulacion = require("../../services/mysql/models/Postulaciones");
 const VacanteFav = require("../../services/mysql/models/VacantesFavoritas");
 const Perfil = require("../../services/mysql/models/Perfiles");
+const moment = require("moment");
 
 const getVacantes = async(id_usuario, fecha) => {
     return new Promise((resolve, reject) =>
@@ -178,7 +179,7 @@ const publicarVacante = async(id) => {
     return new Promise((resolve, reject) =>
         Vacante.update({
             publicada: 1,
-            fecha_publicacion: new Date(Date.now()),
+            fecha_publicacion: moment().format(),
         }, {
             where: {
                 id_vacante: id,
