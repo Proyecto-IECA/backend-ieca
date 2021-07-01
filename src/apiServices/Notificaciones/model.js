@@ -12,8 +12,13 @@ const verNotificacion = async(id_notificacion) => {
     return notificacionDao.verNotificacion(id_notificacion);
 };
 
+const obtenerNumeroNotificaciones = async(id_usuario) => {
+    return notificacionDao.obtenerNumeroNotificaciones(id_usuario);
+};
+
 module.exports = {
     addNotificacion,
     obtenerNotificaciones,
     verNotificacion,
+    obtenerNumeroNotificaciones,
 };

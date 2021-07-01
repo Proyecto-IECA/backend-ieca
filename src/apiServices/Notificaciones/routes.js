@@ -6,5 +6,6 @@ const router = express.Router();
 router.postAsync("/", controller.addNotificacion);
 router.getAsync("/:id", controller.getNotificaciones);
 router.getAsync("/ver/:id", controller.verNotificacion);
+router.getAsync("/sin-ver/:id", controller.obtenerNumeroNotificaciones);
 
 module.exports = router;

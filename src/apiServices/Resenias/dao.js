@@ -1,8 +1,9 @@
+const { Op } = require("sequelize");
+
 const Resenia = require("../../services/mysql/models/Resenias");
 const Usuario = require("../../services/mysql/models/Usuarios");
 const Postulacion = require("../../services/mysql/models/Postulaciones");
 const Vacante = require("../../services/mysql/models/Vacantes");
-const { Op } = require("sequelize");
 
 const getUsuarios = async(ids) => {
     return new Promise((resolve, reject) =>

@@ -21,25 +21,34 @@ const obtenerNotificaciones = async(id_usuario) => {
             order: [
                 ["id_notificacion", "DESC"]
             ],
-            attributes: ["id_notificacion", "url", "titulo", "mensaje", "visto", "fecha_creacion"],
+            attributes: [
+                "id_notificacion",
+                "url",
+                "titulo",
+                "mensaje",
+                "visto",
+                "fecha_creacion",
+            ],
             where: {
-                id_receptor: id_usuario
+                id_receptor: id_usuario,
             },
             include: [{
-                model: Postulacion,
-                attributes: ["id_postulacion", "fecha_postulacion"],
-                include: {
-                    model: Usuario,
-                    attributes: ["foto_perfil"]
-                }
-            }, {
-                model: Vacante,
-                attributes: ["id_vacante", "fecha_publicacion"],
-                include: {
-                    model: Usuario,
-                    attributes: ["foto_perfil"]
-                }
-            }]
+                    model: Postulacion,
+                    attributes: ["id_postulacion", "fecha_postulacion"],
+                    include: {
+                        model: Usuario,
+                        attributes: ["foto_perfil"],
+                    },
+                },
+                {
+                    model: Vacante,
+                    attributes: ["id_vacante", "fecha_publicacion"],
+                    include: {
+                        model: Usuario,
+                        attributes: ["foto_perfil"],
+                    },
+                },
+            ],
         })
         .then((notificaciones) => {
             return resolve(notificaciones);
@@ -68,8 +77,26 @@ const verNotificacion = async(id_notificacion) => {
     );
 };
 
+const obtenerNumeroNotificaciones = async(id_usuario) => {
+    return new Promise((resolve, reject) =>
+        Notificacion.count({
+            where: {
+                id_receptor: id_usuario,
+                visto: 0,
+            },
+        })
+        .then((numeroN) => {
+            return resolve(numeroN);
+        })
+        .catch((err) => {
+            return reject(err);
+        })
+    );
+};
+
 module.exports = {
     addNotificacion,
     obtenerNotificaciones,
     verNotificacion,
+    obtenerNumeroNotificaciones,
 };
