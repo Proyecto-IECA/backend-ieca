@@ -1,3 +1,5 @@
+const sequelize = require("sequelize");
+
 const Postulacion = require("../../services/mysql/models/Postulaciones");
 const Usuario = require("../../services/mysql/models/Usuarios");
 const Vacante = require("../../services/mysql/models/Vacantes");
@@ -142,8 +144,7 @@ const getPostulaciones = async(id_usuario) => {
                 activo: 1
             },
             attributes: [
-                "id_postulacion",
-                "fecha_postulacion",
+                "id_postulacion", [sequelize.fn('date_format', sequelize.col('fecha_postulacion'), '%d/%m/%Y'), 'fecha_postulacion'],
                 "aceptada",
                 "rechazada",
                 "id_vacante_fk",

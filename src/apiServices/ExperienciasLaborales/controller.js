@@ -60,15 +60,6 @@ const updateExpLaboral = async(req, res) => {
             trabajando: req.body.trabajando,
         })
         .then((result) => {
-            if (result[0] === 0) {
-                return res.json(
-                    expLaboralDto.normally(
-                        false,
-                        "Ocurrió un error al actualizar la experiencia laboral"
-                    )
-                );
-            }
-
             return res.json(
                 expLaboralDto.normally(
                     true,

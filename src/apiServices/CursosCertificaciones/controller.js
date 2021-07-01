@@ -36,14 +36,6 @@ const updateCursoCert = async(req, res) => {
             link: req.body.link,
         })
         .then((result) => {
-            if (result[0] === 0) {
-                return res.json(
-                    cursoCertDto.normally(
-                        false,
-                        "Ocurrió un error al actualizar el curso"
-                    )
-                );
-            }
             return res.json(
                 cursoCertDto.normally(true, "Éxito al actualizar el curso")
             );

@@ -1,3 +1,5 @@
+const sequelize = require("sequelize");
+
 const VacanteFav = require("../../services/mysql/models/VacantesFavoritas");
 const Usuario = require("../../services/mysql/models/Usuarios");
 const Vacante = require("../../services/mysql/models/Vacantes");
@@ -39,6 +41,21 @@ const getVacantesFav = async(id_usuario) => {
                 attributes: ["id_vacante_favorita"],
                 include: [{
                     model: Vacante,
+                    attributes: [
+                        "id_vacante",
+                        "puesto", [sequelize.fn('date_format', sequelize.col('fecha_publicacion'), '%d/%m/%Y'), 'fecha_publicacion'],
+                        "imagen",
+                        "sueldo",
+                        "descripcion",
+                        "disponible",
+                        "modalidad",
+                        "nivel",
+                        "vistas",
+                        "publicada",
+                        "activo",
+                        "id_sucursal_fk",
+                        "id_usuario_fk"
+                    ],
                     include: {
                         model: Usuario,
                         attributes: ["nombre", "foto_perfil"]

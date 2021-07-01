@@ -60,15 +60,6 @@ const updateExpAcademica = async(req, res) => {
             estudiando: req.body.estudiando,
         })
         .then((result) => {
-            if (result[0] === 0) {
-                return res.json(
-                    expAcademicaDto.normally(
-                        false,
-                        "Ocurrió un error al actualizar la experiencia académica"
-                    )
-                );
-            }
-
             return res.json(
                 expAcademicaDto.normally(
                     true,

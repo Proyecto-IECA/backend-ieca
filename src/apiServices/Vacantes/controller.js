@@ -241,7 +241,7 @@ const abrirVacante = async(req, res) => {
         });
 };
 
-getPostulantes = async(req, res) => {
+const getPostulantes = async(req, res) => {
     await vacanteModel
         .getPostulantes(req.params.id)
         .then((postulantes) => {
@@ -252,7 +252,7 @@ getPostulantes = async(req, res) => {
         });
 };
 
-getPostulaciones = async(req, res) => {
+const getPostulaciones = async(req, res) => {
     await vacanteModel
         .getPostulaciones(req.params.id)
         .then((numPostulaciones) => {

@@ -1,9 +1,12 @@
+const moment = require("moment");
+const sequelize = require("sequelize");
+
 const Vacante = require("../../services/mysql/models/Vacantes");
 const Usuario = require("../../services/mysql/models/Usuarios");
 const Postulacion = require("../../services/mysql/models/Postulaciones");
 const VacanteFav = require("../../services/mysql/models/VacantesFavoritas");
 const Perfil = require("../../services/mysql/models/Perfiles");
-const moment = require("moment");
+
 
 const getVacantes = async(id_usuario, fecha) => {
     return new Promise((resolve, reject) =>
@@ -16,6 +19,21 @@ const getVacantes = async(id_usuario, fecha) => {
                 publicada: 1,
                 disponible: 1
             },
+            attributes: [
+                "id_vacante",
+                "puesto", [sequelize.fn('date_format', sequelize.col('fecha_publicacion'), '%d/%m/%Y'), 'fecha_publicacion'],
+                "imagen",
+                "sueldo",
+                "descripcion",
+                "disponible",
+                "modalidad",
+                "nivel",
+                "vistas",
+                "publicada",
+                "activo",
+                "id_sucursal_fk",
+                "id_usuario_fk"
+            ],
             include: [{
                     model: Usuario,
                     attributes: ["nombre", "foto_perfil"],
@@ -56,6 +74,21 @@ const getVacantesFilter = async(id_usuario, fecha, perfiles) => {
                 publicada: 1,
                 disponible: 1
             },
+            attributes: [
+                "id_vacante",
+                "puesto", [sequelize.fn('date_format', sequelize.col('fecha_publicacion'), '%d/%m/%Y'), 'fecha_publicacion'],
+                "imagen",
+                "sueldo",
+                "descripcion",
+                "disponible",
+                "modalidad",
+                "nivel",
+                "vistas",
+                "publicada",
+                "activo",
+                "id_sucursal_fk",
+                "id_usuario_fk"
+            ],
             include: [{
                     model: Usuario,
                     attributes: ["nombre", "foto_perfil"],
@@ -91,6 +124,21 @@ const getVacantesFilter = async(id_usuario, fecha, perfiles) => {
 const getVacante = async(id_vacante, id_usuario) => {
     return new Promise((resolve, reject) =>
         Vacante.findByPk(id_vacante, {
+            attributes: [
+                "id_vacante",
+                "puesto", [sequelize.fn('date_format', sequelize.col('fecha_publicacion'), '%d/%m/%Y'), 'fecha_publicacion'],
+                "imagen",
+                "sueldo",
+                "descripcion",
+                "disponible",
+                "modalidad",
+                "nivel",
+                "vistas",
+                "publicada",
+                "activo",
+                "id_sucursal_fk",
+                "id_usuario_fk"
+            ],
             include: [{
                 model: Usuario,
                 attributes: ["id_usuario", "nombre", "pagina_web", "foto_perfil", "ubicacion"],
@@ -119,6 +167,21 @@ const getVacantesEmpresa = async(condicion) => {
     return new Promise((resolve, reject) =>
         Vacante.findAll({
             where: condicion,
+            attributes: [
+                "id_vacante",
+                "puesto", [sequelize.fn('date_format', sequelize.col('fecha_publicacion'), '%d/%m/%Y'), 'fecha_publicacion'],
+                "imagen",
+                "sueldo",
+                "descripcion",
+                "disponible",
+                "modalidad",
+                "nivel",
+                "vistas",
+                "publicada",
+                "activo",
+                "id_sucursal_fk",
+                "id_usuario_fk"
+            ],
         })
         .then((vacantes) => {
             return resolve(vacantes);
@@ -258,8 +321,7 @@ const getPostulantes = async(id) => {
             }, {
                 model: Postulacion,
                 attributes: [
-                    "id_postulacion",
-                    "fecha_postulacion",
+                    "id_postulacion", [sequelize.fn('date_format', sequelize.col('fecha_postulacion'), '%d/%m/%Y'), 'fecha_postulacion'],
                     "aceptada",
                     "rechazada",
                 ],
