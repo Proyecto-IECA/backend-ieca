@@ -4,9 +4,12 @@ const cors = require("cors");
 const sequelize = require("./services/mysql/db");
 const routes = require("./routes/app");
 const moment = require("moment");
+const path = require("path");
 
 
 const app = express();
+
+app.use(express.static(path.join(__dirname, '/public/dist')));
 
 app.use(cors({ origin: true }));
 app.use(express.json());
