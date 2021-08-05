@@ -1,6 +1,7 @@
 const cursoCertModel = require("./model");
 const cursoCertDto = require("../shared/dto");
 
+// Función para obtener un curso y/o certificación
 const getCursosCert = async(req, res) => {
     await cursoCertModel
         .getCursosCert(req.params.id)
@@ -12,6 +13,7 @@ const getCursosCert = async(req, res) => {
         });
 };
 
+// Función para agregar un nuevo curso y/o certificación
 const addCursoCert = async(req, res) => {
     await cursoCertModel
         .addCursoCert({
@@ -28,6 +30,7 @@ const addCursoCert = async(req, res) => {
         });
 };
 
+// Función para actualizar un curso y/o certificación
 const updateCursoCert = async(req, res) => {
     await cursoCertModel
         .updateCursoCert(req.params.id, {
@@ -45,6 +48,7 @@ const updateCursoCert = async(req, res) => {
         });
 };
 
+// Función para eliminar un curso y/o certificación
 const deleteCursoCert = async(req, res) => {
     await cursoCertModel
         .deleteCursoCert(req.params.id)

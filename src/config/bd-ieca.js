@@ -1,3 +1,4 @@
+// Variables para la cadena de conexión a la BD de IECA / variables del entorno
 const conString = {
     host: process.env.SERVER_DB2,
     user: process.env.USER_DB2,

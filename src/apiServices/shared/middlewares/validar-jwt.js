@@ -1,7 +1,9 @@
+// Importación de las librarías necesarias
 const jwt = require("jsonwebtoken");
 const jwtDto = require("../dto");
 const usuarioModel = require("../../Usuarios/model");
 
+// Función para validar un jsonwebtoken
 const validJWT = async(req, res, next) => {
     const token = req.header("x-token");
 

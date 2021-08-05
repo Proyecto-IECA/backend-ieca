@@ -1,3 +1,4 @@
+// Importación de las librarías necesarias
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
@@ -6,17 +7,15 @@ const routes = require("./routes/app");
 const moment = require("moment");
 const path = require("path");
 
-
+// Configuración del server de express
 const app = express();
-
 app.use(express.static(path.join(__dirname, '/public/dist')));
-
 app.use(cors({ origin: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-
 app.use("/api", routes);
 
+// Se levanta el servidor 
 app.listen(process.env.PORT || 3000, () => {
     console.log("Server listening on port 3000");
     console.log(moment().format());

@@ -1,5 +1,7 @@
+// Importación de las librarías necesarias
 const CursoCert = require("../../services/mysql/models/CursosCertificaciones");
 
+// Capa de acceso para obtener el CRUD de curso y/o certificación
 const getCursosCert = async(id_usuario) => {
     return new Promise((resolve, reject) =>
         CursoCert.findAll({

@@ -1,3 +1,4 @@
+// Importación de las librarías necesarias
 const Router = require("express");
 const usuarios = require("../apiServices/Usuarios/routes");
 const cursosCert = require("../apiServices/CursosCertificaciones/routes");
@@ -18,6 +19,7 @@ const vistasVacante = require("../apiServices/VistasVacante/routes");
 const vinculacion = require("../apiServices/Vinculacion/routes");
 const { validJWT } = require("../apiServices/shared/middlewares/validar-jwt");
 
+// Configuracion de las rutas para las API
 const router = Router();
 router.use("/usuarios", usuarios);
 router.use("/cursos-certificaciones", cursosCert);

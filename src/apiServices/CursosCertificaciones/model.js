@@ -1,5 +1,6 @@
 const cursoCertDao = require("./dao");
 
+// Modelo del CRUD de curso y/o certificación
 const getCursosCert = async(id_usuario) => {
     return cursoCertDao.getCursosCert(id_usuario);
 };

@@ -1,3 +1,5 @@
+// Plantillas de HTML para el contenido de los correos
+
 const messageRegistro = (url) => {
     const messageR = {
         asunto: "Activación de Cuenta IECA",

@@ -1,5 +1,7 @@
+// Importación de las librarías necesarias
 const jwt = require("jsonwebtoken");
 
+// Función para generar un jsonwebtoken
 const generateJWT = (id, duracion) => {
     return new Promise((resolve, reject) => {
         const payload = { id };
@@ -21,6 +23,7 @@ const generateJWT = (id, duracion) => {
     });
 };
 
+// Función para obtener el id encriptado en un jsonwebtoken
 const getId = (token) => {
     try {
         const payload = jwt.verify(token, process.env.JWT_SECRET);
