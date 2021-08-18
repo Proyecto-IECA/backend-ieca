@@ -3,6 +3,7 @@ const controller = require("./controller");
 
 const router = express.Router();
 
+// Rutas del CRUD de postulaciones
 router.postAsync("/", controller.addPostulacion);
 router.getAsync("/:id", controller.getPostulante);
 router.getAsync("/realizadas/:id", controller.getPostulaciones);

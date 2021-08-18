@@ -5,6 +5,7 @@ const usuarioDto = require("../shared/dto");
 const { generateJWT } = require("../shared/helpers/jwt");
 const { enviarEmail } = require("../shared/helpers/email");
 
+// Función para crear un nuevo usuario
 const createUsuario = async(req, res) => {
     const salt = bcryptjs.genSaltSync();
 
@@ -42,6 +43,7 @@ const createUsuario = async(req, res) => {
         });
 };
 
+// Función para el login de un usuario
 const loginUsuario = async(req, res) => {
     const usuario = await usuarioModel
         .loginUsuario(req.body.email)
@@ -79,6 +81,7 @@ const loginUsuario = async(req, res) => {
     );
 };
 
+// Función para actualizar el passwoord de un usuario
 const renewPassUsuario = async(req, res) => {
     const salt = bcryptjs.genSaltSync();
 
@@ -101,6 +104,7 @@ const renewPassUsuario = async(req, res) => {
         });
 };
 
+// Función para validar el email de un usuario
 const validEmail = async(req, res) => {
     await usuarioModel
         .validEmail(req.params.id)
@@ -137,6 +141,7 @@ const validEmail = async(req, res) => {
     );
 };
 
+// Función para actualizar un usuario
 const updateUsuario = async(req, res) => {
     await usuarioModel
         .updateUsuario(req.params.id, {
@@ -173,6 +178,7 @@ const updateUsuario = async(req, res) => {
         });
 };
 
+// Función para actualizar la foto de un usuario
 const updateFotoUsuario = async(req, res) => {
     await usuarioModel
         .updateFotoUsuario(req.params.id, {
@@ -192,6 +198,7 @@ const updateFotoUsuario = async(req, res) => {
         });
 };
 
+// Función para obtener un usuario
 const getUsuario = async(req, res) => {
     await usuarioModel
         .getUsuario(req.params.id)
@@ -239,6 +246,7 @@ const getUsuario = async(req, res) => {
         });
 };
 
+// Función para enviar un email
 const sendEmail = async(req, res) => {
     const usuario = await usuarioModel
         .loginUsuario(req.body.email)

@@ -1,6 +1,7 @@
 const Idioma = require("../../services/mysql/models/Idiomas");
 const Usuario = require("../../services/mysql/models/Usuarios");
 
+// Capa de acceso para obtener el CRUD de habilidades
 const getIdiomas = async() => {
     return new Promise((resolve, reject) =>
         Idioma.findAll()

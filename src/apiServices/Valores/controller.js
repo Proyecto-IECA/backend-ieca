@@ -1,6 +1,7 @@
 const valorModel = require("./model");
 const valorDto = require("../shared/dto");
 
+// Función para obtener los valores
 const getValores = async(req, res) => {
     await valorModel
         .getValores()
@@ -12,6 +13,7 @@ const getValores = async(req, res) => {
         });
 };
 
+// Función para obtener los valores del usuario
 const getValoresUsuario = async(req, res) => {
     await valorModel
         .getValoresUsuario(req.params.id)
@@ -23,6 +25,7 @@ const getValoresUsuario = async(req, res) => {
         });
 };
 
+// Función para agregar un valor nuevo
 const addValor = async(req, res) => {
     const valores = await valorModel
         .getValoresUsuario(req.body.id_usuario)

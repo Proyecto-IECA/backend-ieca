@@ -1,5 +1,6 @@
 const ExpAcademica = require("../../services/mysql/models/ExperienciasAcademicas");
 
+// Capa de acceso para obtener el CRUD de las experiencias académicas
 const getExpAcademicas = async(id_usuario) => {
     return new Promise((resolve, reject) =>
         ExpAcademica.findAll({

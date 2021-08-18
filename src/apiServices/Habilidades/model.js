@@ -1,5 +1,6 @@
 const habilidadDao = require("./dao");
 
+// Modelo del CRUD de habilidades
 const getHabilidades = async(descripcion) => {
     return habilidadDao.getHabilidades(descripcion);
 };

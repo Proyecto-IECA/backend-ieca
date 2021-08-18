@@ -1,7 +1,7 @@
 const cursoCertModel = require("./model");
 const cursoCertDto = require("../shared/dto");
 
-// Función para obtener un curso y/o certificación
+// Función para obtener cursos y/o certificaciónes
 const getCursosCert = async(req, res) => {
     await cursoCertModel
         .getCursosCert(req.params.id)

@@ -1,6 +1,7 @@
 const vistaVacanteModel = require("./model");
 const vistaVacanteDto = require("../shared/dto");
 
+// Función para sumar en uno las vistas de la vacante
 const addVistaVacante = async(req, res) => {
     await vistaVacanteModel
         .updateVistasVacante(req.body.id_vacante_fk)
@@ -18,6 +19,7 @@ const addVistaVacante = async(req, res) => {
         });
 };
 
+// Función para obtener el número de vistas de la vacante
 const getVistasUsuario = async(req, res) => {
     await vistaVacanteModel
         .getVistasUsuario(req.params.id)

@@ -2,6 +2,7 @@ const postulacionModel = require("./model");
 const postulacionDto = require("../shared/dto");
 const moment = require("moment");
 
+// Función para agregar una nueva postulación
 const addPostulacion = async(req, res) => {
     await postulacionModel
         .addPostulacion({
@@ -21,6 +22,7 @@ const addPostulacion = async(req, res) => {
         });
 };
 
+// Función para borrar una postulación
 const deletePostulacion = async(req, res) => {
     await postulacionModel
         .deletePostulacion(req.params.id)
@@ -43,6 +45,7 @@ const deletePostulacion = async(req, res) => {
         });
 };
 
+// Función para cancelar una postulación
 const cancelPostulacion = async(req, res) => {
     await postulacionModel
         .cancelPostulacion(req.params.id)
@@ -65,6 +68,7 @@ const cancelPostulacion = async(req, res) => {
         });
 };
 
+// Función para aceptar una postulación
 const aceptarPostulacion = async(req, res) => {
     let fecha = moment().add(10, 'days').format('YYYY-MM-DD');
 
@@ -90,6 +94,7 @@ const aceptarPostulacion = async(req, res) => {
         });
 };
 
+// Función para rechazar una postulación
 const rechazarPostulacion = async(req, res) => {
     await postulacionModel
         .rechazarPostulacion(req.params.id, req.body.comentario)
@@ -112,6 +117,7 @@ const rechazarPostulacion = async(req, res) => {
         });
 };
 
+// Función para obtener un postulante
 const getPostulante = async(req, res) => {
     await postulacionModel
         .getPostulante(req.params.id)
@@ -123,6 +129,7 @@ const getPostulante = async(req, res) => {
         });
 };
 
+// Función para obtener las postulaciones
 const getPostulaciones = async(req, res) => {
     await postulacionModel
         .getPostulaciones(req.params.id)
@@ -134,7 +141,7 @@ const getPostulaciones = async(req, res) => {
         });
 };
 
-
+// Función para obtener una postulación
 const getPostulacion = async(req, res) => {
     await postulacionModel
         .getPostulacion(req.params.id, req.params.idv)

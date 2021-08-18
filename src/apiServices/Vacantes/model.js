@@ -1,5 +1,6 @@
 const vacanteDao = require("./dao");
 
+// Modelo del CRUD de vacantes
 const getVacantes = async(id_usuario, fecha) => {
     return vacanteDao.getVacantes(id_usuario, fecha);
 };

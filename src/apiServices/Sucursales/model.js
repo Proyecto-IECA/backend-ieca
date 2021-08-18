@@ -1,5 +1,6 @@
 const sucursalDao = require("./dao");
 
+// Modelo del CRUD de sucursales
 const getSucursales = async(id_usuario) => {
     return sucursalDao.getSucursales(id_usuario);
 };

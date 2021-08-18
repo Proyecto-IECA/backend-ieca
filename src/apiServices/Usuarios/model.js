@@ -1,5 +1,6 @@
 const usuarioDao = require("./dao");
 
+// Modelo del CRUD de usuarios
 const createUsuario = async(usuario) => {
     return usuarioDao.createUsuario(usuario);
 };

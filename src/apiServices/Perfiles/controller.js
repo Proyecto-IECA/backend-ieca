@@ -1,6 +1,7 @@
 const perfilModel = require("./model");
 const perfilDto = require("../shared/dto");
 
+// Función para obtener los perfiles
 const getPerfiles = async(req, res) => {
     await perfilModel
         .getPerfiles()
@@ -12,6 +13,7 @@ const getPerfiles = async(req, res) => {
         });
 };
 
+// Función para obtener los perfiles del usuario
 const getPerfilesUsuario = async(req, res) => {
     await perfilModel
         .getPerfilesUsuario(req.params.id)
@@ -23,6 +25,7 @@ const getPerfilesUsuario = async(req, res) => {
         });
 };
 
+// Función para agregar un nuevo perfil
 const addPerfil = async(req, res) => {
     const perfiles = await perfilModel
         .getPerfilesUsuario(req.body.id_usuario)
@@ -54,6 +57,7 @@ const addPerfil = async(req, res) => {
     return res.json(perfilDto.normally(true, perfilesNew));
 };
 
+// Función para obtener los perfiles de la vacante
 const getPerfilesVacante = async(req, res) => {
     await perfilModel
         .getPerfilesVacante(req.params.id)
@@ -65,6 +69,7 @@ const getPerfilesVacante = async(req, res) => {
         });
 };
 
+// Función para agregar un nuevo perfil a la vacante
 const addPerfilVacante = async(req, res) => {
     const perfiles = await perfilModel
         .getPerfilesVacante(req.body.id_vacante)

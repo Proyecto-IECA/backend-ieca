@@ -1,5 +1,6 @@
 const ExpLaboral = require("../../services/mysql/models/ExperienciasLaborales");
 
+// Capa de acceso para obtener el CRUD de experiencias laborales
 const getExpLaborales = async(id_usuario) => {
     return new Promise((resolve, reject) =>
         ExpLaboral.findAll({

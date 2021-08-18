@@ -1,6 +1,7 @@
 const expAcademicaModel = require("./model");
 const expAcademicaDto = require("../shared/dto");
 
+// Función para obtener experiencias académicas
 const getExpAcademicas = async(req, res) => {
     await expAcademicaModel
         .getExpAcademicas(req.params.id)
@@ -12,6 +13,7 @@ const getExpAcademicas = async(req, res) => {
         });
 };
 
+// Función para agregar una experiencia académica
 const addExpAcademica = async(req, res) => {
     if (req.body.estudiando === 1) {
         await updateEstudiando(req.body.id_usuario_fk);
@@ -40,6 +42,7 @@ const addExpAcademica = async(req, res) => {
         });
 };
 
+// Función para actualizar una experiencia académica
 const updateExpAcademica = async(req, res) => {
     if (req.body.estudiando === 1) {
         await updateEstudiando(req.body.id_usuario_fk);
@@ -72,6 +75,7 @@ const updateExpAcademica = async(req, res) => {
         });
 };
 
+// Función para eliminar una experiencia académica
 const deleteExpAcademica = async(req, res) => {
     await expAcademicaModel
         .deleteExpAcademica(req.params.id)
@@ -97,6 +101,7 @@ const deleteExpAcademica = async(req, res) => {
         });
 };
 
+// Función para actualizar el estado del estudio
 const updateEstudiando = async(id) => {
     await expAcademicaModel
         .updateEstudiando(id)

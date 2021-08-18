@@ -5,6 +5,7 @@ const Usuario = require("../../services/mysql/models/Usuarios");
 const Postulacion = require("../../services/mysql/models/Postulaciones");
 const Vacante = require("../../services/mysql/models/Vacantes");
 
+// Capa de acceso para obtener el CRUD de Reseñas
 const getUsuarios = async(ids) => {
     return new Promise((resolve, reject) =>
         Usuario.findAll({

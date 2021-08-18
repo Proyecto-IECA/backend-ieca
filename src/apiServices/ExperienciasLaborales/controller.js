@@ -1,6 +1,7 @@
 const expLaboralModel = require("./model");
 const expLaboralDto = require("../shared/dto");
 
+// Función para obtener experiencias laborales
 const getExpLaborales = async(req, res) => {
     await expLaboralModel
         .getExpLaborales(req.params.id)
@@ -12,6 +13,7 @@ const getExpLaborales = async(req, res) => {
         });
 };
 
+// Función para agregar una nueva experiencia laboral
 const addExpLaboral = async(req, res) => {
     if (req.body.trabajando == 1) {
         await updateTrabajando(req.body.id_usuario_fk);
@@ -40,6 +42,7 @@ const addExpLaboral = async(req, res) => {
         });
 };
 
+// Función para actualizar una experiencia laboral
 const updateExpLaboral = async(req, res) => {
     if (req.body.trabajando === 1) {
         await updateTrabajando(req.body.id_usuario_fk);
@@ -72,6 +75,7 @@ const updateExpLaboral = async(req, res) => {
         });
 };
 
+// Función para eliminar una experiencia laboral
 const deleteExpLaboral = async(req, res) => {
     await expLaboralModel
         .deleteExpLaboral(req.params.id)
@@ -94,6 +98,7 @@ const deleteExpLaboral = async(req, res) => {
         });
 };
 
+// Función actualizar el statdo del trabajo
 const updateTrabajando = async(id) => {
     await expLaboralModel
         .updateTrabajando(id)

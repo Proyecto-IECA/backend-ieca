@@ -1,5 +1,6 @@
 const postulacionDao = require("./dao");
 
+// Modelo del CRUD de postulaciones
 const addPostulacion = async(postulacion) => {
     return postulacionDao.addPostulacion(postulacion);
 };

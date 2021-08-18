@@ -1,6 +1,7 @@
 const vinculacionModel = require("./model");
 const vinculacionDto = require("../shared/dto");
 
+// Función para vincular una cuenta de IECA
 const vinculacionCuenta = async(req, res) => {
     await vinculacionModel
         .vinculacionCuenta(req.params.curp)

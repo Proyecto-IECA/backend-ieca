@@ -1,6 +1,7 @@
 const reseniaModel = require("./model");
 const reseniaDto = require("../shared/dto");
 
+// Función para obtener las reseñas
 const getReseniasUsuario = async(req, res) => {
     let resenias = await reseniaModel
         .getReseniasUsuario(req.params.id)
@@ -47,6 +48,7 @@ const getReseniasUsuario = async(req, res) => {
     res.json(reseniaDto.normally(true, data));
 };
 
+// Función para obtener los usuarios a evaluar
 const getUsuariosEvaluar = async(req, res) => {
     let usuario = await reseniaModel
         .getUsuariosEvaluar(req.params.id)
@@ -119,6 +121,7 @@ const getUsuariosEvaluar = async(req, res) => {
         });
 };
 
+// Función para dar una reseña a un usuario
 const calificar = async(req, res) => {
     await reseniaModel
         .calificar(

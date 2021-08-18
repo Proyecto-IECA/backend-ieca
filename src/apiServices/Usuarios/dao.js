@@ -4,6 +4,7 @@ const Habilidad = require("../../services/mysql/models/Habilidades");
 const Perfil = require("../../services/mysql/models/Perfiles");
 const Usuario = require("../../services/mysql/models/Usuarios");
 
+// Capa de acceso para el CRUD de usuarios
 const createUsuario = async(usuario) => {
     return new Promise((resolve, reject) =>
         Usuario.create(usuario)

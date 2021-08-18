@@ -1,6 +1,7 @@
 const VistaVacante = require("../../services/mysql/models/VistasVacante");
 const Vacante = require("../../services/mysql/models/Vacantes");
 
+// Capa de acceso para el CRUD de vistas vacante
 const addVistaVacante = async(id_vacante, id_usuario) => {
     return new Promise((resolve, reject) =>
         VistaVacante.findOne({

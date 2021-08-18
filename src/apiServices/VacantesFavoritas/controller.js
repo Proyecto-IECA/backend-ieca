@@ -1,6 +1,7 @@
 const vacanteFavModel = require("./model");
 const vacanteFavDto = require("../shared/dto");
 
+// Función para agregar una vacante a favorita
 const addVacanteFav = async(req, res) => {
     await vacanteFavModel
         .addVacanteFav({
@@ -15,6 +16,7 @@ const addVacanteFav = async(req, res) => {
         });
 };
 
+// Función para quitar una vacante de favoritas
 const deleteVacanteFav = async(req, res) => {
     await vacanteFavModel
         .deleteVacanteFav(req.params.id)
@@ -40,6 +42,7 @@ const deleteVacanteFav = async(req, res) => {
         });
 };
 
+// Función para obtener las vacantes favoritas
 const getVacantesFav = async(req, res) => {
     await vacanteFavModel
         .getVacantesFav(req.params.id)

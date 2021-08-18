@@ -4,6 +4,7 @@ const VacanteFav = require("../../services/mysql/models/VacantesFavoritas");
 const Usuario = require("../../services/mysql/models/Usuarios");
 const Vacante = require("../../services/mysql/models/Vacantes");
 
+// Capa de acceso para el CRUD de vacantes favoritas
 const addVacanteFav = async(vacanteFav) => {
     return new Promise((resolve, reject) =>
         VacanteFav.create(vacanteFav)

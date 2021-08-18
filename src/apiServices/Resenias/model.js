@@ -1,5 +1,6 @@
 const reseniaDao = require("./dao");
 
+// Modelo del CRUD de reseñas
 const getUsuarios = async(ids) => {
     return reseniaDao.getUsuarios(ids);
 };

@@ -1,5 +1,6 @@
 const valorDao = require("./dao");
 
+// Modelo del CRUD de valores
 const getValores = async(descripcion) => {
     return valorDao.getValores(descripcion);
 };

@@ -1,5 +1,6 @@
 const perfilDao = require("./dao");
 
+// Modelo del CRUD de perfiles
 const getPerfiles = async(descripcion) => {
     return perfilDao.getPerfiles(descripcion);
 };

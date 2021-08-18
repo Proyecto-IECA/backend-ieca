@@ -1,6 +1,7 @@
 const notificacionModel = require("./model");
 const notificacionDto = require("../shared/dto");
 
+// Función para agregar una notificación
 const addNotificacion = async(req, res) => {
     await notificacionModel
         .addNotificacion({
@@ -20,6 +21,7 @@ const addNotificacion = async(req, res) => {
         });
 };
 
+// Función para obtener notificaciones
 const getNotificaciones = async(req, res) => {
     await notificacionModel
         .obtenerNotificaciones(req.params.id)
@@ -31,6 +33,7 @@ const getNotificaciones = async(req, res) => {
         });
 };
 
+// Función para cambiar el estado de la notificación
 const verNotificacion = async(req, res) => {
     await notificacionModel
         .verNotificacion(req.params.id)
@@ -42,6 +45,7 @@ const verNotificacion = async(req, res) => {
         });
 };
 
+// Función para obtener el número de notificaciones
 const obtenerNumeroNotificaciones = async(req, res) => {
     await notificacionModel
         .obtenerNumeroNotificaciones(req.params.id)

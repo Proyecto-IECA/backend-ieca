@@ -1,6 +1,7 @@
 const habilidadModel = require("./model");
 const habilidadDto = require("../shared/dto");
 
+// Función para obtener las habilidades
 const getHabilidades = async(req, res) => {
     await habilidadModel
         .getHabilidades()
@@ -12,6 +13,7 @@ const getHabilidades = async(req, res) => {
         });
 };
 
+// Función para obtener las habilidades de un usuario
 const getHabilidadesUsuario = async(req, res) => {
     await habilidadModel
         .getHabilidadesUsuario(req.params.id)
@@ -23,6 +25,7 @@ const getHabilidadesUsuario = async(req, res) => {
         });
 };
 
+// Función para agregar una nueva habilidad
 const addHabilidad = async(req, res) => {
     const habilidades = await habilidadModel
         .getHabilidadesUsuario(req.body.id_usuario)

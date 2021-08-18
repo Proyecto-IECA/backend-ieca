@@ -3,6 +3,7 @@ const controller = require("./controller");
 
 const router = express.Router();
 
+// Rutas del CRUD de vacantes
 router.postAsync("/", controller.addVacante);
 router.putAsync("/generales/:id", controller.getVacantes);
 router.getAsync("/vacante/:id/:idU", controller.getVacante);

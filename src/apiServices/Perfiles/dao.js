@@ -2,6 +2,7 @@ const Perfil = require("../../services/mysql/models/Perfiles");
 const Usuario = require("../../services/mysql/models/Usuarios");
 const Vacante = require("../../services/mysql/models/Vacantes");
 
+// Capa de acceso para obtener el CRUD de perfiles
 const getPerfiles = async() => {
     return new Promise((resolve, reject) =>
         Perfil.findAll()

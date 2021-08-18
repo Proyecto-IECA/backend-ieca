@@ -1,6 +1,7 @@
 const sucursalModel = require("./model");
 const sucursalDto = require("../shared/dto");
 
+// Función para obtener las sucursales
 const getSucursales = async(req, res) => {
     await sucursalModel
         .getSucursales(req.params.id)
@@ -12,6 +13,7 @@ const getSucursales = async(req, res) => {
         });
 };
 
+// Función para gregar una nueva sucursal
 const addSucursal = async(req, res) => {
     await sucursalModel
         .addSucursal({
@@ -27,6 +29,7 @@ const addSucursal = async(req, res) => {
         });
 };
 
+// Función para actualizar una sucursal
 const updateSucursal = async(req, res) => {
     await sucursalModel
         .updateSucursal(req.params.id, {
@@ -52,6 +55,7 @@ const updateSucursal = async(req, res) => {
         });
 };
 
+// Función para borrar una sucursal
 const deleteSucursal = async(req, res) => {
     await sucursalModel
         .deleteSucursal(req.params.id)

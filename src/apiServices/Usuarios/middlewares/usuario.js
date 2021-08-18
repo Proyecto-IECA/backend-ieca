@@ -3,6 +3,7 @@ const usuarioDto = require("../../shared/dto");
 const authDto = require("../dto");
 const { generateJWT, getId } = require("../../shared/helpers/jwt");
 
+// Función para validar el email del usuario
 const validarEmail = async(req, res) => {
     await usuarioModel
         .getUsuario(req.params.id)
@@ -18,6 +19,7 @@ const validarEmail = async(req, res) => {
         });
 };
 
+// Función para validar el perfil del usuario
 const validarPerfil = async(req, res) => {
     await usuarioModel
         .getUsuarioPerfil(req.params.id)
@@ -63,6 +65,7 @@ const validarPerfil = async(req, res) => {
         });
 }
 
+// Función para validar el token del usuario
 const validarToken = async(req, res) => {
     const token = req.header("x-token");
     const idToken = getId(token);

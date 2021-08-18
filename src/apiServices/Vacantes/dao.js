@@ -7,7 +7,7 @@ const Postulacion = require("../../services/mysql/models/Postulaciones");
 const VacanteFav = require("../../services/mysql/models/VacantesFavoritas");
 const Perfil = require("../../services/mysql/models/Perfiles");
 
-
+// Capa de acceso para el CRUD de vacantes
 const getVacantes = async(id_usuario, fecha) => {
     return new Promise((resolve, reject) =>
         Vacante.findAll({

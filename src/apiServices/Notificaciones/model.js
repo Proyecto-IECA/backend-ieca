@@ -1,5 +1,6 @@
 const notificacionDao = require("./dao");
 
+// Modelo del CRUD de notificaciones
 const addNotificacion = async(notificacion) => {
     return notificacionDao.addNotificacion(notificacion);
 };

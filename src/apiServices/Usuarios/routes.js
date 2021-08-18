@@ -3,6 +3,7 @@ const controller = require("./controller");
 
 const router = express.Router();
 
+// Rutas del CRUD de usuarios
 router.postAsync("/", controller.createUsuario);
 router.postAsync("/login", controller.loginUsuario);
 router.putAsync("/renewpass/:id", controller.renewPassUsuario);

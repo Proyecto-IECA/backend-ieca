@@ -1,5 +1,6 @@
 const expLaboralDao = require("./dao");
 
+// Modelo del CRUD de experiencias laborales
 const getExpLaborales = async(id_usuario) => {
     return expLaboralDao.getExpLaborales(id_usuario);
 };

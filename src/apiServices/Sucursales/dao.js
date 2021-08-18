@@ -1,6 +1,7 @@
 const Sucursal = require("../../services/mysql/models/Sucursales");
 const Usuario = require("../../services/mysql/models/Usuarios");
 
+// Capa de acceso para el CRUD de sucursales
 const getSucursales = async(id_usuario) => {
     return new Promise((resolve, reject) =>
         Sucursal.findAll({

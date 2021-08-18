@@ -1,5 +1,6 @@
 const expAcademicaDao = require("./dao");
 
+// Modelo del CRUD de experiencias académicas
 const getExpAcademicas = async(id_usuario) => {
     return expAcademicaDao.getExpAcademicas(id_usuario);
 };

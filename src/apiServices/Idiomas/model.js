@@ -1,5 +1,6 @@
 const idiomaDao = require("./dao");
 
+// Modelo del CRUD de idiomas
 const getIdiomas = async(descripcion) => {
     return idiomaDao.getIdiomas(descripcion);
 };

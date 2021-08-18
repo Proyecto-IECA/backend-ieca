@@ -1,6 +1,7 @@
 const vacanteModel = require("./model");
 const vacanteDto = require("../shared/dto");
 
+// Función para obtener las vacantes
 const getVacantes = async(req, res) => {
     if (req.body.filter_perfiles == true) {
         await vacanteModel
@@ -23,6 +24,7 @@ const getVacantes = async(req, res) => {
     }
 };
 
+// Función para obtener una vacante
 const getVacante = async(req, res) => {
     await vacanteModel
         .getVacante(req.params.id, req.params.idU)
@@ -34,6 +36,7 @@ const getVacante = async(req, res) => {
         });
 };
 
+// Función para obtener las vacantes de una empresa
 const getVacantesEmpresa = async(req, res) => {
     let vacantesP;
     let vacantesB;
@@ -101,6 +104,7 @@ const getVacantesEmpresa = async(req, res) => {
     return res.json(vacanteDto.normally(true, vacantes));
 };
 
+// Función para crear una nueva vacante
 const addVacante = async(req, res) => {
     await vacanteModel
         .addVacante({
@@ -122,6 +126,7 @@ const addVacante = async(req, res) => {
         });
 };
 
+// Función para actualizar una vacante
 const updateVacante = async(req, res) => {
     await vacanteModel
         .updateVacante(req.params.id, {
@@ -152,6 +157,7 @@ const updateVacante = async(req, res) => {
         });
 };
 
+// Función para borrar una vacante
 const deleteVacante = async(req, res) => {
     await vacanteModel
         .deleteVacante(req.params.id)
@@ -171,6 +177,7 @@ const deleteVacante = async(req, res) => {
         });
 };
 
+// Función para públicar una vacante
 const publicarVacante = async(req, res) => {
     await vacanteModel
         .publicarVacante(req.params.id)
@@ -190,6 +197,7 @@ const publicarVacante = async(req, res) => {
         });
 };
 
+// Función para dejar de públicar una vacante
 const noPublicarVacante = async(req, res) => {
     await vacanteModel
         .noPublicarVacante(req.params.id)
@@ -207,6 +215,7 @@ const noPublicarVacante = async(req, res) => {
         });
 };
 
+// Función para cerrar una vacante
 const cerrarVacante = async(req, res) => {
     await vacanteModel
         .cerrarVacante(req.params.id)
@@ -224,6 +233,7 @@ const cerrarVacante = async(req, res) => {
         });
 };
 
+// Función para abrir una vacante
 const abrirVacante = async(req, res) => {
     await vacanteModel
         .abrirVacante(req.params.id)
@@ -241,6 +251,7 @@ const abrirVacante = async(req, res) => {
         });
 };
 
+// Función para obtener los postulantes de una vacante
 const getPostulantes = async(req, res) => {
     await vacanteModel
         .getPostulantes(req.params.id)
@@ -252,6 +263,7 @@ const getPostulantes = async(req, res) => {
         });
 };
 
+// Función para obtener las postulaciones de una vacante
 const getPostulaciones = async(req, res) => {
     await vacanteModel
         .getPostulaciones(req.params.id)

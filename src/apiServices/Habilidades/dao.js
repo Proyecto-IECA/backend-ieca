@@ -1,6 +1,7 @@
 const Habilidad = require("../../services/mysql/models/Habilidades");
 const Usuario = require("../../services/mysql/models/Usuarios");
 
+// Capa de acceso para obtener el CRUD de habilidades
 const getHabilidades = async() => {
     return new Promise((resolve, reject) =>
         Habilidad.findAll()

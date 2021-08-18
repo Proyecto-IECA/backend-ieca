@@ -1,6 +1,7 @@
 const idiomaModel = require("./model");
 const idiomaDto = require("../shared/dto");
 
+// Función para obtener los idiomas
 const getIdiomas = async(req, res) => {
     await idiomaModel
         .getIdiomas()
@@ -12,6 +13,7 @@ const getIdiomas = async(req, res) => {
         });
 };
 
+// Función para obtener los idiomas de un usuario
 const getIdiomasUsuario = async(req, res) => {
     await idiomaModel
         .getIdiomasUsuario(req.params.id)
@@ -23,6 +25,7 @@ const getIdiomasUsuario = async(req, res) => {
         });
 };
 
+// Función para agregar un nuevo idioma
 const addIdioma = async(req, res) => {
     const idiomas = await idiomaModel
         .getIdiomasUsuario(req.body.id_usuario)

@@ -1,6 +1,7 @@
 const Valor = require("../../services/mysql/models/Valores");
 const Usuario = require("../../services/mysql/models/Usuarios");
 
+// Capa de acceso para el CRUD de valores
 const getValores = async() => {
     return new Promise((resolve, reject) =>
         Valor.findAll()

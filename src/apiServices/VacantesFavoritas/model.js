@@ -1,5 +1,6 @@
 const vacanteFavDao = require("./dao");
 
+// Modelo del CRUD de vacantes favoritas
 const addVacanteFav = async(vacanteFav) => {
     return vacanteFavDao.addVacanteFav(vacanteFav);
 };
